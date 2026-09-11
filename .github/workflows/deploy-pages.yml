@@ -38,6 +38,9 @@ jobs:
           cp -r admin/dist frontend/dist/admin
           cp frontend/dist/index.html frontend/dist/404.html
           cp frontend/dist/admin/index.html frontend/dist/admin/404.html
+        env:
+          VITE_BACKEND_URL: "https://naanstop-desi-api.loca.lt"
+          VITE_FRONTEND_URL: "https://deekshag96.github.io/food-delivery-app"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
