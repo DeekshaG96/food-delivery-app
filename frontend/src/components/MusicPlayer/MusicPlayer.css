@@ -1,0 +1,571 @@
+/* Tomato Diner Radio & Food Waiting Music Player */
+
+.diner-music-wrapper {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9990;
+    font-family: 'Outfit', sans-serif;
+    user-select: none;
+}
+
+/* ========================================================
+   1. COLLAPSED FLOATING PILL DOCK
+   ======================================================== */
+.diner-music-pill {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(18, 22, 32, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 76, 36, 0.35);
+    padding: 8px 14px 8px 10px;
+    border-radius: 40px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 16px rgba(255, 76, 36, 0.15);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    max-width: 320px;
+}
+
+.diner-music-pill:hover {
+    transform: translateY(-3px) scale(1.02);
+    border-color: #ff4c24;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45), 0 0 24px rgba(255, 76, 36, 0.3);
+}
+
+.diner-music-pill.playing {
+    border-color: #ff4c24;
+    background: rgba(26, 20, 24, 0.94);
+}
+
+.pill-icon-wrap {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff6347, #e03a18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(255, 76, 36, 0.4);
+    flex-shrink: 0;
+}
+
+.pill-icon {
+    font-size: 19px;
+}
+
+.pill-waves {
+    position: absolute;
+    bottom: -2px;
+    display: flex;
+    gap: 2px;
+    align-items: flex-end;
+    height: 10px;
+}
+
+.pill-waves span {
+    width: 2.5px;
+    background: #ffffff;
+    border-radius: 2px;
+    animation: bounceWave 0.8s ease-in-out infinite alternate;
+}
+
+.pill-waves span:nth-child(1) { height: 4px; animation-delay: 0.1s; }
+.pill-waves span:nth-child(2) { height: 8px; animation-delay: 0.25s; }
+.pill-waves span:nth-child(3) { height: 5px; animation-delay: 0.4s; }
+
+.pill-info {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: 1.25;
+}
+
+.pill-tag {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #ff6347;
+}
+
+.pill-track {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pill-btn-play {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
+    color: #ffffff;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    margin-left: 2px;
+}
+
+.pill-btn-play:hover {
+    background: #ff4c24;
+    transform: scale(1.1);
+}
+
+.pill-btn-expand {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.2s ease;
+}
+
+.pill-btn-expand:hover {
+    color: #ffffff;
+}
+
+/* ========================================================
+   2. EXPANDED HI-FI RADIO LOUNGE CARD
+   ======================================================== */
+.diner-music-card {
+    width: 340px;
+    background: rgba(18, 20, 28, 0.95);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 24px;
+    padding: 18px 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 76, 36, 0.2);
+    animation: popIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Top Bar Header */
+.diner-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 10px;
+}
+
+.diner-header-brand {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-badge {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ff6347;
+    letter-spacing: 0.3px;
+}
+
+.brand-subtitle {
+    font-size: 11px;
+    color: #9ca3af;
+    margin-top: 1px;
+}
+
+.diner-header-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-icon-hdr {
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    color: #cbd5e1;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-icon-hdr:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+.btn-icon-hdr.close:hover {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+/* Vinyl Record & Meta */
+.diner-card-body {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.vinyl-display {
+    position: relative;
+    width: 86px;
+    height: 86px;
+    flex-shrink: 0;
+}
+
+.vinyl-disc {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle, #242426 0%, #0d0d0f 70%, #050506 100%);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5), inset 0 0 0 2px rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.vinyl-disc.spinning {
+    animation: spinDisc 5s linear infinite;
+}
+
+@keyframes spinDisc {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.vinyl-grooves {
+    position: absolute;
+    width: 82%;
+    height: 82%;
+    border-radius: 50%;
+    border: 1px dashed rgba(255, 255, 255, 0.12);
+}
+
+.vinyl-center {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff4c24, #c92f0d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 8px rgba(255, 76, 36, 0.5);
+}
+
+.vinyl-tomato {
+    font-size: 14px;
+}
+
+.tonearm {
+    position: absolute;
+    top: -2px;
+    right: -4px;
+    width: 22px;
+    height: 44px;
+    border-right: 2.5px solid #94a3b8;
+    border-top: 2.5px solid #94a3b8;
+    border-top-right-radius: 8px;
+    transform-origin: top right;
+    transform: rotate(15deg);
+    transition: transform 0.4s ease;
+    pointer-events: none;
+}
+
+.tonearm.playing {
+    transform: rotate(38deg);
+}
+
+.diner-track-meta {
+    flex: 1;
+    overflow: hidden;
+}
+
+.track-badges {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+
+.track-badge-vibe {
+    font-size: 10px;
+    background: rgba(255, 76, 36, 0.18);
+    color: #ff7d5f;
+    padding: 2px 7px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.track-badge-bpm {
+    font-size: 9px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #94a3b8;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.track-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 3px 0 2px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.track-station {
+    font-size: 11px;
+    color: #94a3b8;
+    margin: 0 0 8px 0;
+}
+
+/* Soundwave Equalizer */
+.equalizer-soundwave {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 14px;
+}
+
+.equalizer-soundwave span {
+    width: 3px;
+    background: #ff4c24;
+    border-radius: 2px;
+    height: 3px;
+    transition: height 0.15s ease;
+}
+
+.equalizer-soundwave.active span {
+    animation: eqDance 0.7s ease-in-out infinite alternate;
+}
+
+.equalizer-soundwave.active span:nth-child(1) { animation-delay: 0.1s; height: 10px; }
+.equalizer-soundwave.active span:nth-child(2) { animation-delay: 0.25s; height: 14px; }
+.equalizer-soundwave.active span:nth-child(3) { animation-delay: 0.4s; height: 8px; }
+.equalizer-soundwave.active span:nth-child(4) { animation-delay: 0.15s; height: 12px; }
+.equalizer-soundwave.active span:nth-child(5) { animation-delay: 0.3s; height: 14px; }
+.equalizer-soundwave.active span:nth-child(6) { animation-delay: 0.5s; height: 7px; }
+.equalizer-soundwave.active span:nth-child(7) { animation-delay: 0.2s; height: 11px; }
+.equalizer-soundwave.active span:nth-child(8) { animation-delay: 0.35s; height: 9px; }
+
+@keyframes eqDance {
+    0% { height: 3px; }
+    100% { height: 14px; }
+}
+
+@keyframes bounceWave {
+    0% { height: 3px; }
+    100% { height: 10px; }
+}
+
+/* Progress bar */
+.track-progress-container {
+    margin-bottom: 12px;
+}
+
+.track-progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.track-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6347, #ff4c24);
+    border-radius: 3px;
+    transition: width 0.3s linear;
+}
+
+.track-progress-time {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+.loop-indicator {
+    color: #10b981;
+    font-weight: 600;
+}
+
+/* Controls */
+.diner-controls-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.ctrl-btn {
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ctrl-btn.secondary {
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #e2e8f0;
+    font-size: 13px;
+}
+
+.ctrl-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.18);
+    transform: scale(1.08);
+}
+
+.ctrl-btn.primary {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #ff5722, #e63914);
+    color: #ffffff;
+    font-size: 16px;
+    box-shadow: 0 6px 18px rgba(255, 76, 36, 0.4);
+}
+
+.ctrl-btn.primary:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 22px rgba(255, 76, 36, 0.6);
+}
+
+.ctrl-btn.primary.playing {
+    background: linear-gradient(135deg, #e63914, #c92f0d);
+}
+
+/* Volume */
+.volume-control-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding: 0 6px;
+}
+
+.btn-volume-mute {
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.volume-slider {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+    outline: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ff4c24;
+    cursor: pointer;
+    box-shadow: 0 0 6px rgba(255, 76, 36, 0.6);
+}
+
+.volume-label {
+    font-size: 10px;
+    color: #94a3b8;
+    width: 28px;
+    text-align: right;
+}
+
+/* Station Chips */
+.diner-stations-list {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 10px;
+}
+
+.stations-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #64748b;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.stations-chips {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+.station-chip {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #cbd5e1;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.station-chip:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.station-chip.active {
+    background: rgba(255, 76, 36, 0.2);
+    border-color: #ff4c24;
+    color: #ffffff;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .diner-music-wrapper {
+        bottom: 84px; /* Sits comfortably above mobile bottom navigation bar */
+        right: 16px;
+    }
+
+    .diner-music-card {
+        width: 300px;
+        padding: 14px 16px;
+    }
+}

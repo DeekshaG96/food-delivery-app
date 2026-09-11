@@ -13,6 +13,8 @@ import MyOrders from './pages/MyOrders/MyOrders';
 import Reservations from './pages/Reservations/Reservations';
 import { StoreContext } from './context/StoreContext';
 
+import MusicPlayer from './components/MusicPlayer/MusicPlayer';
+
 const App = () => {
     const [showLogin, setShowLogin] = useState(false);
     const { toast, closeToast } = useContext(StoreContext);
@@ -33,6 +35,7 @@ const App = () => {
                 <Footer />
             </div>
             <BottomNav setShowLogin={setShowLogin} />
+            <MusicPlayer />
             {toast && <Toast message={toast.message} type={toast.type} onClose={closeToast} />}
         </>
     );

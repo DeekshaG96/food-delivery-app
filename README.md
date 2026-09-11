@@ -61,6 +61,15 @@ An enterprise-ready, full-stack food delivery, table reservation, and kitchen op
 * **Live Order Tracking & Receipt Breakdown**:
   * Stage-by-stage status: 🟡 *Food Processing* ➔ 🔵 *Out for Delivery / Ready* ➔ 🟢 *Delivered*.
   * Dedicated **Receipt Breakdown Modal** showing item portion sizes, add-ons, cooking notes, and fulfillment method.
+* **Tomato Diner Radio & Food Waiting Music Lounge** 🎧:
+  * In-app audio player featuring 4 ambient kitchen & dining stations:
+    * ☕ *Cozy Kitchen Lofi* (Mellow Rhodes piano & chillhop vinyl grooves)
+    * 🍕 *Trattoria Acoustic Serenade* (Warm Mediterranean nylon guitar fingerpicking)
+    * 🌧️ *Rainy Cafe Piano* (Nostalgic piano keys with soothing rain ambience)
+    * 🌆 *Midnight Tokyo Ramen* (Neo-soul synth pads & late-night chillhop bass)
+  * Procedural Web Audio API sound synthesis (100% offline, zero external audio dependencies).
+  * Rotating vinyl record turntable animation, dancing equalizer soundwave visualizer, station selector, and volume slider.
+  * Embedded directly on "My Orders" order tracking page and globally accessible via the navigation bar.
 
 ---
 

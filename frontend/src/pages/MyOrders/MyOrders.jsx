@@ -17,7 +17,9 @@ import {
     Utensils,
     MapPin,
     Flame,
-    Sparkles
+    Sparkles,
+    Headphones,
+    Music
 } from 'lucide-react';
 import { StoreContext } from '../../context/StoreContext';
 import './MyOrders.css';
@@ -112,6 +114,36 @@ const MyOrders = () => {
                 >
                     <RefreshCw size={16} className={isRefreshing ? "spin-icon" : ""} />
                     <span>Refresh Status</span>
+                </button>
+            </div>
+
+            {/* Waiting for Food Music Callout Banner */}
+            <div className="waiting-music-banner">
+                <div className="music-banner-left">
+                    <div className="music-banner-avatar">
+                        <Headphones size={24} />
+                    </div>
+                    <div>
+                        <div className="music-banner-tag">
+                            <span>🍅 Tomato Diner Radio</span>
+                            <span className="live-dot-pulse">● LIVE AMBIENCE</span>
+                        </div>
+                        <h3 className="music-banner-title">Waiting for your food? Relax with chill kitchen beats</h3>
+                        <p className="music-banner-desc">
+                            Listen to soothing lo-fi chords, acoustic cafe guitars, and ambient kitchen lofi while our chefs prepare your order.
+                        </p>
+                    </div>
+                </div>
+                <button
+                    type="button"
+                    onClick={() => {
+                        window.dispatchEvent(new CustomEvent('open-music-player', { detail: { play: true } }));
+                    }}
+                    className="music-banner-cta"
+                    id="play-waiting-music-btn"
+                >
+                    <Music size={16} />
+                    <span>Play Waiting Beats 🎵</span>
                 </button>
             </div>
 

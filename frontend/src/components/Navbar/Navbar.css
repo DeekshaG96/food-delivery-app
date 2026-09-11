@@ -76,7 +76,37 @@
 .navbar-right {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
+}
+
+.nav-radio-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, rgba(255, 76, 36, 0.12), rgba(255, 125, 95, 0.18));
+  color: var(--primary);
+  border: 1px solid rgba(255, 76, 36, 0.3);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.nav-radio-btn:hover {
+  background: linear-gradient(135deg, rgba(255, 76, 36, 0.22), rgba(255, 125, 95, 0.3));
+  border-color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 76, 36, 0.15);
+}
+
+.radio-icon {
+  font-size: 14px;
+}
+
+.radio-label {
+  font-family: 'Outfit', sans-serif;
 }
 
 .admin-badge-btn {

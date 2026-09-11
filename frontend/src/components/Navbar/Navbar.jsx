@@ -67,6 +67,21 @@ const Navbar = ({ setShowLogin }) => {
                 </nav>
 
                 <div className="navbar-right">
+                    {/* Diner Radio Trigger */}
+                    <button
+                        type="button"
+                        onClick={() => {
+                            window.dispatchEvent(new CustomEvent('open-music-player', { detail: { play: true } }));
+                        }}
+                        className="nav-radio-btn"
+                        title="Tune into Tomato Diner Radio & Food Waiting Lounge"
+                        aria-label="Tomato Diner Radio"
+                        id="nav-diner-radio-btn"
+                    >
+                        <span className="radio-icon">🎵</span>
+                        <span className="radio-label">Diner Radio</span>
+                    </button>
+
                     {/* Switch to Admin Dashboard */}
                     <a
                         href={adminUrl}
