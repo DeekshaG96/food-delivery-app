@@ -1,0 +1,10 @@
+{
+  "name": "food-delivery-app",
+  "version": "1.0.0",
+  "description": "Full Stack Food Delivery Web Application (MERN + Stripe + Admin Panel)",
+  "scripts": {
+    "server": "npm --prefix backend run dev",
+    "client": "npm --prefix frontend run dev",
+    "admin": "npm --prefix admin run dev"
+  }
+}

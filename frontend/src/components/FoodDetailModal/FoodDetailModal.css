@@ -1,0 +1,439 @@
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.food-modal-container {
+    background: #ffffff;
+    width: 100%;
+    max-width: 580px;
+    max-height: 90vh;
+    border-radius: 24px;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 10;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    color: #1e293b;
+    transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+    background: #ffffff;
+    transform: scale(1.08);
+}
+
+.modal-image-wrapper {
+    position: relative;
+    height: 240px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.modal-dish-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal-image-overlay {
+    position: absolute;
+    bottom: 12px;
+    left: 16px;
+    right: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-category-pill {
+    background: rgba(255, 75, 58, 0.9);
+    color: #ffffff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(6px);
+}
+
+.modal-rating-badge {
+    background: rgba(15, 23, 42, 0.75);
+    color: #ffffff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    backdrop-filter: blur(6px);
+}
+
+.modal-body-content {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+}
+
+.modal-dish-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.modal-dish-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.2;
+    margin-bottom: 6px;
+}
+
+.modal-dish-meta-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.meta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748b;
+    background: #f1f5f9;
+    padding: 3px 10px;
+    border-radius: 8px;
+}
+
+.meta-pill.highlight {
+    background: #fff1f0;
+    color: #ff4b3a;
+}
+
+.modal-dish-price {
+    font-size: 26px;
+    font-weight: 800;
+    color: #ff4b3a;
+    white-space: nowrap;
+}
+
+.modal-dish-desc {
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.custom-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.section-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.optional-tag {
+    font-size: 12px;
+    font-weight: 400;
+    color: #94a3b8;
+}
+
+.spice-pill-group {
+    display: flex;
+    gap: 10px;
+}
+
+.spice-pill {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1.5px solid #e2e8f0;
+    background: #ffffff;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.spice-pill:hover {
+    border-color: #cbd5e1;
+}
+
+.spice-pill.active {
+    border-color: #ff4b3a;
+    background: #fff5f4;
+    color: #ff4b3a;
+}
+
+.addons-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.addon-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #ffffff;
+}
+
+.addon-card:hover {
+    border-color: #cbd5e1;
+    background: #f8fafc;
+}
+
+.addon-card.selected {
+    border-color: #ff4b3a;
+    background: #fff5f4;
+}
+
+.addon-checkbox {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    border: 1.5px solid #cbd5e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.addon-card.selected .addon-checkbox {
+    background: #ff4b3a;
+    border-color: #ff4b3a;
+}
+
+.addon-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: #1e293b;
+    flex: 1;
+}
+
+.addon-price {
+    font-size: 12px;
+    font-weight: 700;
+    color: #ff4b3a;
+}
+
+.notes-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 13px;
+    resize: none;
+    color: #1e293b;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.notes-textarea:focus {
+    border-color: #ff4b3a;
+}
+
+.modal-footer-bar {
+    padding: 16px 24px;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #fafafa;
+    border-radius: 0 0 24px 24px;
+}
+
+.modal-quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    padding: 6px 12px;
+    border-radius: 12px;
+}
+
+.qty-btn {
+    background: transparent;
+    border: none;
+    color: #475569;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.qty-btn:disabled {
+    color: #cbd5e1;
+    cursor: not-allowed;
+}
+
+.qty-display {
+    font-weight: 700;
+    font-size: 16px;
+    min-width: 20px;
+    text-align: center;
+    color: #0f172a;
+}
+
+.modal-add-cart-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #ff6b4a 0%, #ff4b3a 100%);
+    color: #ffffff;
+    border: none;
+    padding: 14px 22px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 10px 20px -5px rgba(255, 75, 58, 0.4);
+    transition: all 0.2s ease;
+}
+
+.modal-add-cart-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 25px -5px rgba(255, 75, 58, 0.5);
+}
+
+.total-badge {
+    background: rgba(255, 255, 255, 0.25);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+@keyframes scaleUp {
+    from {
+        transform: scale(0.92);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.animate-scale-up {
+    animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Size Variant Selector */
+.sizes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.size-card-btn {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+}
+
+.size-card-btn:hover {
+    border-color: var(--primary, #ff4b3a);
+    background: #fffafa;
+}
+
+.size-card-btn.active {
+    border-color: var(--primary, #ff4b3a);
+    background: #fff5f5;
+    box-shadow: 0 4px 14px rgba(255, 75, 58, 0.15);
+}
+
+.size-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.size-name {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.size-card-btn.active .size-name {
+    color: var(--primary, #ff4b3a);
+}
+
+.size-price-diff {
+    font-size: 11px;
+    font-weight: 700;
+    color: #059669;
+    background: #ecfdf5;
+    padding: 2px 6px;
+    border-radius: 6px;
+}
+
+.size-serves {
+    font-size: 11.5px;
+    color: #64748b;
+}
+
+@media (max-width: 640px) {
+    .sizes-grid {
+        grid-template-columns: 1fr;
+    }
+    .addons-grid {
+        grid-template-columns: 1fr;
+    }
+}

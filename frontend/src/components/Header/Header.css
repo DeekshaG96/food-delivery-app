@@ -1,0 +1,117 @@
+.header-section {
+  padding: 24px 0 10px;
+}
+
+.header-card {
+  position: relative;
+  height: 34vw;
+  min-height: 420px;
+  max-height: 520px;
+  background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1600&auto=format&fit=crop&q=80') no-repeat center center;
+  background-size: cover;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+}
+
+.header-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(17, 24, 39, 0.92) 0%,
+    rgba(17, 24, 39, 0.82) 45%,
+    rgba(17, 24, 39, 0.25) 100%
+  );
+}
+
+.header-contents {
+  position: relative;
+  z-index: 2;
+  max-width: 580px;
+  padding-left: 54px;
+  padding-right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  animation: fadeIn 0.8s ease;
+}
+
+.header-badges {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.badge-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.badge-chip.gold {
+  color: #ffca28;
+  background: rgba(255, 202, 40, 0.15);
+  border-color: rgba(255, 202, 40, 0.35);
+}
+
+.header-title {
+  color: #ffffff;
+  font-size: clamp(32px, 4.2vw, 56px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -1px;
+}
+
+.highlight-text {
+  color: #ff6b5b;
+  text-shadow: 0 4px 20px rgba(255, 107, 91, 0.4);
+}
+
+.header-description {
+  color: #e5e7eb;
+  font-size: clamp(14px, 1.1vw, 16px);
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.header-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+  background: var(--primary);
+  color: #ffffff;
+  padding: 14px 30px;
+  border-radius: var(--radius-full);
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: var(--shadow-glow);
+  transition: var(--transition);
+}
+
+.header-cta-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(255, 76, 59, 0.45);
+}
+
+@media (max-width: 768px) {
+  .header-card {
+    min-height: 480px;
+  }
+  .header-contents {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}

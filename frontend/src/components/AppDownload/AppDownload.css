@@ -1,0 +1,110 @@
+.app-download-section {
+  padding: 30px 0 60px;
+}
+
+.app-download-card {
+  background: linear-gradient(135deg, #1e252b 0%, #111827 100%);
+  border-radius: var(--radius-lg);
+  padding: 50px 40px;
+  text-align: center;
+  color: #ffffff;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.app-download-card::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(255, 76, 59, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.app-download-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.download-pill {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #ff8577;
+  background: rgba(255, 76, 59, 0.18);
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+}
+
+.download-title {
+  font-size: clamp(26px, 3vw, 38px);
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.download-subtitle {
+  color: #9ca3af;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.download-platforms {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.platform-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 10px 22px;
+  border-radius: var(--radius-md);
+  color: #ffffff;
+  backdrop-filter: blur(8px);
+  transition: var(--transition);
+}
+
+.platform-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.platform-icon {
+  font-size: 24px;
+}
+
+.platform-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.platform-text small {
+  font-size: 10px;
+  color: #9ca3af;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.platform-text strong {
+  font-size: 15px;
+  font-weight: 700;
+}

@@ -1,0 +1,361 @@
+.admin-reservations-page {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.reservations-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: #ffffff;
+  padding: 20px 24px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.res-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.res-sub {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.res-refresh-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.res-refresh-btn:hover {
+  border-color: var(--primary, #ff4b3a);
+  color: var(--primary, #ff4b3a);
+}
+
+/* Metrics */
+.res-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.res-metric-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.metric-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.metric-icon.total { background: #eff6ff; color: #2563eb; }
+.metric-icon.confirmed { background: #ecfdf5; color: #059669; }
+.metric-icon.seated { background: #fef3c7; color: #d97706; }
+.metric-icon.guests { background: #f5f3ff; color: #7c3aed; }
+
+.metric-label {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.metric-val {
+  font-family: 'Outfit', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+/* Filter Bar */
+.res-filter-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.res-status-tabs {
+  display: flex;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 10px;
+  gap: 4px;
+}
+
+.res-tab-btn {
+  background: transparent;
+  border: none;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #64748b;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.res-tab-btn.active {
+  background: #ffffff;
+  color: #ff4b3a;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.res-search-input-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 280px;
+}
+
+.search-ico {
+  position: absolute;
+  left: 12px;
+  color: #94a3b8;
+}
+
+.res-search-input {
+  width: 100%;
+  padding: 8px 12px 8px 36px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 13px;
+  outline: none;
+}
+
+.res-search-input:focus {
+  border-color: #ff4b3a;
+}
+
+/* Cards Grid */
+.reservations-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
+}
+
+.admin-res-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.card-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.code-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.res-code {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  color: #0f172a;
+  letter-spacing: 0.04em;
+}
+
+.res-status-pill {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  text-transform: capitalize;
+}
+
+.res-status-pill.confirmed { background: #ecfdf5; color: #059669; }
+.res-status-pill.seated { background: #eff6ff; color: #2563eb; }
+.res-status-pill.cancelled { background: #fee2e2; color: #dc2626; }
+
+.res-area-badge {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.guest-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.guest-contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.booking-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #f1f5f9;
+}
+
+.bd-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bd-lbl {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.bd-val {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.special-notes-box {
+  background: #fff5f5;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.notes-lbl {
+  font-weight: 700;
+  color: #b91c1c;
+}
+
+.notes-text {
+  color: #7f1d1d;
+  font-style: italic;
+  margin: 2px 0 0;
+}
+
+/* Actions */
+.res-actions-bar {
+  display: flex;
+  gap: 8px;
+  padding-top: 6px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.res-action-btn {
+  flex: 1;
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.res-action-btn.seat {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+.res-action-btn.seat:hover {
+  background: #2563eb;
+}
+
+.res-action-btn.confirm {
+  background: #10b981;
+  color: #ffffff;
+}
+
+.res-action-btn.confirm:hover {
+  background: #059669;
+}
+
+.res-action-btn.cancel {
+  background: #f1f5f9;
+  color: #dc2626;
+  border: 1px solid #fee2e2;
+}
+
+.res-action-btn.cancel:hover {
+  background: #fee2e2;
+}
+
+/* Empty */
+.res-empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px dashed #cbd5e1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.empty-ico {
+  color: #94a3b8;
+}
+
+@media (max-width: 900px) {
+  .res-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
