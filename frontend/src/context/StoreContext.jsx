@@ -6,8 +6,8 @@ export const StoreContext = createContext(null);
 const StoreContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});
     const [cartCustomizations, setCartCustomizations] = useState({});
-    const url = "http://localhost:4000";
-    const adminUrl = "http://localhost:5174";
+    const url = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
+    const adminUrl = import.meta.env.VITE_ADMIN_URL || "http://localhost:5174";
     const [token, setToken] = useState(localStorage.getItem("token") || "");
     const [userName, setUserName] = useState(localStorage.getItem("userName") || "");
     const [food_list, setFoodList] = useState([]);

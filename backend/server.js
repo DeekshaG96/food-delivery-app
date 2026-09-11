@@ -47,7 +47,7 @@ app.use("/api/reservation", reservationRouter);
 app.get("/", (req, res) => {
     res.json({
         success: true,
-        message: "Tomato Food Delivery API is running successfully!",
+        message: "NaanStop Food Delivery API is running successfully! 🌶️",
         endpoints: {
             foods: "/api/food/list",
             userRegister: "/api/user/register",

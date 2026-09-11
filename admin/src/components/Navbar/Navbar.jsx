@@ -3,6 +3,8 @@ import { ExternalLink, ShieldAlert } from 'lucide-react';
 import './Navbar.css';
 
 const Navbar = () => {
+    const customerUrl = import.meta.env.VITE_FRONTEND_URL || "http://localhost:5173";
+
     return (
         <header className="admin-navbar">
             <div className="admin-brand">
@@ -13,7 +15,7 @@ const Navbar = () => {
 
             <div className="admin-navbar-right">
                 <a
-                    href="http://localhost:5173"
+                    href={customerUrl}
                     target="_blank"
                     rel="noreferrer"
                     className="view-store-btn"
