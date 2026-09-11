@@ -187,3 +187,101 @@
   padding: 2px 8px;
   border-radius: var(--radius-full);
 }
+
+/* Authentic Indian FSSAI Veg / Non-Veg Indicator */
+.title-with-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.fssai-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  border-radius: 3px;
+  background: #ffffff;
+  padding: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.fssai-indicator.veg {
+  border: 1.5px solid #16a34a;
+}
+
+.fssai-indicator.veg .fssai-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #16a34a;
+}
+
+.fssai-indicator.non-veg {
+  border: 1.5px solid #dc2626;
+}
+
+.fssai-indicator.non-veg .fssai-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #dc2626;
+}
+
+/* Bestseller Badge */
+.food-bestseller-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.35);
+  letter-spacing: 0.2px;
+  z-index: 4;
+}
+
+/* Spice & Jain Tag Row */
+.food-tags-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.spice-indicator-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #b91c1c;
+  background: #fee2e2;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.spice-indicator-badge .spice-icon {
+  color: #ef4444;
+}
+
+.jain-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: #047857;
+  background: #d1fae5;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+

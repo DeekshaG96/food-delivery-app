@@ -5,11 +5,24 @@ import { StoreContext } from '../../context/StoreContext';
 import './Cart.css';
 
 const Cart = () => {
-    const { cartItems, food_list, removeFromCart, addToCart, getTotalCartAmount, url, showToast } = useContext(StoreContext);
+    const { 
+        cartItems, 
+        food_list, 
+        removeFromCart, 
+        addToCart, 
+        getTotalCartAmount, 
+        url, 
+        showToast,
+        appliedCoupon,
+        setAppliedCoupon,
+        setSpinModalOpen
+    } = useContext(StoreContext);
     const navigate = useNavigate();
-    const [promoCode, setPromoCode] = useState("");
-    const [appliedDiscount, setAppliedDiscount] = useState(0);
-    const [promoMessage, setPromoMessage] = useState("");
+    const [promoCode, setPromoCode] = useState(appliedCoupon?.code || "");
+    const [appliedDiscount, setAppliedDiscount] = useState(appliedCoupon ? appliedCoupon.discount || 0 : 0);
+    const [promoMessage, setPromoMessage] = useState(
+        appliedCoupon ? `Applied from Spin Wheel: ${appliedCoupon.label || appliedCoupon.code}` : ""
+    );
 
     const subtotal = getTotalCartAmount();
     const deliveryFee = subtotal === 0 ? 0 : (appliedDiscount === -1 ? 0 : 2); // -1 = free shipping
@@ -18,22 +31,42 @@ const Cart = () => {
 
     const handleApplyPromo = (codeToApply) => {
         const code = (codeToApply || promoCode).trim().toUpperCase();
-        if (code === "WELCOME10") {
-            setAppliedDiscount(10);
-            setPromoMessage("Promo code applied: $10.00 OFF!");
-            showToast("Promo WELCOME10 applied: $10 off! 🎉", "success");
-        } else if (code === "FREESHIP") {
+        if (code === "TADKA20" || code === "TOMATO20") {
+            const disc = Math.round(subtotal * 0.2);
+            setAppliedDiscount(disc);
+            setPromoMessage("Tadka 20% OFF applied! 🔥");
+            setAppliedCoupon({ code, discount: disc, label: "20% Tadka Discount" });
+            showToast("Promo TADKA20 applied: 20% off! 🌶️", "success");
+        } else if (code === "FREELASSI") {
+            setAppliedDiscount(4.50);
+            setPromoMessage("Free Mango Lassi Voucher Applied ($4.50 OFF)! 🥭");
+            setAppliedCoupon({ code, discount: 4.50, label: "Free Mango Lassi" });
+            showToast("Promo FREELASSI applied: $4.50 off! 🥭", "success");
+        } else if (code === "CHAI5") {
+            setAppliedDiscount(5.00);
+            setPromoMessage("Chai Lover Special: $5.00 OFF! ☕");
+            setAppliedCoupon({ code, discount: 5.00, label: "$5 Chai Discount" });
+            showToast("Promo CHAI5 applied: $5.00 off! ☕", "success");
+        } else if (code === "DESIFREE" || code === "FREESHIP") {
             setAppliedDiscount(-1);
-            setPromoMessage("Promo code applied: FREE DELIVERY!");
-            showToast("Promo FREESHIP applied: Free Delivery! 🚚", "success");
-        } else if (code === "TOMATO20") {
-            setAppliedDiscount(Math.round(subtotal * 0.2));
-            setPromoMessage("Promo code applied: 20% OFF!");
-            showToast("Promo TOMATO20 applied: 20% off! 🍅", "success");
+            setPromoMessage("Desi Express: FREE DELIVERY Applied! 🛵");
+            setAppliedCoupon({ code, discount: -1, label: "Free Delivery" });
+            showToast("Promo applied: Free Delivery! 🛵", "success");
+        } else if (code === "MAKHAN10" || code === "WELCOME10") {
+            const disc = code === "WELCOME10" ? 10 : Math.round(subtotal * 0.1);
+            setAppliedDiscount(disc);
+            setPromoMessage(`${code === "WELCOME10" ? "$10" : "10%"} Makhan Discount applied! 🧈`);
+            setAppliedCoupon({ code, discount: disc, label: `${disc} Discount` });
+            showToast(`Promo ${code} applied successfully! 🧈`, "success");
+        } else if (code === "GULABJAMUN") {
+            setAppliedDiscount(3.99);
+            setPromoMessage("Free Shahi Gulab Jamun Treat ($3.99 OFF)! 🍯");
+            setAppliedCoupon({ code, discount: 3.99, label: "Free Gulab Jamun" });
+            showToast("Promo GULABJAMUN applied: $3.99 off! 🍯", "success");
         } else {
             setAppliedDiscount(0);
-            setPromoMessage("Invalid promo code. Try WELCOME10 or FREESHIP");
-            showToast("Invalid promo code. Try WELCOME10 or FREESHIP", "error");
+            setPromoMessage("Invalid promo code. Try spinning the wheel or use TADKA20 / CHAI5 / DESIFREE!");
+            showToast("Invalid promo code. Try TADKA20 or DESIFREE", "error");
         }
     };
 
@@ -167,27 +200,57 @@ const Cart = () => {
                             )}
 
                             <div className="quick-promo-tags">
-                                <span className="tag-label">Try test codes:</span>
+                                <span className="tag-label">Desi Offer Codes:</span>
                                 <button
                                     type="button"
                                     onClick={() => {
-                                        setPromoCode("WELCOME10");
-                                        handleApplyPromo("WELCOME10");
+                                        setPromoCode("TADKA20");
+                                        handleApplyPromo("TADKA20");
                                     }}
-                                    className="promo-chip"
+                                    className="promo-chip highlight-chip"
                                 >
-                                    WELCOME10 ($10 off)
+                                    🌶️ TADKA20 (20% OFF)
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => {
-                                        setPromoCode("FREESHIP");
-                                        handleApplyPromo("FREESHIP");
+                                        setPromoCode("FREELASSI");
+                                        handleApplyPromo("FREELASSI");
                                     }}
                                     className="promo-chip"
                                 >
-                                    FREESHIP (Free delivery)
+                                    🥭 FREELASSI ($4.50 off)
                                 </button>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setPromoCode("DESIFREE");
+                                        handleApplyPromo("DESIFREE");
+                                    }}
+                                    className="promo-chip"
+                                >
+                                    🛵 DESIFREE (Free delivery)
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setPromoCode("CHAI5");
+                                        handleApplyPromo("CHAI5");
+                                    }}
+                                    className="promo-chip"
+                                >
+                                    ☕ CHAI5 ($5 off)
+                                </button>
+                            </div>
+
+                            {/* Lucky Wheel Promo CTA */}
+                            <div className="cart-wheel-cta" onClick={() => setSpinModalOpen(true)}>
+                                <span className="wheel-spin-emoji">🎡</span>
+                                <div className="wheel-cta-text">
+                                    <strong>Chakkar of Luck: Spin & Win!</strong>
+                                    <span>Spin the royal wheel to win instant discounts up to 20% off.</span>
+                                </div>
+                                <span className="wheel-cta-btn">Spin Now</span>
                             </div>
                         </div>
 

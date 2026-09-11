@@ -1,8 +1,11 @@
-import React from 'react';
-import { ArrowRight, Clock, Star } from 'lucide-react';
+import React, { useContext } from 'react';
+import { ArrowRight, Flame, Star, Sparkles } from 'lucide-react';
+import { StoreContext } from '../../context/StoreContext';
 import './Header.css';
 
 const Header = () => {
+    const { setSpinModalOpen } = useContext(StoreContext);
+
     return (
         <section className="header-section">
             <div className="header-card">
@@ -10,28 +13,39 @@ const Header = () => {
                 <div className="header-contents">
                     <div className="header-badges">
                         <span className="badge-chip">
-                            <Clock size={14} />
-                            <span>Fast 30-min Delivery</span>
+                            <Flame size={14} color="#f59e0b" />
+                            <span>100% Asli Desi Ghee</span>
                         </span>
                         <span className="badge-chip gold">
-                            <Star size={14} fill="#ff9f1c" />
-                            <span>4.9 / 5 Rated</span>
+                            <Star size={14} fill="#f59e0b" color="#f59e0b" />
+                            <span>4.9 ★ (15,000+ Desi Foodies)</span>
                         </span>
                     </div>
 
                     <h1 className="header-title">
-                        Order your <br />
-                        <span className="highlight-text">favourite food</span> here
+                        Asli Desi Swad, <br />
+                        <span className="highlight-text">Non-Stop Goodness! 🌶️</span>
                     </h1>
 
                     <p className="header-description">
-                        Choose from a diverse menu featuring an exquisite array of dishes crafted with the finest ingredients and culinary artistry. Satisfy your cravings and elevate every mealtime today.
+                        From smoky clay-oven garlic naans to fragrant slow-dum biryanis and royal rich curries. Prepared fresh with authentic spices and delivered piping hot in 30 mins!
                     </p>
 
-                    <a href="#explore-menu" className="header-cta-btn" id="header-view-menu-btn">
-                        <span>Explore Menu</span>
-                        <ArrowRight size={18} />
-                    </a>
+                    <div className="header-cta-group">
+                        <a href="#explore-menu" className="header-cta-btn" id="header-view-menu-btn">
+                            <span>Explore Desi Menu 🍛</span>
+                            <ArrowRight size={18} />
+                        </a>
+                        <button 
+                            type="button" 
+                            onClick={() => setSpinModalOpen(true)}
+                            className="header-spin-cta-btn"
+                            id="header-spin-luck-btn"
+                        >
+                            <Sparkles size={16} />
+                            <span>Spin for 20% Off 🎡</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>

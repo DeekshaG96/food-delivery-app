@@ -6,10 +6,10 @@ const ExploreMenu = ({ category, setCategory }) => {
     return (
         <section className="explore-menu-section" id="explore-menu">
             <div className="section-header">
-                <span className="section-pill">Taste the Variety</span>
-                <h2 className="section-title">Explore our curated menu</h2>
+                <span className="section-pill">Taste the Desi Magic 🌶️</span>
+                <h2 className="section-title">Explore Our Royal Desi Canteen Menu</h2>
                 <p className="section-subtitle">
-                    Select a category to filter dishes crafted with authentic flavors, fresh local produce, and master culinary techniques.
+                    Hand-crafted authentic recipes from Old Delhi, Lucknow, Hyderabad, and Amritsar. Cooked with pure spices, slow-cooked gravies, and tandoori sizzle.
                 </p>
             </div>
 

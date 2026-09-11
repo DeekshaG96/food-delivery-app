@@ -13,6 +13,10 @@ const StoreContextProvider = (props) => {
     const [food_list, setFoodList] = useState([]);
     const [loadingFoods, setLoadingFoods] = useState(true);
     const [toast, setToast] = useState(null);
+    const [pureVegOnly, setPureVegOnly] = useState(false);
+    const [spinModalOpen, setSpinModalOpen] = useState(false);
+    const [appliedCoupon, setAppliedCoupon] = useState(null);
+    const [riderTip, setRiderTip] = useState(1.00);
 
     const showToast = (message, type = 'success', duration = 3000) => {
         setToast({ message, type });
@@ -186,7 +190,15 @@ const StoreContextProvider = (props) => {
         loadingFoods,
         toast,
         showToast,
-        closeToast
+        closeToast,
+        pureVegOnly,
+        setPureVegOnly,
+        spinModalOpen,
+        setSpinModalOpen,
+        appliedCoupon,
+        setAppliedCoupon,
+        riderTip,
+        setRiderTip
     };
 
     return (

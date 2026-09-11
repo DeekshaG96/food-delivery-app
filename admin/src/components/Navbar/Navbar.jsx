@@ -6,9 +6,9 @@ const Navbar = () => {
     return (
         <header className="admin-navbar">
             <div className="admin-brand">
-                <span className="brand-name">Tomato</span>
-                <span className="brand-dot">.</span>
-                <span className="admin-pill">Admin Dashboard</span>
+                <span className="brand-name">NaanStop</span>
+                <span className="brand-dot" style={{ color: '#ef4444' }}>🌶️</span>
+                <span className="admin-pill">Kitchen OS & Admin</span>
             </div>
 
             <div className="admin-navbar-right">

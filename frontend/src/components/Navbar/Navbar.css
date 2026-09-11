@@ -21,21 +21,36 @@
 
 .navbar-logo {
   display: flex;
-  align-items: baseline;
+  align-items: center;
+  gap: 2px;
   text-decoration: none;
 }
 
-.logo-tomato {
-  font-size: 32px;
-  font-weight: 800;
-  color: var(--primary);
+.logo-naan {
+  font-size: 30px;
+  font-weight: 900;
+  color: #f59e0b;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 8px rgba(245, 158, 11, 0.25);
+}
+
+.logo-stop {
+  font-size: 30px;
+  font-weight: 900;
+  color: #e11d48;
   letter-spacing: -0.5px;
 }
 
-.logo-dot {
-  font-size: 36px;
-  font-weight: 800;
-  color: var(--accent);
+.logo-chilli {
+  font-size: 24px;
+  margin-left: 2px;
+  display: inline-block;
+  animation: chillBounce 2s ease-in-out infinite alternate;
+}
+
+@keyframes chillBounce {
+  from { transform: rotate(0deg) scale(1); }
+  to { transform: rotate(12deg) scale(1.15); }
 }
 
 .navbar-menu {
@@ -77,6 +92,78 @@
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+.nav-veg-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f0fdf4;
+  border: 1.5px solid #86efac;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #166534;
+}
+
+.nav-veg-toggle.active {
+  background: #15803d;
+  color: #ffffff;
+  border-color: #15803d;
+  box-shadow: 0 3px 10px rgba(22, 101, 52, 0.3);
+}
+
+.veg-switch-pill {
+  width: 24px;
+  height: 14px;
+  background: #cbd5e1;
+  border-radius: 10px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.veg-switch-pill::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.veg-switch-pill.on {
+  background: #4ade80;
+}
+
+.veg-switch-pill.on::after {
+  left: 12px;
+}
+
+.nav-spin-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 7px 14px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 3px 12px rgba(245, 158, 11, 0.35);
+  transition: var(--transition);
+}
+
+.nav-spin-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 16px rgba(245, 158, 11, 0.55);
 }
 
 .nav-radio-btn {

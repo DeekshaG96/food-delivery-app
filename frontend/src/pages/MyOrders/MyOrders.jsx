@@ -125,12 +125,12 @@ const MyOrders = () => {
                     </div>
                     <div>
                         <div className="music-banner-tag">
-                            <span>🍅 Tomato Diner Radio</span>
-                            <span className="live-dot-pulse">● LIVE AMBIENCE</span>
+                            <span>🌶️ NaanStop Radio</span>
+                            <span className="live-dot-pulse">● LIVE DESI AMBIENCE</span>
                         </div>
-                        <h3 className="music-banner-title">Waiting for your food? Relax with chill kitchen beats</h3>
+                        <h3 className="music-banner-title">Waiting for your tandoori feast? Tune into Desi vibes</h3>
                         <p className="music-banner-desc">
-                            Listen to soothing lo-fi chords, acoustic cafe guitars, and ambient kitchen lofi while our chefs prepare your order.
+                            Enjoy soothing Bollywood acoustic guitar, tapri chai monsoon rain, and highway dhaba lofi while Raju Bhaiya speeds to your doorstep!
                         </p>
                     </div>
                 </div>
@@ -143,7 +143,7 @@ const MyOrders = () => {
                     id="play-waiting-music-btn"
                 >
                     <Music size={16} />
-                    <span>Play Waiting Beats 🎵</span>
+                    <span>Play Desi Beats 🎵</span>
                 </button>
             </div>
 
@@ -248,15 +248,50 @@ const MyOrders = () => {
                                     </div>
                                 </div>
 
+                                {/* Delivery Partner Live Tracker Card (Raju Bhaiya) */}
+                                {orderType === 'delivery' && (
+                                    <div className="rider-tracking-card">
+                                        <div className="rider-avatar-col">
+                                            <div className="rider-avatar-ring">
+                                                <span className="rider-avatar-emoji">🛵</span>
+                                                <span className="rider-live-pulse" title="Live on GPS"></span>
+                                            </div>
+                                        </div>
+                                        <div className="rider-details-col">
+                                            <div className="rider-name-row">
+                                                <h4 className="rider-name">{order.rider?.name || "Raju Bhaiya"}</h4>
+                                                <span className="rider-vehicle-pill">{order.rider?.vehicle || "Hero Splendor • KA-03-HA-7788"}</span>
+                                            </div>
+                                            <div className="rider-metrics-row">
+                                                <span className="rider-rating">⭐ {order.rider?.rating || 4.9} ({order.rider?.trips || "1,420"} deliveries)</span>
+                                                <span className="rider-eta-badge">
+                                                    <Clock size={12} /> ETA: ~{order.etaMins || 22} mins • Hot Bag Secured
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="rider-chai-action-col">
+                                            <button 
+                                                type="button" 
+                                                className="rider-chai-tip-cta"
+                                                onClick={() => showToast("Chai tip sent to Raju Bhaiya! Dhanyawad! ☕", "success")}
+                                                title="Send chai tip to Raju Bhaiya"
+                                            >
+                                                <span>Tip Chai ☕</span>
+                                                <span className="chai-amt">${order.riderTip ? order.riderTip.toFixed(2) : '1.00'}</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+
                                 {/* Order Card Footer */}
                                 <div className="order-card-footer">
                                     <div className="order-address-snippet">
                                         {orderType === 'delivery' ? (
                                             <span><MapPin size={14} /> Deliver to: {order.address ? `${order.address.street || ''}, ${order.address.city || ''}` : 'Home Address'}</span>
                                         ) : orderType === 'pickup' ? (
-                                            <span><Store size={14} /> Pickup at: Tomato Flagship, 120 Market St (Counter)</span>
+                                            <span><Store size={14} /> Pickup at: NaanStop Flagship, 120 Chandni Chowk Lane (Counter)</span>
                                         ) : (
-                                            <span><Utensils size={14} /> Dine-In service to: {order.tableNumber || 'Table 4'}</span>
+                                            <span><Utensils size={14} /> Royal Dine-In to: {order.tableNumber || 'Table 4'}</span>
                                         )}
                                     </div>
 
@@ -382,7 +417,7 @@ const MyOrders = () => {
                                 {receiptOrder.orderType === 'delivery' && receiptOrder.address ? (
                                     `${receiptOrder.address.firstName || ''} ${receiptOrder.address.lastName || ''}, ${receiptOrder.address.street || ''}, ${receiptOrder.address.city || ''}, ${receiptOrder.address.state || ''} ${receiptOrder.address.zipcode || ''} • Tel: ${receiptOrder.address.phone || ''}`
                                 ) : receiptOrder.orderType === 'pickup' ? (
-                                    'Tomato Culinary Flagship: 120 Market Street, Gourmet Quarter • Contact: (555) 839-2049'
+                                    'NaanStop Desi Culinary Flagship: 120 Chandni Chowk Lane, Gourmet Quarter • Contact: (555) 839-2049'
                                 ) : (
                                     `Table: ${receiptOrder.tableNumber || 'Table 4'} (Server will deliver dishes directly to table)`
                                 )}

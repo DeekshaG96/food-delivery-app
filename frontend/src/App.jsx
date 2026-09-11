@@ -14,10 +14,11 @@ import Reservations from './pages/Reservations/Reservations';
 import { StoreContext } from './context/StoreContext';
 
 import MusicPlayer from './components/MusicPlayer/MusicPlayer';
+import SpinWheelModal from './components/SpinWheel/SpinWheelModal';
 
 const App = () => {
     const [showLogin, setShowLogin] = useState(false);
-    const { toast, closeToast } = useContext(StoreContext);
+    const { toast, closeToast, spinModalOpen, setSpinModalOpen, setAppliedCoupon, showToast } = useContext(StoreContext);
 
     return (
         <>
@@ -36,6 +37,14 @@ const App = () => {
             </div>
             <BottomNav setShowLogin={setShowLogin} />
             <MusicPlayer />
+            <SpinWheelModal 
+                isOpen={spinModalOpen} 
+                onClose={() => setSpinModalOpen(false)} 
+                onApplyCoupon={(code) => {
+                    setAppliedCoupon(code);
+                    showToast(`Coupon ${code} applied successfully! 🌶️🎉`, 'success');
+                }}
+            />
             {toast && <Toast message={toast.message} type={toast.type} onClose={closeToast} />}
         </>
     );

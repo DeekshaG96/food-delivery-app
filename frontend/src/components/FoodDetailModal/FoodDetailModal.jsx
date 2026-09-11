@@ -4,31 +4,45 @@ import { StoreContext } from '../../context/StoreContext';
 import './FoodDetailModal.css';
 
 const SIZES = [
-    { id: 'regular', name: 'Regular', extraPrice: 0, serves: 'Serves 1', desc: 'Standard single portion' },
-    { id: 'medium', name: 'Medium', extraPrice: 3.50, serves: 'Serves 2', desc: '+35% generous portion' },
-    { id: 'large', name: 'Large / Family', extraPrice: 7.00, serves: 'Serves 3–4', desc: 'Family sharing size' }
+    { id: 'regular', name: 'Single Plate / Handi', extraPrice: 0, serves: 'Serves 1', desc: 'Authentic individual portion' },
+    { id: 'medium', name: 'Dhaba Sharing Handi', extraPrice: 3.50, serves: 'Serves 2', desc: '+40% hearty portion' },
+    { id: 'large', name: 'Royal Dawat / Karahi', extraPrice: 7.00, serves: 'Serves 3–4', desc: 'Feast size with extra gravy' }
 ];
 
-const ADD_ONS = [
-    { id: 'cheese', name: 'Extra Melted Cheese', price: 1.50 },
-    { id: 'sauce', name: 'Artisan Garlic Dip', price: 0.99 },
-    { id: 'avocado', name: 'Fresh Hass Avocado Slices', price: 2.00 },
-    { id: 'crunch', name: 'Crispy Shallots & Herbs', price: 0.75 }
+const DESI_ADD_ONS = [
+    { id: 'makhan', name: 'Extra Amul Butter Dollop (Makhan)', price: 0.99 },
+    { id: 'raita', name: 'Chilled Boondi Raita Bowl', price: 1.50 },
+    { id: 'sirka_pyaz', name: 'Sirka Pickled Onions & Green Chutney', price: 0.75 },
+    { id: 'papad', name: 'Crispy Roasted Papad (2 pcs)', price: 0.99 },
+    { id: 'naan', name: 'Hot Butter Garlic Naan (1 pc)', price: 2.25 }
 ];
 
-const SPICE_LEVELS = ['Mild 🌿', 'Medium 🌶️', 'Hot 🔥'];
+const SPICE_LEVELS = [
+    { id: 'mild', label: 'Mild (Creamy) 🌿', desc: 'Mild & subtle spices' },
+    { id: 'medium', label: 'Medium (Ghar Ka Tadka) 🌶️', desc: 'Balanced authentic warmth' },
+    { id: 'teekha', label: 'Desi Teekha (Dhaba Style) 🌶️🌶️', desc: 'Bold spicy kick' },
+    { id: 'fire', label: 'Bhut Jolokia Fire 🌶️🌶️🌶️', desc: 'Warning: For real spice lovers!' }
+];
 
 const FoodDetailModal = ({ food, onClose }) => {
     const { addToCart, showToast, url } = useContext(StoreContext);
     const [quantity, setQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState('regular');
-    const [selectedSpice, setSelectedSpice] = useState('Medium 🌶️');
+    const [selectedSpice, setSelectedSpice] = useState(
+        food?.spiceDefault === 'Desi Teekha' ? 'Desi Teekha (Dhaba Style) 🌶️🌶️' : 'Medium (Ghar Ka Tadka) 🌶️'
+    );
     const [selectedAddOns, setSelectedAddOns] = useState([]);
+    const [isJainPrep, setIsJainPrep] = useState(false);
     const [specialNotes, setSpecialNotes] = useState('');
 
     if (!food) return null;
 
-    const imageSrc = food.image.startsWith('http') ? food.image : `${url}/images/${food.image}`;
+    const isVeg = food.isVeg !== undefined 
+        ? food.isVeg 
+        : (food.category === 'Mithai' || food.category === 'Chai & Drinks' || food.category === 'Breads' || 
+           /paneer|dal|samosa|chaat|chole|veg|pav bhaji|kulcha|naan|roti|lassi|chai|jamun|halwa|kheer|rasmalai/i.test(food.name));
+
+    const imageSrc = food.image?.startsWith('http') ? food.image : `${url}/images/${food.image}`;
 
     const toggleAddOn = (addonId) => {
         setSelectedAddOns(prev =>
@@ -41,7 +55,7 @@ const FoodDetailModal = ({ food, onClose }) => {
     const currentSizeObj = SIZES.find(s => s.id === selectedSize) || SIZES[0];
 
     const addOnsTotal = selectedAddOns.reduce((sum, id) => {
-        const item = ADD_ONS.find(a => a.id === id);
+        const item = DESI_ADD_ONS.find(a => a.id === id);
         return sum + (item ? item.price : 0);
     }, 0);
 
@@ -51,14 +65,15 @@ const FoodDetailModal = ({ food, onClose }) => {
     const handleAddToCart = () => {
         const customization = {
             size: currentSizeObj.name,
-            addOns: selectedAddOns.map(id => ADD_ONS.find(a => a.id === id)?.name).filter(Boolean),
+            addOns: selectedAddOns.map(id => DESI_ADD_ONS.find(a => a.id === id)?.name).filter(Boolean),
             spice: selectedSpice,
+            isJain: isJainPrep,
             notes: specialNotes,
             unitPrice: unitPrice
         };
-        addToCart(food._id, quantity, true, customization);
-        const addonText = selectedAddOns.length > 0 ? ` with ${selectedAddOns.length} add-ons` : '';
-        showToast(`Added ${quantity}x ${food.name} (${currentSizeObj.name})${addonText} to cart! 🍽️`, 'success');
+        addToCart(food._id || food.id, quantity, true, customization);
+        const addonText = selectedAddOns.length > 0 ? ` with ${selectedAddOns.length} Desi add-ons` : '';
+        showToast(`Added ${quantity}x ${food.name} (${currentSizeObj.name})${addonText} to cart! 🌶️`, 'success');
         onClose();
     };
 
@@ -103,11 +118,19 @@ const FoodDetailModal = ({ food, onClose }) => {
                 <div className="modal-body-content">
                     <div className="modal-dish-header">
                         <div>
-                            <h2 className="modal-dish-title">{food.name}</h2>
+                            <div className="modal-title-with-badge">
+                                <span 
+                                    className={`fssai-indicator ${isVeg ? 'veg' : 'non-veg'}`}
+                                    title={isVeg ? "100% Pure Veg" : "Contains Non-Veg"}
+                                >
+                                    <span className="fssai-dot"></span>
+                                </span>
+                                <h2 className="modal-dish-title">{food.name}</h2>
+                            </div>
                             <div className="modal-dish-meta-row">
                                 <span className="meta-pill"><Clock size={14} /> 20–30 mins</span>
                                 <span className="meta-pill"><Flame size={14} /> ~450 kcal</span>
-                                <span className="meta-pill highlight"><ChefHat size={14} /> Chef's Choice</span>
+                                <span className="meta-pill highlight"><ChefHat size={14} /> NaanStop Signature</span>
                             </div>
                         </div>
                         <div className="modal-dish-price">${Number(food.price).toFixed(2)}</div>
@@ -115,11 +138,11 @@ const FoodDetailModal = ({ food, onClose }) => {
 
                     <p className="modal-dish-desc">{food.description}</p>
 
-                    {/* Size Variation Selector (Inspired by Delivery App) */}
+                    {/* Size Variation Selector */}
                     <div className="custom-section">
                         <label className="section-label">
                             <span>Select Portion Size</span>
-                            <span className="optional-tag">Delivery App Variation</span>
+                            <span className="optional-tag">Handcrafted Portion</span>
                         </label>
                         <div className="sizes-grid">
                             {SIZES.map((s) => (
@@ -141,31 +164,51 @@ const FoodDetailModal = ({ food, onClose }) => {
                         </div>
                     </div>
 
-                    {/* Spice Level Selector */}
+                    {/* Desi Spice Meter */}
                     <div className="custom-section">
-                        <label className="section-label">Spice Preference</label>
+                        <label className="section-label">
+                            <span>Desi Teekhapan (Spice Level) 🌶️</span>
+                            <span className="optional-tag">Select your warmth</span>
+                        </label>
                         <div className="spice-pill-group">
-                            {SPICE_LEVELS.map((level) => (
+                            {SPICE_LEVELS.map((sp) => (
                                 <button
                                     type="button"
-                                    key={level}
-                                    className={`spice-pill ${selectedSpice === level ? 'active' : ''}`}
-                                    onClick={() => setSelectedSpice(level)}
+                                    key={sp.id}
+                                    className={`spice-pill ${selectedSpice === sp.label ? 'active' : ''}`}
+                                    onClick={() => setSelectedSpice(sp.label)}
+                                    title={sp.desc}
                                 >
-                                    {level}
+                                    {sp.label}
                                 </button>
                             ))}
                         </div>
                     </div>
 
+                    {/* Jain Option Checkbox */}
+                    <div className="custom-section jain-toggle-section">
+                        <label 
+                            className={`jain-toggle-card ${isJainPrep ? 'active' : ''}`}
+                            onClick={() => setIsJainPrep(!isJainPrep)}
+                        >
+                            <div className="jain-checkbox">
+                                {isJainPrep && <Check size={14} />}
+                            </div>
+                            <div className="jain-text-col">
+                                <span className="jain-title">🌱 Prepare as 100% Jain Friendly</span>
+                                <span className="jain-desc">Cooked without onions, garlic, or root vegetables in dedicated utensils.</span>
+                            </div>
+                        </label>
+                    </div>
+
                     {/* Add-ons Checklist */}
                     <div className="custom-section">
                         <label className="section-label">
-                            <span>Optional Add-ons</span>
-                            <span className="optional-tag">Customize your taste</span>
+                            <span>Desi Sidekicks & Add-ons</span>
+                            <span className="optional-tag">Best paired with this dish</span>
                         </label>
                         <div className="addons-grid">
-                            {ADD_ONS.map((addon) => {
+                            {DESI_ADD_ONS.map((addon) => {
                                 const isChecked = selectedAddOns.includes(addon.id);
                                 return (
                                     <div
@@ -182,6 +225,12 @@ const FoodDetailModal = ({ food, onClose }) => {
                                 );
                             })}
                         </div>
+                    </div>
+
+                    {/* NaanStop Quality Pledge */}
+                    <div className="naanstop-quality-pledge">
+                        <Sparkles size={16} className="pledge-icon" />
+                        <span><strong>NaanStop Royal Promise:</strong> Cooked with pure desi ghee, freshly ground whole garam masalas, and zero artificial coloring.</span>
                     </div>
 
                     {/* Special Instructions */}

@@ -13,7 +13,7 @@ const DIET_FILTERS = [
 ];
 
 const FoodDisplay = ({ category }) => {
-    const { food_list, loadingFoods } = useContext(StoreContext);
+    const { food_list, loadingFoods, pureVegOnly, setPureVegOnly } = useContext(StoreContext);
     const [searchQuery, setSearchQuery] = useState("");
     const [sortBy, setSortBy] = useState("featured");
     const [dietFilter, setDietFilter] = useState("all");
@@ -25,21 +25,18 @@ const FoodDisplay = ({ category }) => {
             const matchesCategory = category === "All" || item.category === category;
             const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                                   item.description.toLowerCase().includes(searchQuery.toLowerCase());
+            const matchesGlobalVeg = !pureVegOnly || item.isVeg === true;
 
             let matchesDiet = true;
             if (dietFilter === 'veg') {
-                const vegCategories = ['Salad', 'Pure Veg', 'Pasta', 'Deserts', 'Cake'];
-                matchesDiet = vegCategories.includes(item.category) ||
-                              item.name.toLowerCase().includes('veg') ||
-                              item.description.toLowerCase().includes('vegetable');
+                matchesDiet = item.isVeg === true;
             } else if (dietFilter === 'under15') {
                 matchesDiet = item.price < 15;
             } else if (dietFilter === 'popular') {
-                // Featured popular items
-                matchesDiet = item.price >= 14 || item.category === 'Salad' || item.category === 'Pasta';
+                matchesDiet = item.bestseller === true || item.price >= 16;
             }
 
-            return matchesCategory && matchesSearch && matchesDiet;
+            return matchesCategory && matchesSearch && matchesGlobalVeg && matchesDiet;
         });
 
         // Sorting logic
@@ -96,6 +93,20 @@ const FoodDisplay = ({ category }) => {
                     )}
                 </div>
             </div>
+
+            {pureVegOnly && (
+                <div className="pure-veg-active-banner">
+                    <span className="pva-icon">🟢</span>
+                    <span className="pva-text"><strong>Pure Veg Mode Active:</strong> Showing vegetarian delicacies only.</span>
+                    <button 
+                        type="button" 
+                        className="pva-clear-btn" 
+                        onClick={() => setPureVegOnly(false)}
+                    >
+                        Show All
+                    </button>
+                </div>
+            )}
 
             {/* Filter & Sorting Toolbar */}
             <div className="menu-filter-toolbar">
@@ -166,6 +177,11 @@ const FoodDisplay = ({ category }) => {
                             price={item.price}
                             image={item.image}
                             category={item.category}
+                            isVeg={item.isVeg}
+                            spiceDefault={item.spiceDefault}
+                            bestseller={item.bestseller}
+                            jainAvailable={item.jainAvailable}
+                            rawItem={item}
                             onQuickView={(foodObj) => setSelectedFoodForModal(foodObj)}
                         />
                     ))}

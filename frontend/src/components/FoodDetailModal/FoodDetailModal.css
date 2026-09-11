@@ -437,3 +437,96 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Modal Title with FSSAI badge */
+.modal-title-with-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Jain Friendly Toggle Card */
+.jain-toggle-section {
+    margin-top: -4px;
+}
+
+.jain-toggle-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #f0fdf4;
+    border: 1.5px solid #86efac;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.jain-toggle-card:hover {
+    background: #dcfce7;
+    border-color: #4ade80;
+}
+
+.jain-toggle-card.active {
+    background: #dcfce7;
+    border-color: #16a34a;
+    box-shadow: 0 2px 10px rgba(22, 163, 74, 0.15);
+}
+
+.jain-checkbox {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 6px;
+    border: 1.5px solid #16a34a;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    margin-top: 2px;
+    transition: all 0.2s ease;
+}
+
+.jain-toggle-card.active .jain-checkbox {
+    background: #16a34a;
+}
+
+.jain-text-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.jain-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #14532d;
+}
+
+.jain-desc {
+    font-size: 12px;
+    color: #166534;
+    line-height: 1.4;
+}
+
+/* NaanStop Quality Pledge */
+.naanstop-quality-pledge {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 16px;
+    background: #fffbeb;
+    border: 1px solid #fef3c7;
+    border-radius: 12px;
+    font-size: 12.5px;
+    color: #92400e;
+    line-height: 1.45;
+}
+
+.pledge-icon {
+    color: #d97706;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+

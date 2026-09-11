@@ -8,7 +8,7 @@ export const placeOrder = async (req, res) => {
     const frontend_url = process.env.FRONTEND_URL || "http://localhost:5173";
 
     try {
-        const { userId, items, amount, address, orderType, scheduledFor, tableNumber, pickupTime } = req.body;
+        const { userId, items, amount, address, orderType, scheduledFor, tableNumber, pickupTime, riderTip } = req.body;
         if (!items || items.length === 0) {
             return res.json({ success: false, message: "Cart is empty" });
         }
@@ -22,6 +22,7 @@ export const placeOrder = async (req, res) => {
             scheduledFor: scheduledFor || "ASAP",
             tableNumber: tableNumber || null,
             pickupTime: pickupTime || null,
+            riderTip: Number(riderTip) || 0,
             payment: false,
             status: "Food Processing"
         });

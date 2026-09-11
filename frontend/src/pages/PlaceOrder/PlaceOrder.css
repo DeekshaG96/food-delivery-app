@@ -318,6 +318,68 @@
   color: #0f172a;
 }
 
+/* Chai Tip Section */
+.chai-tip-card {
+  background: #fffbeb;
+  border: 1.5px solid #fef3c7;
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chai-tip-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tip-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #92400e;
+}
+
+.tip-sub {
+  font-size: 11.5px;
+  color: #b45309;
+}
+
+.chai-tip-pill-group {
+  display: flex;
+  gap: 6px;
+}
+
+.chai-pill {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid #fde68a;
+  color: #78350f;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 6px 0;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.chai-pill:hover {
+  border-color: #d97706;
+  background: #fef3c7;
+}
+
+.chai-pill.active {
+  background: #d97706;
+  color: #ffffff;
+  border-color: #b45309;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3);
+}
+
+
 @media (max-width: 850px) {
   .place-order-form {
     grid-template-columns: 1fr;

@@ -34,42 +34,42 @@ const TIME_SLOTS = [
 
 const SEATING_AREAS = [
     {
-        id: 'Indoor Cozy',
-        title: 'Indoor Dining Room',
-        desc: 'Warm acoustic lighting, velvet booths, and relaxing jazz ambiance.',
-        tag: 'Cozy & Classic',
-        icon: '🕯️'
+        id: 'Maharaja Diwan',
+        title: 'Maharaja Royal Diwan',
+        desc: 'Regal silk cushions, antique brass lanterns, and private low-table dawat feast seating.',
+        tag: 'Royal Dawat',
+        icon: '👑'
     },
     {
-        id: 'Garden Patio',
-        title: 'Garden Patio',
-        desc: 'Al fresco dining surrounded by lush greenery and ambient fairy lights.',
-        tag: 'Outdoor Breeze',
-        icon: '🌿'
+        id: 'Dhaba Charpai Courtyard',
+        title: 'Dhaba Charpai Courtyard',
+        desc: 'Authentic rustic woven charpai cot seating with open tandoor aroma and colorful truck art.',
+        tag: 'Rustic Dhaba',
+        icon: '🪑'
     },
     {
-        id: 'Rooftop Lounge',
-        title: 'Sunset Rooftop',
-        desc: 'Panoramic skyline views, fire pits, and handcrafted cocktail service.',
-        tag: 'Skyline View',
+        id: 'Bollywood Rooftop Lounge',
+        title: 'Bollywood Retro Rooftop',
+        desc: 'Open-air terrace with nostalgic golden era cinema murals, fairy lights, and live ambient sitar radio.',
+        tag: 'Sufi & Skyline',
         icon: '🌆'
     },
     {
-        id: 'Chef Booth',
-        title: "Chef's Tasting Booth",
-        desc: 'Front-row view into our open kitchen with complimentary welcome amuse-bouche.',
-        tag: 'Exclusive VIP',
-        icon: '👑'
+        id: 'Verandah Garden Patio',
+        title: 'Verandah Garden Patio',
+        desc: 'Al fresco fountain courtyard surrounded by fragrant night-blooming jasmine and marigolds.',
+        tag: 'Jasmine Breeze',
+        icon: '🌿'
     }
 ];
 
 const OCCASIONS = [
-    'Casual Gathering',
-    'Birthday Celebration 🎂',
-    'Romantic Anniversary 🥂',
-    'Business Dinner 💼',
-    'Date Night ❤️',
-    'Family Reunion 👨‍👩‍👧‍👦'
+    'Family Feast (Khandaani Dawat) 👨‍👩‍👧‍👦',
+    'Birthday Celebration (Jashn-e-Khaas) 🎂',
+    'Romantic Candlelight / Date Night 🥂',
+    'Friends Reunion (Chai & Charcha) ☕',
+    'Corporate & Business Dinner 💼',
+    'Festive Treat & Mithai 🪔'
 ];
 
 const Reservations = () => {
@@ -82,10 +82,10 @@ const Reservations = () => {
     const [guests, setGuests] = useState(2);
     const [date, setDate] = useState(defaultDate);
     const [timeSlot, setTimeSlot] = useState('7:00 PM');
-    const [seatingArea, setSeatingArea] = useState('Indoor Cozy');
-    const [occasion, setOccasion] = useState('Casual Gathering');
-    const [name, setName] = useState(userName || 'Alex Morgan');
-    const [email, setEmail] = useState('alex.demo@tomato.com');
+    const [seatingArea, setSeatingArea] = useState('Maharaja Diwan');
+    const [occasion, setOccasion] = useState('Family Feast (Khandaani Dawat) 👨‍👩‍👧‍👦');
+    const [name, setName] = useState(userName || 'Rohan Sharma');
+    const [email, setEmail] = useState('rohan.desi@naanstop.com');
     const [phone, setPhone] = useState('+1 (555) 234-5678');
     const [specialRequests, setSpecialRequests] = useState('');
 
@@ -158,11 +158,11 @@ const Reservations = () => {
                 <div className="hero-content">
                     <span className="hero-badge">
                         <Utensils size={14} />
-                        <span>KitchenAsty Dining System</span>
+                        <span>NaanStop Royal Dawat Dining</span>
                     </span>
-                    <h1 className="hero-title">Book an Unforgettable Dining Experience</h1>
+                    <h1 className="hero-title">Book an Authentic Royal Desi Dining Experience</h1>
                     <p className="hero-subtitle">
-                        Reserve your preferred table at Tomato. From romantic sunset rooftops to tranquil garden patios, enjoy personalized hospitality crafted for you.
+                        Reserve your preferred table at NaanStop. From the regal Maharaja Diwan to the rustic Dhaba Charpai Courtyard, enjoy legendary hospitality and fresh-from-the-tandoor delicacies.
                     </p>
 
                     <div className="hero-tab-toggle">

@@ -17,7 +17,16 @@ import { StoreContext } from '../../context/StoreContext';
 import './PlaceOrder.css';
 
 const PlaceOrder = ({ setShowLogin }) => {
-    const { getTotalCartAmount, token, food_list, cartItems, cartCustomizations, url } = useContext(StoreContext);
+    const { 
+        getTotalCartAmount, 
+        token, 
+        food_list, 
+        cartItems, 
+        cartCustomizations, 
+        url,
+        riderTip,
+        setRiderTip 
+    } = useContext(StoreContext);
     const navigate = useNavigate();
 
     // Fulfillment & Timing states (KitchenAsty feature)
@@ -27,9 +36,9 @@ const PlaceOrder = ({ setShowLogin }) => {
     const [tableNumber, setTableNumber] = useState('Table 4');
 
     const [data, setData] = useState({
-        firstName: "Alex",
-        lastName: "Morgan",
-        email: "alex.demo@tomato.com",
+        firstName: "Rohan",
+        lastName: "Sharma",
+        email: "rohan.desi@naanstop.com",
         street: "742 Evergreen Terrace",
         city: "Springfield",
         state: "OR",
@@ -49,7 +58,8 @@ const PlaceOrder = ({ setShowLogin }) => {
 
     const subtotal = getTotalCartAmount();
     const deliveryFee = orderType === 'delivery' ? (subtotal === 0 ? 0 : 2) : 0;
-    const finalTotal = subtotal + deliveryFee;
+    const appliedTip = orderType === 'delivery' ? (riderTip || 0) : 0;
+    const finalTotal = subtotal + deliveryFee + appliedTip;
 
     const onPlaceOrder = async (event) => {
         event.preventDefault();
@@ -68,9 +78,10 @@ const PlaceOrder = ({ setShowLogin }) => {
                 let itemInfo = {
                     ...item,
                     quantity: cartItems[item._id],
-                    size: custom.size || "Regular",
+                    size: custom.size || "Single Plate / Handi",
                     addOns: custom.addOns || [],
                     spice: custom.spice || "Medium 🌶️",
+                    isJain: custom.isJain || false,
                     notes: custom.notes || "",
                     price: custom.unitPrice || item.price
                 };
@@ -88,6 +99,7 @@ const PlaceOrder = ({ setShowLogin }) => {
             address: data,
             items: orderItems,
             amount: finalTotal,
+            riderTip: appliedTip,
             orderType: orderType,
             scheduledFor: scheduleType === 'asap' ? 'ASAP (25-35 mins)' : `Scheduled for ${scheduledTime}`,
             tableNumber: orderType === 'dine-in' ? tableNumber : '',
@@ -339,15 +351,15 @@ const PlaceOrder = ({ setShowLogin }) => {
                                 <Store size={22} className="section-icon" />
                                 <div>
                                     <h2>Restaurant Pickup Location</h2>
-                                    <p className="form-sub">Pick up your freshly packed meal at our takeaway counter</p>
+                                    <p className="form-sub">Pick up your freshly packed meal at our royal takeaway counter</p>
                                 </div>
                             </div>
 
                             <div className="pickup-location-card">
                                 <div className="pl-badge">Ready in 15 mins • No Delivery Fee</div>
-                                <h3 className="pl-name">🍅 Tomato Culinary Flagship</h3>
-                                <p className="pl-addr">120 Market Street, Gourmet Quarter, Springfield, OR</p>
-                                <p className="pl-hours">Open Daily: 11:00 AM – 10:30 PM • Phone: (555) 839-2049</p>
+                                <h3 className="pl-name">🌶️ NaanStop Desi Culinary Flagship</h3>
+                                <p className="pl-addr">120 Chandni Chowk Lane, Gourmet Quarter, Springfield, OR</p>
+                                <p className="pl-hours">Open Daily: 11:00 AM – 11:00 PM • Tandoor Fired All Day!</p>
                                 <div className="pl-perk">
                                     <CheckCircle2 size={16} color="#10b981" />
                                     <span>Curbside pickup available — call when you pull into parking bay 3.</span>
@@ -444,6 +456,33 @@ const PlaceOrder = ({ setShowLogin }) => {
                             </span>
                         </div>
 
+                        {/* Chai Tipping Section for Delivery */}
+                        {orderType === 'delivery' && (
+                            <div className="chai-tip-card">
+                                <div className="chai-tip-header">
+                                    <span className="tip-title">☕ Chai for Raju Bhaiya (Delivery Partner)</span>
+                                    <span className="tip-sub">100% directly transferred to your rider</span>
+                                </div>
+                                <div className="chai-tip-pill-group">
+                                    {[
+                                        { val: 0, label: 'None' },
+                                        { val: 1, label: '$1' },
+                                        { val: 2, label: '$2 ⭐' },
+                                        { val: 3, label: '$3' }
+                                    ].map(t => (
+                                        <button
+                                            key={t.val}
+                                            type="button"
+                                            className={`chai-pill ${riderTip === t.val ? 'active' : ''}`}
+                                            onClick={() => setRiderTip(t.val)}
+                                        >
+                                            {t.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
                         <div className="cart-total-details">
                             <div className="cart-line-item">
                                 <span>Subtotal</span>
@@ -454,6 +493,15 @@ const PlaceOrder = ({ setShowLogin }) => {
                                 <span>Delivery Fee</span>
                                 <span>{deliveryFee === 0 ? <strong style={{ color: '#059669' }}>FREE</strong> : `$${deliveryFee.toFixed(2)}`}</span>
                             </div>
+                            {appliedTip > 0 && (
+                                <>
+                                    <hr />
+                                    <div className="cart-line-item" style={{ color: '#d97706', fontWeight: 600 }}>
+                                        <span>Rider Chai Tip ☕</span>
+                                        <span>+${appliedTip.toFixed(2)}</span>
+                                    </div>
+                                </>
+                            )}
                             <hr />
                             <div className="cart-line-item grand-total">
                                 <strong>Total</strong>

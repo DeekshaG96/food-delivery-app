@@ -7,7 +7,16 @@ import './Navbar.css';
 const Navbar = ({ setShowLogin }) => {
     const [menu, setMenu] = useState("home");
     const [profileOpen, setProfileOpen] = useState(false);
-    const { getTotalCartCount, token, userName, setToken, adminUrl } = useContext(StoreContext);
+    const { 
+        getTotalCartCount, 
+        token, 
+        userName, 
+        setToken, 
+        adminUrl, 
+        pureVegOnly, 
+        setPureVegOnly, 
+        setSpinModalOpen 
+    } = useContext(StoreContext);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -23,8 +32,9 @@ const Navbar = ({ setShowLogin }) => {
         <header className="navbar-container">
             <div className="navbar">
                 <Link to="/" className="navbar-logo">
-                    <span className="logo-tomato">Tomato</span>
-                    <span className="logo-dot">.</span>
+                    <span className="logo-naan">Naan</span>
+                    <span className="logo-stop">Stop</span>
+                    <span className="logo-chilli">🌶️</span>
                 </Link>
 
                 <nav className="navbar-menu">
@@ -40,7 +50,7 @@ const Navbar = ({ setShowLogin }) => {
                         onClick={() => setMenu("menu")}
                         className={menu === "menu" ? "active" : ""}
                     >
-                        Menu
+                        Desi Menu
                     </a>
                     <Link
                         to="/reservations"
@@ -67,6 +77,31 @@ const Navbar = ({ setShowLogin }) => {
                 </nav>
 
                 <div className="navbar-right">
+                    {/* Pure Veg Switch */}
+                    <button
+                        type="button"
+                        onClick={() => setPureVegOnly(!pureVegOnly)}
+                        className={`nav-veg-toggle ${pureVegOnly ? 'active' : ''}`}
+                        title="Filter Pure Veg dishes only"
+                        id="nav-pure-veg-toggle"
+                    >
+                        <span className="veg-dot-icon">🟢</span>
+                        <span className="veg-label">Veg Mode</span>
+                        <span className={`veg-switch-pill ${pureVegOnly ? 'on' : ''}`}></span>
+                    </button>
+
+                    {/* Spin & Win Button */}
+                    <button
+                        type="button"
+                        onClick={() => setSpinModalOpen(true)}
+                        className="nav-spin-btn"
+                        title="Spin the Chakkar of Luck for discount codes!"
+                        id="nav-spin-wheel-btn"
+                    >
+                        <span className="spin-icon">🎡</span>
+                        <span className="spin-label">Spin & Win</span>
+                    </button>
+
                     {/* Diner Radio Trigger */}
                     <button
                         type="button"
@@ -74,12 +109,12 @@ const Navbar = ({ setShowLogin }) => {
                             window.dispatchEvent(new CustomEvent('open-music-player', { detail: { play: true } }));
                         }}
                         className="nav-radio-btn"
-                        title="Tune into Tomato Diner Radio & Food Waiting Lounge"
-                        aria-label="Tomato Diner Radio"
+                        title="Tune into NaanStop Desi Radio & Waiting Lounge"
+                        aria-label="NaanStop Diner Radio"
                         id="nav-diner-radio-btn"
                     >
                         <span className="radio-icon">🎵</span>
-                        <span className="radio-label">Diner Radio</span>
+                        <span className="radio-label">Desi Radio</span>
                     </button>
 
                     {/* Switch to Admin Dashboard */}
@@ -90,7 +125,7 @@ const Navbar = ({ setShowLogin }) => {
                         className="admin-badge-btn"
                         title="Open Restaurant Admin Panel"
                     >
-                        <span>Admin Panel</span>
+                        <span>Kitchen OS</span>
                         <ExternalLink size={13} />
                     </a>
 

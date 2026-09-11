@@ -1,8 +1,10 @@
 <div align="center">
 
-# 🍅 Tomato — Full-Stack Food Delivery & Restaurant Management Platform
+# 🌶️ NaanStop — Modern Desi Canteen & Express Delivery
 
-An enterprise-ready, full-stack food delivery, table reservation, and kitchen operations platform built with **React 18 (Vite)**, **Node.js**, **Express**, and **Modern Vanilla CSS**.
+### *"Ghar Ka Pyaar, Dhaba Ka Swad • Non-Stop Goodness!"*
+
+An enterprise-ready, full-stack Desi food delivery, table reservation, and kitchen operations platform built with **React 18 (Vite)**, **Node.js**, **Express**, and **Modern Vanilla CSS**.
 
 [![React](https://img.shields.io/badge/Frontend-React%2018%20(Vite)-61DAFB?logo=react&logoColor=black)](https://react.dev/)
 [![Node.js](https://img.shields.io/badge/Backend-Node.js%20%2F%20Express-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
@@ -13,12 +15,13 @@ An enterprise-ready, full-stack food delivery, table reservation, and kitchen op
 
 <p align="center">
   <a href="#-key-features">Key Features</a> •
+  <a href="#-the-naanstop-experience">The NaanStop Vibe</a> •
   <a href="#-tech-stack">Tech Stack</a> •
   <a href="#-project-architecture">Architecture</a> •
   <a href="#-getting-started">Getting Started</a> •
   <a href="#-api-documentation">API Docs</a> •
   <a href="#-testing--verification">Testing</a> •
-  <a href="#-credits--acknowledgements">Credits</a>
+  <a href="#-acknowledgements">Acknowledgements</a>
 </p>
 
 </div>
@@ -27,76 +30,85 @@ An enterprise-ready, full-stack food delivery, table reservation, and kitchen op
 
 ## 📖 Overview
 
-**Tomato** is an end-to-end food service application that combines modern customer ordering experiences with real-time restaurant operational tooling. Inspired by and synthesizing best patterns from:
-- **[KitchenAsty](https://github.com/mighty840/kitchenasty)**: Self-hosted restaurant table reservation booking and live Kitchen Display System (KDS) Kanban board.
-- **[delivery_app](https://github.com/CaioQuirinoMedeiros/delivery_app)**: Portion sizing (`Regular`, `Medium`, `Large`), customizable add-ons, chef cooking notes, and itemized receipt breakdown.
-- **GreatStack**: MERN food delivery core architecture.
+**NaanStop 🌶️** is a vibrant, modern full-stack culinary application that blends high-energy Indian dhaba culture with sleek, state-of-the-art digital dining. Combining royal dawat feasts with fast-casual street food, NaanStop solves the entire food journey—from interactive dish exploration to live kitchen prep, gamified discounts, and delivery partner tracking.
+
+Synthesizing proven architectural patterns from:
+- **[KitchenAsty](https://github.com/mighty840/kitchenasty)**: Self-hosted table reservations and real-time Kitchen Display System (KDS) Kanban.
+- **[delivery_app](https://github.com/CaioQuirinoMedeiros/delivery_app)**: Portion sizing (`Single Plate / Handi`, `Dhaba Sharing`, `Royal Dawat`), spice customizations, add-ons, and itemized receipts.
+- **NaanStop Royal Innovations**: Gamified **Chakkar of Luck 🎡**, **Raju Bhaiya 🛵** live tracker with chai tipping, 1-click **🟢 Pure Veg Mode**, and offline **Web Audio Desi Diner Radio**.
 
 ---
 
 ## 🌟 Key Features
 
-### 🛒 Customer Web Application (`frontend/` — Port 5173)
-* **Responsive Visual Design**: Modern glassmorphism aesthetic, Outfit & Inter typography, responsive layouts, and fluid micro-interactions.
-* **Menu Discovery**: 8 dynamic food categories (Salad, Rolls, Deserts, Sandwich, Cake, Pure Veg, Pasta, Noodles) with active category pills and real-time keyword search.
-* **Portion Sizing & Customization**:
-  * 3 portion sizes: **Regular**, **Medium (+$3.50)**, **Large/Family (+$7.00)**.
-  * Spice levels, optional add-ons, and chef cooking notes.
-  * Dynamic subtotal and cart price calculation reflecting selected portion deltas.
-* **Multi-Channel Order Fulfillment**:
-  * 🛵 **Delivery**: Standard address delivery with automatic delivery fee.
-  * 🛍️ **Store Pickup**: Self-pickup option with dynamic **$0.00** delivery fee waiver.
-  * 🍽️ **Dine-In Table Ordering**: Direct dine-in ordering with table number assignment.
-* **Order Scheduling**:
-  * ⚡ **ASAP**: Immediate kitchen preparation.
-  * 🕒 **Schedule for Later**: Time-slot picker for scheduled delivery or pickup.
-* **Table Reservation System**:
-  * Party size selector (1 to 10+ guests), calendar date picker, and service time slots.
-  * 4 ambiance seating options: *Indoor Cozy*, *Garden Patio*, *Rooftop Lounge*, *Chef's Booth*.
-  * Instant reservation confirmation ticket with unique code (`RES-xxxx`).
-  * "View My Bookings" personal reservation history.
-* **Shopping Cart & Checkout**:
-  * Real-time item quantity steppers, promo code discount engine (`WELCOME10`, `FREESHIP`), and delivery details validation.
-  * Resilient payment integration (Stripe Checkout with instant local simulation fallback).
-* **Live Order Tracking & Receipt Breakdown**:
-  * Stage-by-stage status: 🟡 *Food Processing* ➔ 🔵 *Out for Delivery / Ready* ➔ 🟢 *Delivered*.
-  * Dedicated **Receipt Breakdown Modal** showing item portion sizes, add-ons, cooking notes, and fulfillment method.
-* **Tomato Diner Radio & Food Waiting Music Lounge** 🎧:
-  * In-app audio player featuring 4 ambient kitchen & dining stations:
-    * ☕ *Cozy Kitchen Lofi* (Mellow Rhodes piano & chillhop vinyl grooves)
-    * 🍕 *Trattoria Acoustic Serenade* (Warm Mediterranean nylon guitar fingerpicking)
-    * 🌧️ *Rainy Cafe Piano* (Nostalgic piano keys with soothing rain ambience)
-    * 🌆 *Midnight Tokyo Ramen* (Neo-soul synth pads & late-night chillhop bass)
-  * Procedural Web Audio API sound synthesis (100% offline, zero external audio dependencies).
-  * Rotating vinyl record turntable animation, dancing equalizer soundwave visualizer, station selector, and volume slider.
-  * Embedded directly on "My Orders" order tracking page and globally accessible via the navigation bar.
+### 🛒 Customer Web Portal (`frontend/` — Port 5173)
+
+#### 1. 🍛 Royal Desi Menu & Pure Veg Mode
+* **7 Curated Indian Categories**: *Biryani*, *Curries*, *Tandoor*, *Breads*, *Street Chaat*, *Chai & Drinks*, and *Mithai*.
+* **Authentic FSSAI Badges**: Distinctive green square/dot (🟢 Pure Veg) and red square/dot (🔴 Non-Veg) indicators on every dish card and modal.
+* **1-Click 🟢 Veg Mode**: Instant navbar toggle switch filtering out all non-veg items with active visual alerts.
+* **Desi Spice Meter (Teekhapan)**: Choose between *Mild (Creamy) 🌿*, *Medium (Ghar Ka Tadka) 🌶️*, *Desi Teekha (Dhaba Style) 🌶️🌶️*, and *Bhut Jolokia Fire 🌶️🌶️🌶️*.
+* **🌱 Jain-Friendly Option**: 1-click toggle for satvik preparation (cooked without onions or garlic in dedicated cookware).
+* **Desi Sidekicks & Add-Ons**: Extra dollops of Amul Makhan, chilled boondi raita, sirka pickled onions, crispy papad, and piping hot garlic naan.
+
+#### 2. 🎡 "Chakkar of Luck" (Gamified Spin-the-Wheel)
+* Interactive SVG/Canvas lucky wheel modal with vibrant Indian festive colors.
+* Procedural Web Audio API sound synthesis: realistic mechanical wheel ticks and celebratory fanfare chords.
+* Instant coupon rewards:
+  * `TADKA20`: 20% OFF subtotal
+  * `FREELASSI`: Free Chilled Mango Lassi ($4.50 value)
+  * `CHAI5`: $5.00 OFF for chai lovers
+  * `DESIFREE`: Free Express Delivery waiver
+  * `MAKHAN10`: 10% OFF Makhan discount
+  * `GULABJAMUN`: Free Shahi Gulab Jamun treat ($3.99 value)
+* 1-click "Apply Coupon Directly to Cart" with clipboard copy fallback.
+
+#### 3. 🛵 "Raju Bhaiya" Live Delivery Hero & Chai Tipping
+* Customer order tracking cards displaying your assigned delivery hero:
+  * **Raju Bhaiya** (4.9 ★, 1,420+ safe deliveries)
+  * **Vehicle**: Hero Splendor (`KA-03-HA-7788`)
+  * **Live ETA Countdown**: Real-time arrival estimation with insulated hot-bag guarantee.
+* **Chai Tipping**: 1-click tipping (*"Bhaiya ki Chai ke liye"* $1, $2, or $3) with 100% direct attribution to the rider.
+
+#### 4. 🪑 Themed Desi Table Reservations
+* **Maharaja Royal Diwan 👑**: Regal silk cushions, antique brass lanterns, and low-table dawat feast seating.
+* **Dhaba Charpai Courtyard 🪑**: Authentic woven charpai cots, open tandoor aromas, and truck art aesthetic.
+* **Bollywood Retro Rooftop 🌆**: Open-air terrace with nostalgic golden era cinema murals and panoramic skyline views.
+* **Verandah Garden Patio 🌿**: Al fresco fountain courtyard surrounded by night-blooming jasmine and marigolds.
+* Instant `RES-xxxx` confirmation code, email notification dispatch, and personal reservation history.
+
+#### 5. 📻 NaanStop Desi Diner Radio & Waiting Lounge
+* In-app audio player featuring 3 procedural ambient stations (100% offline Web Audio API):
+  * 🎸 *Bollywood Acoustic Chill* (Romantic nylon guitar & mellow chords)
+  * 🌧️ *Tapri Chai & Monsoon Rain* (Raindrop ambience & gentle lofi piano)
+  * 🌅 *Highway Dhaba Sunset* (Ethereal tanpura pads & sitar undertones)
+* Plus classic cafe lofi channels, dancing soundwave equalizer, and spinning vinyl disc animation.
 
 ---
 
-### 🛠️ Restaurant Admin Dashboard (`admin/` — Port 5174)
+### 🛠️ Kitchen OS & Admin Dashboard (`admin/` — Port 5174)
+
 * **Live Kitchen Display System (KDS) Kanban**:
-  * 4 live workflow columns: **New Orders** ➔ **In Kitchen** ➔ **Ready** ➔ **Completed**.
-  * Urgency timers, order-type tags (`Delivery`, `Store Pickup`, `Dine-In`), and itemized preparation checklists.
-  * One-click stage progression buttons (`Start Prep ➔`, `Ready for Pickup ➔`, `Complete ➔`).
-* **Table Reservations Management**:
-  * 4 real-time KPI metric cards: *Total Bookings*, *Confirmed*, *Seated*, *Today's Guests*.
-  * Searchable reservations table with status filtering tabs (`All`, `Confirmed`, `Seated`, `Cancelled`).
-  * One-click operational actions: `Seat Guests`, `Confirm`, and `Cancel`.
-* **Menu Catalog Management**:
-  * Add new dishes with image file upload, category selection, description, and base pricing.
-  * Searchable menu catalog with quick deletion.
-* **Order Dispatch Monitor**:
-  * Full list view of all orders, delivery addresses, order timestamps, and manual status override controls.
+  * 4 live workflow lanes: **New Orders** ➔ **In Kitchen** ➔ **Ready** ➔ **Completed**.
+  * Prep urgency timers, order-type badges (`Delivery`, `Store Pickup`, `Dine-In`), and itemized portion breakdowns.
+  * 1-click stage progression buttons (`Start Prep ➔`, `Ready for Pickup ➔`, `Complete ➔`).
+* **Table Reservations Desk**:
+  * KPI metric cards: *Total Bookings*, *Confirmed*, *Seated*, and *Today's Guests*.
+  * Operational actions: `Seat Guests`, `Confirm`, and `Cancel`.
+* **Menu Catalog & Inventory Manager**:
+  * Add new Desi dishes with image upload, category assignment, spice defaults, and pricing.
+  * Searchable menu catalog with instant deletion.
 
 ---
 
 ### ⚡ Resilient Backend Service (`backend/` — Port 4000)
-* **RESTful JSON API**: Clean route/controller architecture for foods, users, cart, orders, and reservations.
+
 * **Dual Storage Engine**:
   * Production ready with **MongoDB Atlas** (`MONGO_URI`).
-  * **Zero-Config Local Fallback**: When no MongoDB URI is supplied, automatically operates via a local file store (`data/db.json`), ensuring instant out-of-the-box local development.
-* **JWT Authentication**: Secure user registration, login, token verification, and 1-click instant demo mode.
-* **Stripe & Simulated Checkout**: Live Stripe payment sessions with automatic graceful fallback to instant simulation.
+  * **Zero-Config Local Fallback**: Automatically persists to local store (`data/db.json`) if MongoDB URI is absent.
+* **JWT Authentication**: User registration, login, token verification, and instant 1-click demo accounts.
+* **Rider & Tip Attribution**: Persists assigned delivery rider profiles, ETA countdowns, and chai tip amounts across order lifecycles.
+* **Stripe & Simulated Checkout**: Live Stripe checkout sessions with graceful local simulation fallback.
 
 ---
 
@@ -105,14 +117,14 @@ An enterprise-ready, full-stack food delivery, table reservation, and kitchen op
 | Layer | Technology | Description |
 | :--- | :--- | :--- |
 | **Frontend App** | React 18, Vite | Customer web portal (SPA) |
-| **Admin Dashboard**| React 18, Vite | Restaurant operational management & KDS |
-| **Styling** | Vanilla CSS (BEM / Custom Tokens) | Glassmorphism, animations, responsive design |
-| **State Management** | React Context API | Dynamic cart calculations, user auth, toast notifications |
-| **Backend Framework**| Node.js, Express.js (ESM) | REST API, route handlers, error middleware |
-| **Database** | MongoDB Atlas / Local JSON Engine | Hybrid dual persistence layer |
-| **Authentication** | JSON Web Tokens (JWT), bcryptjs | Secure password hashing and stateless auth |
-| **Payments** | Stripe API | Online card payments & checkout sessions |
-| **Testing** | Node.js Test Runner / Fetch Suite | 24 automated full-stack integration assertions |
+| **Admin Dashboard**| React 18, Vite | Kitchen OS, live KDS Kanban, reservations manager |
+| **Styling** | Vanilla CSS (CSS3 Tokens) | Warm saffron & tandoori palette, glassmorphism, responsive |
+| **Audio Engine** | Web Audio API | Procedural synthesizers for lucky wheel & Desi radio stations |
+| **State Management** | React Context API | Cart calculation, veg filter, promo codes, rider tips |
+| **Backend API** | Node.js, Express.js (ESM) | REST API, route controllers, error handling middleware |
+| **Database** | MongoDB Atlas / Local JSON | Hybrid dual persistence architecture |
+| **Auth & Security** | JWT, bcryptjs | Stateless auth & salted password hashing |
+| **Testing** | Node.js Test Runner | 24 automated full-stack integration assertions |
 
 ---
 
@@ -120,7 +132,7 @@ An enterprise-ready, full-stack food delivery, table reservation, and kitchen op
 
 ```
 food-delivery-app/
-├── admin/                      # Restaurant Admin React Application
+├── admin/                      # NaanStop Kitchen OS & Admin React App
 │   ├── src/
 │   │   ├── components/         # Navbar, Sidebar
 │   │   ├── pages/
@@ -129,38 +141,48 @@ food-delivery-app/
 │   │   │   ├── Orders/         # Order dispatch list
 │   │   │   ├── Kanban/         # Live Kitchen Display System (KDS)
 │   │   │   └── Reservations/   # Table reservations manager
-│   │   ├── App.jsx             # Admin route definitions
+│   │   ├── App.jsx
 │   │   └── main.jsx
 │   └── vite.config.js
 ├── backend/                    # Express REST API Service
 │   ├── config/
-│   │   ├── db.js               # MongoDB Mongoose connection
-│   │   └── store.js            # Resilient data layer (Atlas + Local JSON fallback)
+│   │   ├── db.js               # MongoDB Mongoose connector
+│   │   └── store.js            # Dual storage & seed catalog (Desi menu)
 │   ├── controllers/            # food, user, cart, order, reservation controllers
 │   ├── middleware/             # JWT auth middleware
 │   ├── models/                 # Mongoose schemas (Food, User, Order, Reservation)
 │   ├── routes/                 # Express routers
-│   ├── data/                   # Seed & fallback database store (db.json)
-│   ├── verify_features.mjs     # 24-test automated integration suite
-│   └── server.js               # Express application entry point
-├── frontend/                   # Customer React Application
+│   ├── data/                   # Fallback database store (db.json)
+│   ├── verify_features.mjs     # 24-test integration test runner
+│   └── server.js               # Server entry point
+├── frontend/                   # NaanStop Customer React App
 │   ├── src/
-│   │   ├── assets/             # Icons, illustrations, sample dishes
-│   │   ├── components/         # Navbar, FoodDetailModal, FoodDisplay, Footer, etc.
-│   │   ├── context/            # StoreContext (cart, portion deltas, user state)
+│   │   ├── assets/             # Menu definitions, high-res Indian food photos
+│   │   ├── components/
+│   │   │   ├── Navbar/         # Logo, 🟢 Veg toggle, 🎡 Spin button, cart badge
+│   │   │   ├── Header/         # Hero banner, CTAs
+│   │   │   ├── ExploreMenu/    # Category slider
+│   │   │   ├── FoodDisplay/    # Food grid, instant search, sort, veg alert banner
+│   │   │   ├── FoodItem/       # FSSAI indicator, spice badge, bestseller ribbon
+│   │   │   ├── FoodDetailModal/# Portion sizing, Desi spices, Jain prep, add-ons
+│   │   │   ├── SpinWheel/      # Chakkar of Luck interactive modal & Web Audio sound
+│   │   │   ├── MusicPlayer/    # NaanStop Diner Radio (Bollywood / Dhaba stations)
+│   │   │   └── Footer/         # Brand story, address, contact
+│   │   ├── context/            # StoreContext (cart, coupons, veg mode, rider tips)
+│   │   ├── utils/
+│   │   │   ├── musicEngine.js  # Web Audio sound synthesis engine
+│   │   │   └── spinWheel.js    # Lucky wheel physics and audio fanfare
 │   │   ├── pages/
-│   │   │   ├── Home/           # Hero, category browser, food item grid
-│   │   │   ├── Cart/           # Dynamic cart, portion deltas, promo codes
-│   │   │   ├── PlaceOrder/     # Fulfillment selector, scheduling, checkout form
-│   │   │   ├── MyOrders/       # Order tracking & itemized receipt modal
-│   │   │   ├── Reservations/   # Table booking page & booking history
-│   │   │   └── Verify/         # Payment verification landing
-│   │   ├── App.jsx             # Customer route definitions
+│   │   │   ├── Home/           # Landing page
+│   │   │   ├── Cart/           # Dynamic cart, Desi promo codes, spin CTA
+│   │   │   ├── PlaceOrder/     # Address form, delivery/pickup/dine-in, Chai tip
+│   │   │   ├── MyOrders/       # Live milestone stepper, Raju Bhaiya tracker, receipt
+│   │   │   └── Reservations/   # Maharaja Diwan / Charpai courtyard table booking
+│   │   ├── App.jsx
 │   │   └── main.jsx
 │   └── vite.config.js
-├── .gitignore                  # Git ignore rules
-├── package.json                # Root package scripts
-└── README.md                   # Project documentation
+├── package.json
+└── README.md
 ```
 
 ---
@@ -178,43 +200,47 @@ cd food-delivery-app
 ```
 
 ### 2. Configure Environment Variables
-Create a `.env` file in `backend/` (or copy from `.env.example`):
+Create a `.env` file in `backend/`:
 ```bash
 cp backend/.env.example backend/.env
 ```
 
 ```env
 PORT=4000
-JWT_SECRET="food_delivery_super_secret_jwt_key_2026"
-MONGO_URI=""           # Optional: MongoDB Atlas URI (leave blank for zero-config local storage)
+JWT_SECRET="naanstop_super_secret_jwt_key_2026"
+MONGO_URI=""           # Optional: MongoDB Atlas URI (leave blank for local store)
 STRIPE_SECRET_KEY=""   # Optional: Stripe Secret Key (leave blank for simulated checkout)
 FRONTEND_URL="http://localhost:5173"
 ```
 
 ### 3. Install Dependencies
-Run in three separate terminals (or from each directory):
-
 ```bash
-# Terminal 1 — Backend
-cd backend
-npm install
+# Backend
+cd backend && npm install
 
-# Terminal 2 — Customer Frontend
-cd frontend
-npm install
+# Frontend Customer App
+cd ../frontend && npm install
 
-# Terminal 3 — Admin Panel
-cd admin
-npm install
+# Admin Panel
+cd ../admin && npm install
 ```
 
 ### 4. Run Development Servers
+```bash
+# Terminal 1 — Backend (Port 4000)
+npm --prefix backend run dev
 
-| Application | Command | URL |
-| :--- | :--- | :--- |
-| **Backend API** | `npm --prefix backend run dev` | `http://localhost:4000` |
-| **Customer App** | `npm --prefix frontend run dev` | `http://localhost:5173` |
-| **Admin Dashboard** | `npm --prefix admin run dev` | `http://localhost:5174` |
+# Terminal 2 — Customer Frontend (Port 5173)
+npm --prefix frontend run dev
+
+# Terminal 3 — Admin Panel (Port 5174)
+npm --prefix admin run dev
+```
+
+Visit:
+- **Customer Store**: [http://localhost:5173](http://localhost:5173)
+- **Admin & KDS Dashboard**: [http://localhost:5174](http://localhost:5174)
+- **Backend API**: [http://localhost:4000](http://localhost:4000)
 
 ---
 
@@ -231,30 +257,24 @@ npm install
 ### Orders & Fulfillment (`/api/order`)
 | Method | Endpoint | Description | Auth |
 | :--- | :--- | :--- | :---: |
-| `POST` | `/api/order/place` | Place an order (supports delivery, pickup, dine-in, customizations) | Bearer / Token |
+| `POST` | `/api/order/place` | Place an order (attaches Raju Bhaiya rider profile & chai tip) | Token |
 | `POST` | `/api/order/verify` | Verify payment status (Stripe or Simulated) | No |
-| `POST` | `/api/order/userorders` | Fetch orders placed by authenticated user | Bearer / Token |
+| `POST` | `/api/order/userorders` | Fetch orders placed by authenticated user | Token |
 | `GET` | `/api/order/list` | Fetch all orders for admin monitor & KDS Kanban | No |
 | `POST` | `/api/order/status` | Update order stage (`Food Processing`, `Out for delivery`, `Delivered`)| No |
 
-### Food & Menu (`/api/food`)
+### Food & Catalog (`/api/food`)
 | Method | Endpoint | Description | Auth |
 | :--- | :--- | :--- | :---: |
-| `GET` | `/api/food/list` | Retrieve complete menu catalog | No |
+| `GET` | `/api/food/list` | Retrieve complete Desi menu catalog | No |
 | `POST` | `/api/food/add` | Upload image and create new dish item | No |
 | `POST` | `/api/food/remove` | Delete dish item from catalog | No |
-
-### User Authentication (`/api/user`)
-| Method | Endpoint | Description | Auth |
-| :--- | :--- | :--- | :---: |
-| `POST` | `/api/user/register` | Register new user account | No |
-| `POST` | `/api/user/login` | Authenticate user & return JWT token | No |
 
 ---
 
 ## 🧪 Testing & Verification
 
-The backend includes a comprehensive integration test suite verifying all major business flows:
+Run the automated integration test suite:
 
 ```bash
 cd backend
@@ -262,58 +282,38 @@ node verify_features.mjs
 ```
 
 ### Verified Scenarios (24/24 Passing)
-- [x] **Table Booking**: Creation, payload validation, unique `RES-xxxx` code generation, and initial `Confirmed` status.
+- [x] **Table Booking**: Creation, unique `RES-xxxx` code generation, and initial `Confirmed` status.
 - [x] **Admin Reservation Management**: Full listing, seating area retention, and status transitions to `Seated`.
 - [x] **Customer Reservation Lookup**: Filter reservations by customer email.
-- [x] **Store Pickup Fulfillment**: Placement with portion sizes (Medium +$3.50), add-ons, notes, and $0 fee.
-- [x] **Dine-In Table Fulfillment**: Placement with table assignment (`Table 4`), portion size (Large +$7.00), and cooking notes.
+- [x] **Store Pickup Fulfillment**: Placement with portion sizes, add-ons, notes, and $0 fee.
+- [x] **Dine-In Table Fulfillment**: Placement with table assignment (`Table 4`), portion size, and cooking notes.
 - [x] **KDS Kanban Progression**: Retrieval of order types and progression from `New Orders` ➔ `In Kitchen` ➔ `Ready` ➔ `Completed`.
 
 ---
 
 ## 🛡️ Production Build
 
-To validate production builds:
+Both the Customer Store and the Admin Dashboard compile cleanly with **0 errors**:
 
 ```bash
-# Customer Frontend
-cd frontend
-npm run build
+# Customer Frontend Build
+npm --prefix frontend run build
 
-# Restaurant Admin
-cd admin
-npm run build
+# Kitchen OS Admin Build
+npm --prefix admin run build
 ```
 
-Both bundles compile with **0 errors** using Vite's tree-shaking and minification pipeline.
-
 ---
 
-## 🤝 Contributing
-
-1. Fork the repository (`https://github.com/DeekshaG96/food-delivery-app/fork`)
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'feat: Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
----
-
-## 📜 License
-
-Distributed under the **MIT License**. See `LICENSE` for more information.
-
----
-
-## 💖 Acknowledgements & Inspirations
+## 💖 Acknowledgements
 
 - [KitchenAsty](https://github.com/mighty840/kitchenasty) — Self-hosted table reservations and kitchen display system architecture.
 - [delivery_app](https://github.com/CaioQuirinoMedeiros/delivery_app) — Portion sizing, add-on customization, and itemized receipt model.
-- [GreatStack](https://www.youtube.com/@GreatStackDev) — Original full-stack food delivery tutorial foundation.
-- [Unsplash](https://unsplash.com/) — Food imagery assets.
+- [GreatStack](https://www.youtube.com/@GreatStackDev) — Full-stack MERN food delivery foundation.
+- [Unsplash](https://unsplash.com/) — High-definition Indian food imagery.
 
 ---
 
 <div align="center">
-  <sub>Built with ❤️ by Deeksha Ganesh • Star ⭐ this repository if you found it useful!</sub>
+  <sub>Built with ❤️ by Deeksha Ganesh • Star ⭐ this repository if you loved the NaanStop experience!</sub>
 </div>

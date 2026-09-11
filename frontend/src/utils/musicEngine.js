@@ -15,6 +15,54 @@ class MusicEngine {
 
         this.tracks = [
             {
+                id: "bollywood-acoustic",
+                title: "Bollywood Acoustic Chill",
+                vibe: "🪕 Sitar & Acoustic Nylon Fusion",
+                bpm: 82,
+                chords: [
+                    [146.83, 220.00, 261.63, 349.23],         // Dm
+                    [196.00, 246.94, 293.66, 392.00],         // G
+                    [174.61, 220.00, 261.63, 349.23],         // Fmaj7
+                    [220.00, 277.18, 329.63, 440.00]          // A
+                ],
+                bass: [73.42, 98.00, 87.31, 110.00],
+                waveform: "triangle",
+                filterFreq: 1600,
+                vinyl: false
+            },
+            {
+                id: "tapri-chai",
+                title: "Tapri Chai & Monsoon Rain",
+                vibe: "☕ Warm Tabla Lofi & Raindrops",
+                bpm: 72,
+                chords: [
+                    [164.81, 196.00, 246.94, 329.63],         // Em
+                    [130.81, 164.81, 196.00, 246.94],         // Cmaj7
+                    [146.83, 220.00, 293.66, 369.99],         // D9
+                    [164.81, 196.00, 246.94, 392.00]          // Em7
+                ],
+                bass: [82.41, 65.41, 73.42, 82.41],
+                waveform: "sine",
+                filterFreq: 850,
+                vinyl: true
+            },
+            {
+                id: "dhaba-sunset",
+                title: "Highway Dhaba Sunset",
+                vibe: "🥘 Punjabi Acoustic Strums & Dusk",
+                bpm: 90,
+                chords: [
+                    [196.00, 246.94, 293.66, 392.00],         // G
+                    [146.83, 220.00, 293.66, 369.99],         // D
+                    [164.81, 196.00, 246.94, 329.63],         // Em
+                    [130.81, 164.81, 196.00, 261.63]          // C
+                ],
+                bass: [98.00, 73.42, 82.41, 65.41],
+                waveform: "triangle",
+                filterFreq: 1500,
+                vinyl: false
+            },
+            {
                 id: "cozy-lofi",
                 title: "Cozy Kitchen Lofi",
                 vibe: "☕ Mellow Rhodes & Chillhop Groove",
@@ -45,38 +93,6 @@ class MusicEngine {
                 bass: [110.00, 146.83, 98.00, 130.81],
                 waveform: "sine",
                 filterFreq: 1800,
-                vinyl: false
-            },
-            {
-                id: "rainy-cafe",
-                title: "Rainy Cafe Piano",
-                vibe: "🌧️ Ambient Rain & Gentle Nostalgic Keys",
-                bpm: 66,
-                chords: [
-                    [174.61, 220.00, 261.63, 329.63],         // Fmaj7
-                    [196.00, 246.94, 293.66, 392.00],         // G
-                    [164.81, 196.00, 246.94, 329.63],         // Em7
-                    [220.00, 261.63, 329.63, 440.00]          // Am
-                ],
-                bass: [87.31, 98.00, 82.41, 110.00],
-                waveform: "sine",
-                filterFreq: 950,
-                vinyl: true
-            },
-            {
-                id: "tokyo-ramen",
-                title: "Midnight Tokyo Ramen",
-                vibe: "🌆 Neo-Soul Synth & Late Night Vibe",
-                bpm: 80,
-                chords: [
-                    [207.65, 261.63, 311.13, 392.00],         // Abmaj7
-                    [196.00, 233.08, 293.66, 349.23],         // Gm7
-                    [174.61, 207.65, 261.63, 311.13],         // Fm7
-                    [233.08, 293.66, 349.23, 415.30]          // Bb7
-                ],
-                bass: [103.83, 98.00, 87.31, 116.54],
-                waveform: "triangle",
-                filterFreq: 1400,
                 vinyl: false
             }
         ];

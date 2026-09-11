@@ -241,3 +241,48 @@
 .sort-dropdown:focus {
   border-color: var(--primary);
 }
+
+/* Pure Veg Active Alert Banner */
+.pure-veg-active-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+  border: 1.5px solid #10b981;
+  border-radius: var(--radius-md);
+  padding: 12px 18px;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.12);
+  animation: fadeIn 0.3s ease;
+}
+
+.pure-veg-active-banner .pva-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.pure-veg-active-banner .pva-text {
+  flex: 1;
+  font-size: 14px;
+  color: #065f46;
+}
+
+.pure-veg-active-banner .pva-text strong {
+  color: #047857;
+}
+
+.pure-veg-active-banner .pva-clear-btn {
+  background: #ffffff;
+  border: 1px solid #10b981;
+  color: #059669;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pure-veg-active-banner .pva-clear-btn:hover {
+  background: #10b981;
+  color: #ffffff;
+}
