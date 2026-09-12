@@ -32,3 +32,8 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Raw Datasets & Archives
+archive*/
+*.zip
+
