@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
+import { defaultFoods } from "../assets/defaultFoods";
 
 export const StoreContext = createContext(null);
 
@@ -7,11 +8,11 @@ const StoreContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});
     const [cartCustomizations, setCartCustomizations] = useState({});
     const url = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
-    const adminUrl = import.meta.env.VITE_ADMIN_URL || "http://localhost:5174";
+    const adminUrl = import.meta.env.VITE_ADMIN_URL || (typeof window !== "undefined" && window.location.hostname.includes("github.io") ? "./admin/" : "http://localhost:5174");
     const [token, setToken] = useState(localStorage.getItem("token") || "");
     const [userName, setUserName] = useState(localStorage.getItem("userName") || "");
-    const [food_list, setFoodList] = useState([]);
-    const [loadingFoods, setLoadingFoods] = useState(true);
+    const [food_list, setFoodList] = useState(defaultFoods);
+    const [loadingFoods, setLoadingFoods] = useState(false);
     const [toast, setToast] = useState(null);
     const [pureVegOnly, setPureVegOnly] = useState(false);
     const [spinModalOpen, setSpinModalOpen] = useState(false);
@@ -115,13 +116,12 @@ const StoreContextProvider = (props) => {
 
     const fetchFoodList = async () => {
         try {
-            setLoadingFoods(true);
-            const response = await axios.get(`${url}/api/food/list`);
-            if (response.data.success) {
+            const response = await axios.get(`${url}/api/food/list`, { timeout: 3000 });
+            if (response.data?.success && Array.isArray(response.data.data) && response.data.data.length > 0) {
                 setFoodList(response.data.data);
             }
         } catch (error) {
-            console.error("Failed to fetch foods:", error);
+            console.warn("Backend API unavailable, using offline food catalog:", error.message);
         } finally {
             setLoadingFoods(false);
         }

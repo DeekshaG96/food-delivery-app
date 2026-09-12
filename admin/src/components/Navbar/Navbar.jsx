@@ -3,7 +3,7 @@ import { ExternalLink, ShieldAlert } from 'lucide-react';
 import './Navbar.css';
 
 const Navbar = () => {
-    const customerUrl = import.meta.env.VITE_FRONTEND_URL || "http://localhost:5173";
+    const customerUrl = import.meta.env.VITE_FRONTEND_URL || (typeof window !== "undefined" && window.location.hostname.includes("github.io") ? "../" : "http://localhost:5173");
 
     return (
         <header className="admin-navbar">

@@ -605,7 +605,7 @@
     {
       "_id": "order_1789142421970",
       "date": "2026-09-11T16:00:21.970Z",
-      "status": "Food Processing",
+      "status": "Delivered",
       "payment": false,
       "orderType": "dine-in",
       "scheduledFor": "ASAP",
