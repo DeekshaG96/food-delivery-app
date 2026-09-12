@@ -5,18 +5,14 @@ import { StoreContext } from '../../context/StoreContext';
 import './BottomNav.css';
 
 const BottomNav = ({ setShowLogin }) => {
-    const { getTotalCartCount, token, userName } = useContext(StoreContext);
+    const { getTotalCartCount, token, userName, setProfileModalOpen } = useContext(StoreContext);
     const navigate = useNavigate();
     const location = useLocation();
 
     const cartCount = getTotalCartCount();
 
     const handleProfileClick = () => {
-        if (!token) {
-            setShowLogin(true);
-        } else {
-            navigate('/myorders');
-        }
+        setProfileModalOpen(true);
     };
 
     const scrollToMenu = () => {
@@ -68,10 +64,7 @@ const BottomNav = ({ setShowLogin }) => {
 
             <button
                 className={`nav-tab-item ${location.pathname === '/myorders' ? 'active' : ''}`}
-                onClick={() => {
-                    if (token) navigate('/myorders');
-                    else setShowLogin(true);
-                }}
+                onClick={() => navigate('/myorders')}
                 id="bottom-nav-orders"
             >
                 <Package size={20} />

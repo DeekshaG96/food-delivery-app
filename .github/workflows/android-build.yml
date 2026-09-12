@@ -1,0 +1,104 @@
+name: Build NaanStop Android App (APK & AAB)
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build Type (all / debug / release)'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - debug
+          - release
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-android:
+    name: Build Android APK & Google Play Bundle (AAB)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Set up Java 17 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Frontend Dependencies
+        working-directory: frontend
+        run: |
+          npm install
+
+      - name: Build Production Web App
+        working-directory: frontend
+        run: |
+          npm run build
+        env:
+          VITE_BACKEND_URL: "https://naanstop-desi-api.loca.lt"
+          VITE_FRONTEND_URL: "https://deekshag96.github.io/food-delivery-app"
+
+      - name: Initialize & Sync Capacitor Android
+        working-directory: frontend
+        run: |
+          if [ ! -d "android" ]; then
+            npx cap add android
+          fi
+          npx cap sync android
+
+      - name: Grant Execute Permission to Gradle Wrapper
+        working-directory: frontend/android
+        run: chmod +x gradlew
+
+      - name: Build Debug APK (Immediate Device Install)
+        if: ${{ github.event.inputs.build_type == 'all' || github.event.inputs.build_type == 'debug' || github.event_name == 'push' }}
+        working-directory: frontend/android
+        run: ./gradlew assembleDebug
+
+      - name: Build Release APK & App Bundle (AAB) for Google Play
+        if: ${{ github.event.inputs.build_type == 'all' || github.event.inputs.build_type == 'release' || github.event_name == 'push' }}
+        working-directory: frontend/android
+        run: |
+          ./gradlew assembleRelease
+          ./gradlew bundleRelease
+
+      - name: Upload Debug APK Artifact
+        if: ${{ github.event.inputs.build_type == 'all' || github.event.inputs.build_type == 'debug' || github.event_name == 'push' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: naanstop-debug-apk
+          path: frontend/android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 14
+
+      - name: Upload Release APK Artifact
+        if: ${{ github.event.inputs.build_type == 'all' || github.event.inputs.build_type == 'release' || github.event_name == 'push' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: naanstop-release-unsigned-apk
+          path: frontend/android/app/build/outputs/apk/release/app-release-unsigned.apk
+          retention-days: 14
+
+      - name: Upload Google Play AAB Bundle Artifact
+        if: ${{ github.event.inputs.build_type == 'all' || github.event.inputs.build_type == 'release' || github.event_name == 'push' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: naanstop-google-play-bundle-aab
+          path: frontend/android/app/build/outputs/bundle/release/app-release.aab
+          retention-days: 30

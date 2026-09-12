@@ -15,6 +15,10 @@ import { StoreContext } from './context/StoreContext';
 
 import MusicPlayer from './components/MusicPlayer/MusicPlayer';
 import SpinWheelModal from './components/SpinWheel/SpinWheelModal';
+import NotificationCenter from './components/NotificationCenter/NotificationCenter';
+import ProfileModal from './components/ProfileModal/ProfileModal';
+import HelpSupportModal from './components/HelpSupport/HelpSupportModal';
+import LegalModal from './components/Legal/LegalModal';
 
 const App = () => {
     const [showLogin, setShowLogin] = useState(false);
@@ -45,6 +49,10 @@ const App = () => {
                     showToast(`Coupon ${code} applied successfully! 🌶️🎉`, 'success');
                 }}
             />
+            <NotificationCenter />
+            <ProfileModal />
+            <HelpSupportModal />
+            <LegalModal />
             {toast && <Toast message={toast.message} type={toast.type} onClose={closeToast} />}
         </>
     );

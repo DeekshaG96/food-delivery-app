@@ -285,3 +285,34 @@
   border-radius: var(--radius-full);
 }
 
+/* 1-Tap Favorite Wishlist Button */
+.food-favorite-btn {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.food-favorite-btn:hover {
+  transform: scale(1.15);
+  background: rgba(15, 23, 42, 0.85);
+}
+
+.food-favorite-btn.favorited {
+  background: #ffffff;
+  border-color: #e11d48;
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
+  transform: scale(1.05);
+}
+

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingBag, Search, User, LogOut, Package, ExternalLink } from 'lucide-react';
+import { ShoppingBag, Search, User, LogOut, Package, ExternalLink, Bell, Shield, HelpCircle } from 'lucide-react';
 import { StoreContext } from '../../context/StoreContext';
 import './Navbar.css';
 
@@ -15,7 +15,12 @@ const Navbar = ({ setShowLogin }) => {
         adminUrl, 
         pureVegOnly, 
         setPureVegOnly, 
-        setSpinModalOpen 
+        setSpinModalOpen,
+        unreadNotificationsCount,
+        setNotificationModalOpen,
+        setProfileModalOpen,
+        setHelpModalOpen,
+        setLegalModalOpen
     } = useContext(StoreContext);
     const navigate = useNavigate();
     const location = useLocation();
@@ -129,6 +134,21 @@ const Navbar = ({ setShowLogin }) => {
                         <ExternalLink size={13} />
                     </a>
 
+                    {/* In-App Notification Bell */}
+                    <button
+                        type="button"
+                        onClick={() => setNotificationModalOpen(true)}
+                        className="navbar-notif-btn"
+                        title="Notifications & Order Updates"
+                        id="navbar-notif-btn"
+                        aria-label="Notifications"
+                    >
+                        <Bell size={21} />
+                        {unreadNotificationsCount > 0 && (
+                            <span className="notif-badge animate-pop">{unreadNotificationsCount}</span>
+                        )}
+                    </button>
+
                     {/* Cart Button with Count Badge */}
                     <Link to="/cart" className="navbar-cart-icon" id="navbar-cart-btn" aria-label="Shopping Cart">
                         <ShoppingBag size={22} />
@@ -137,15 +157,28 @@ const Navbar = ({ setShowLogin }) => {
                         )}
                     </Link>
 
-                    {/* Auth Area */}
+                    {/* Auth / Profile Area */}
                     {!token ? (
-                        <button
-                            onClick={() => setShowLogin(true)}
-                            className="navbar-signin-btn"
-                            id="navbar-signin-btn"
-                        >
-                            Sign In
-                        </button>
+                        <div className="navbar-guest-actions">
+                            <button
+                                onClick={() => setShowLogin(true)}
+                                className="navbar-signin-btn"
+                                id="navbar-signin-btn"
+                            >
+                                Sign In
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setProfileModalOpen(true)}
+                                className="navbar-profile-btn"
+                                title="Guest Profile & Addresses"
+                                aria-label="Profile"
+                            >
+                                <div className="profile-avatar">
+                                    <User size={18} />
+                                </div>
+                            </button>
+                        </div>
                     ) : (
                         <div className="navbar-profile-wrapper">
                             <button
@@ -168,6 +201,17 @@ const Navbar = ({ setShowLogin }) => {
                                     <button
                                         onClick={() => {
                                             setProfileOpen(false);
+                                            setProfileModalOpen(true);
+                                        }}
+                                        className="dropdown-item"
+                                        id="nav-profile-settings-btn"
+                                    >
+                                        <User size={17} />
+                                        <span>Profile & Addresses</span>
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setProfileOpen(false);
                                             navigate('/myorders');
                                         }}
                                         className="dropdown-item"
@@ -175,6 +219,26 @@ const Navbar = ({ setShowLogin }) => {
                                     >
                                         <Package size={17} />
                                         <span>My Orders</span>
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setProfileOpen(false);
+                                            setHelpModalOpen(true);
+                                        }}
+                                        className="dropdown-item"
+                                    >
+                                        <HelpCircle size={17} />
+                                        <span>Help & Support</span>
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setProfileOpen(false);
+                                            setLegalModalOpen('privacy');
+                                        }}
+                                        className="dropdown-item"
+                                    >
+                                        <Shield size={17} />
+                                        <span>Privacy & Legal</span>
                                     </button>
                                     <button onClick={logout} className="dropdown-item logout" id="nav-logout-btn">
                                         <LogOut size={17} />

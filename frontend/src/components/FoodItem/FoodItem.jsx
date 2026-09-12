@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Plus, Minus, Star, Flame, Sparkles } from 'lucide-react';
+import { Plus, Minus, Star, Flame, Sparkles, Heart } from 'lucide-react';
 import { StoreContext } from '../../context/StoreContext';
 import './FoodItem.css';
 
@@ -17,7 +17,10 @@ const FoodItem = ({
     rawItem,
     onQuickView 
 }) => {
-    const { cartItems, addToCart, removeFromCart, url } = useContext(StoreContext);
+    const { cartItems, addToCart, removeFromCart, url, favorites, toggleFavorite } = useContext(StoreContext);
+
+    // Check favorite status
+    const isFavorite = favorites?.includes(id);
 
     // Resolve image URL (Unsplash external URL or local static upload)
     const imageSrc = image?.startsWith("http") ? image : `${url}/images/${image}`;
@@ -70,6 +73,21 @@ const FoodItem = ({
                         <Sparkles size={11} /> Chef's Hit
                     </span>
                 )}
+
+                {/* 1-Tap Favorite / Wishlist Button */}
+                <button
+                    type="button"
+                    className={`food-favorite-btn ${isFavorite ? 'favorited' : ''}`}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        toggleFavorite(id);
+                    }}
+                    aria-label="Toggle favorite"
+                    title={isFavorite ? "Remove from Favorites" : "Save to Favorites"}
+                    id={`fav-btn-${id}`}
+                >
+                    <Heart size={16} fill={isFavorite ? "#e11d48" : "none"} color={isFavorite ? "#e11d48" : "#ffffff"} />
+                </button>
 
                 <div className="food-counter-wrapper" onClick={(e) => e.stopPropagation()}>
                     {itemCount === 0 ? (

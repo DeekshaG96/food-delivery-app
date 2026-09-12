@@ -23,12 +23,17 @@
   --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.1);
   --shadow-glow: 0 8px 25px rgba(255, 76, 59, 0.35);
   --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -38,6 +43,12 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+}
+
+button, input, select, textarea {
+  touch-action: manipulation;
 }
 
 h1, h2, h3, h4, h5, h6 {

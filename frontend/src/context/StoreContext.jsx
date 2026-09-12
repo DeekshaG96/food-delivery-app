@@ -1,8 +1,53 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { defaultFoods } from "../assets/defaultFoods";
+import { triggerHaptic } from "../utils/haptics";
 
 export const StoreContext = createContext(null);
+
+const DEFAULT_ADDRESSES = [
+    {
+        id: "addr_1",
+        label: "Home",
+        tag: "home",
+        street: "742 Evergreen Terrace, Apt 4B",
+        city: "Springfield",
+        state: "OR",
+        zipcode: "97477",
+        phone: "+1-555-0199",
+        isDefault: true
+    },
+    {
+        id: "addr_2",
+        label: "Work / Office",
+        tag: "work",
+        street: "100 Innovation Blvd, Tech Hub Tower",
+        city: "Springfield",
+        state: "OR",
+        zipcode: "97477",
+        phone: "+1-555-0144",
+        isDefault: false
+    }
+];
+
+const DEFAULT_NOTIFICATIONS = [
+    {
+        id: "notif_welcome",
+        title: "Welcome to NaanStop 🌶️",
+        message: "Enjoy 20% off your first order! Use code TADKA20 or spin the Chakkar of Luck.",
+        time: "Just now",
+        unread: true,
+        type: "promo"
+    },
+    {
+        id: "notif_delight",
+        title: "Fresh Dum Biryani Ready! 🍲",
+        message: "Handi slow-cooked over charcoal dum just arrived in the kitchen. Order now for express 25-min delivery!",
+        time: "15 mins ago",
+        unread: true,
+        type: "kitchen"
+    }
+];
 
 const StoreContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});
@@ -18,6 +63,66 @@ const StoreContextProvider = (props) => {
     const [spinModalOpen, setSpinModalOpen] = useState(false);
     const [appliedCoupon, setAppliedCoupon] = useState(null);
     const [riderTip, setRiderTip] = useState(1.00);
+
+    // Mobile specific & Google Play compliance states
+    const [favorites, setFavorites] = useState(() => {
+        try {
+            return JSON.parse(localStorage.getItem("naanstop_favorites") || "[]");
+        } catch {
+            return [];
+        }
+    });
+
+    const [savedAddresses, setSavedAddresses] = useState(() => {
+        try {
+            const saved = localStorage.getItem("naanstop_addresses");
+            return saved ? JSON.parse(saved) : DEFAULT_ADDRESSES;
+        } catch {
+            return DEFAULT_ADDRESSES;
+        }
+    });
+
+    const [notifications, setNotifications] = useState(() => {
+        try {
+            const saved = localStorage.getItem("naanstop_notifications");
+            return saved ? JSON.parse(saved) : DEFAULT_NOTIFICATIONS;
+        } catch {
+            return DEFAULT_NOTIFICATIONS;
+        }
+    });
+
+    const [localOrders, setLocalOrders] = useState(() => {
+        try {
+            return JSON.parse(localStorage.getItem("naanstop_local_orders") || "[]");
+        } catch {
+            return [];
+        }
+    });
+
+    const [userProfile, setUserProfile] = useState(() => {
+        try {
+            const saved = localStorage.getItem("naanstop_profile");
+            return saved ? JSON.parse(saved) : {
+                name: localStorage.getItem("userName") || "Rohan Sharma",
+                phone: "+1-555-0199",
+                email: "rohan.desi@naanstop.com",
+                isVeg: false
+            };
+        } catch {
+            return {
+                name: "Rohan Sharma",
+                phone: "+1-555-0199",
+                email: "rohan.desi@naanstop.com",
+                isVeg: false
+            };
+        }
+    });
+
+    // Modal Visibility States
+    const [profileModalOpen, setProfileModalOpen] = useState(false);
+    const [notificationModalOpen, setNotificationModalOpen] = useState(false);
+    const [helpModalOpen, setHelpModalOpen] = useState(false);
+    const [legalModalOpen, setLegalModalOpen] = useState(null); // null | 'privacy' | 'terms'
 
     const showToast = (message, type = 'success', duration = 3000) => {
         setToast({ message, type });
@@ -171,6 +276,126 @@ const StoreContextProvider = (props) => {
         loadData();
     }, []);
 
+    // Favorites Management
+    const toggleFavorite = (dishId) => {
+        triggerHaptic('light');
+        setFavorites((prev) => {
+            const next = prev.includes(dishId)
+                ? prev.filter(id => id !== dishId)
+                : [...prev, dishId];
+            localStorage.setItem("naanstop_favorites", JSON.stringify(next));
+            const dish = food_list.find(f => f._id === dishId);
+            if (dish) {
+                if (next.includes(dishId)) {
+                    showToast(`Added ${dish.name} to Favorites! ❤️`, 'success');
+                } else {
+                    showToast(`Removed from Favorites`, 'info');
+                }
+            }
+            return next;
+        });
+    };
+
+    // Address Management
+    const saveAddress = (newAddr) => {
+        setSavedAddresses((prev) => {
+            const existingIndex = prev.findIndex(a => a.id === newAddr.id);
+            let updated;
+            if (existingIndex !== -1) {
+                updated = [...prev];
+                updated[existingIndex] = newAddr;
+            } else {
+                updated = [...prev, { ...newAddr, id: `addr_${Date.now()}` }];
+            }
+            localStorage.setItem("naanstop_addresses", JSON.stringify(updated));
+            showToast("Address saved successfully! 📍", "success");
+            return updated;
+        });
+    };
+
+    const deleteAddress = (addrId) => {
+        setSavedAddresses((prev) => {
+            const updated = prev.filter(a => a.id !== addrId);
+            localStorage.setItem("naanstop_addresses", JSON.stringify(updated));
+            showToast("Address removed", "info");
+            return updated;
+        });
+    };
+
+    // Notification Management
+    const addNotification = (notif) => {
+        setNotifications((prev) => {
+            const updated = [{ ...notif, id: `notif_${Date.now()}`, unread: true, time: "Just now" }, ...prev];
+            localStorage.setItem("naanstop_notifications", JSON.stringify(updated));
+            return updated;
+        });
+    };
+
+    const markAllNotificationsRead = () => {
+        setNotifications((prev) => {
+            const updated = prev.map(n => ({ ...n, unread: false }));
+            localStorage.setItem("naanstop_notifications", JSON.stringify(updated));
+            return updated;
+        });
+    };
+
+    const unreadNotificationsCount = notifications.filter(n => n.unread).length;
+
+    // Profile Management
+    const updateUserProfile = (newProfile) => {
+        setUserProfile(newProfile);
+        localStorage.setItem("naanstop_profile", JSON.stringify(newProfile));
+        if (newProfile.name) {
+            setUserName(newProfile.name);
+            localStorage.setItem("userName", newProfile.name);
+        }
+        showToast("Profile updated! 👤", "success");
+    };
+
+    // Local Orders for Instant / Guest Checkout
+    const addLocalOrder = (order) => {
+        triggerHaptic('success');
+        setLocalOrders((prev) => {
+            const updated = [order, ...prev];
+            localStorage.setItem("naanstop_local_orders", JSON.stringify(updated));
+            return updated;
+        });
+        addNotification({
+            title: `Order Placed: #${order._id.slice(-6)} 🛵`,
+            message: `${order.items.length} item(s) on their way with Raju Bhaiya. Tap to track live!`,
+            type: "order"
+        });
+    };
+
+    const updateLocalOrderStatus = (orderId, newStatus) => {
+        setLocalOrders((prev) => {
+            const updated = prev.map(o => o._id === orderId ? { ...o, status: newStatus } : o);
+            localStorage.setItem("naanstop_local_orders", JSON.stringify(updated));
+            return updated;
+        });
+    };
+
+    // Google Play Required: Delete Account & Clear All Data
+    const clearAllUserData = () => {
+        triggerHaptic('warning');
+        localStorage.clear();
+        setCartItems({});
+        setCartCustomizations({});
+        setToken("");
+        setUserName("");
+        setFavorites([]);
+        setSavedAddresses(DEFAULT_ADDRESSES);
+        setNotifications([]);
+        setLocalOrders([]);
+        setUserProfile({
+            name: "Guest User",
+            phone: "",
+            email: "",
+            isVeg: false
+        });
+        showToast("All personal data and saved orders cleared.", "info");
+    };
+
     const contextValue = {
         food_list,
         cartItems,
@@ -198,7 +423,31 @@ const StoreContextProvider = (props) => {
         appliedCoupon,
         setAppliedCoupon,
         riderTip,
-        setRiderTip
+        setRiderTip,
+        // Mobile additions
+        favorites,
+        toggleFavorite,
+        savedAddresses,
+        saveAddress,
+        deleteAddress,
+        notifications,
+        addNotification,
+        markAllNotificationsRead,
+        unreadNotificationsCount,
+        userProfile,
+        updateUserProfile,
+        localOrders,
+        addLocalOrder,
+        updateLocalOrderStatus,
+        clearAllUserData,
+        profileModalOpen,
+        setProfileModalOpen,
+        notificationModalOpen,
+        setNotificationModalOpen,
+        helpModalOpen,
+        setHelpModalOpen,
+        legalModalOpen,
+        setLegalModalOpen
     };
 
     return (

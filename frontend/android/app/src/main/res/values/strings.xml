@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">NaanStop</string>
+    <string name="title_activity_main">NaanStop</string>
+    <string name="package_name">com.naanstop.delivery</string>
+    <string name="custom_url_scheme">com.naanstop.delivery</string>
+</resources>

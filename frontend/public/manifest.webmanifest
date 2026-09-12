@@ -1,0 +1,26 @@
+{
+  "name": "NaanStop: Desi Food Delivery & Canteen",
+  "short_name": "NaanStop",
+  "description": "Royal Desi Canteen & Express Food Delivery. Ghar Ka Pyaar, Dhaba Ka Swad! Pure Veg mode, Raju Bhaiya live tracker & Desi diner radio.",
+  "start_url": "./#/",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0c0a09",
+  "theme_color": "#e11d48",
+  "categories": ["food", "shopping", "lifestyle"],
+  "icons": [
+    {
+      "src": "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=192&auto=format&fit=crop&q=80",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=512&auto=format&fit=crop&q=80",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}

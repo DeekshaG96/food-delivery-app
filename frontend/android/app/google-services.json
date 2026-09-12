@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "135138258993",
+    "project_id": "food-service-65cae",
+    "storage_bucket": "food-service-65cae.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:135138258993:android:816fe9e836fed4b19e6510",
+        "android_client_info": {
+          "package_name": "com.naanstop.delivery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-h-QqN95RvtjmENL5hpgg3153bq93jpM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

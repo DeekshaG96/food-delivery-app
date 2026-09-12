@@ -1,0 +1,27 @@
+{
+  "appId": "com.naanstop.delivery",
+  "appName": "NaanStop",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "backgroundColor": "#0c0a09",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1800,
+      "launchAutoHide": true,
+      "backgroundColor": "#0c0a09",
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER_CROP",
+      "splashFullScreen": true,
+      "splashImmersive": true
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#0c0a09",
+      "overlaysWebView": false
+    }
+  }
+}

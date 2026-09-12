@@ -25,7 +25,12 @@ const PlaceOrder = ({ setShowLogin }) => {
         cartCustomizations, 
         url,
         riderTip,
-        setRiderTip 
+        setRiderTip,
+        savedAddresses,
+        addLocalOrder,
+        userProfile,
+        setCartItems,
+        showToast
     } = useContext(StoreContext);
     const navigate = useNavigate();
 
@@ -34,17 +39,19 @@ const PlaceOrder = ({ setShowLogin }) => {
     const [scheduleType, setScheduleType] = useState('asap'); // 'asap' | 'later'
     const [scheduledTime, setScheduledTime] = useState('7:30 PM');
     const [tableNumber, setTableNumber] = useState('Table 4');
+    const [paymentMode, setPaymentMode] = useState('upi'); // 'upi' | 'card' | 'cod' | 'netbanking'
+    const [selectedAddressId, setSelectedAddressId] = useState(savedAddresses[0]?.id || null);
 
     const [data, setData] = useState({
-        firstName: "Rohan",
-        lastName: "Sharma",
-        email: "rohan.desi@naanstop.com",
-        street: "742 Evergreen Terrace",
-        city: "Springfield",
-        state: "OR",
-        zipcode: "97477",
+        firstName: userProfile?.name ? userProfile.name.split(' ')[0] : "Rohan",
+        lastName: userProfile?.name && userProfile.name.split(' ').length > 1 ? userProfile.name.split(' ').slice(1).join(' ') : "Sharma",
+        email: userProfile?.email || "rohan.desi@naanstop.com",
+        street: savedAddresses[0]?.street || "742 Evergreen Terrace",
+        city: savedAddresses[0]?.city || "Springfield",
+        state: savedAddresses[0]?.state || "OR",
+        zipcode: savedAddresses[0]?.zipcode || "97477",
         country: "United States",
-        phone: "+1-555-0199"
+        phone: userProfile?.phone || savedAddresses[0]?.phone || "+1-555-0199"
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -56,6 +63,19 @@ const PlaceOrder = ({ setShowLogin }) => {
         setData(data => ({ ...data, [name]: value }));
     };
 
+    const handleSelectSavedAddress = (addr) => {
+        setSelectedAddressId(addr.id);
+        setData(prev => ({
+            ...prev,
+            street: addr.street,
+            city: addr.city,
+            state: addr.state || 'OR',
+            zipcode: addr.zipcode || '97477',
+            phone: addr.phone || prev.phone
+        }));
+        showToast(`Selected "${addr.label}" delivery address 📍`, 'info');
+    };
+
     const subtotal = getTotalCartAmount();
     const deliveryFee = orderType === 'delivery' ? (subtotal === 0 ? 0 : 2) : 0;
     const appliedTip = orderType === 'delivery' ? (riderTip || 0) : 0;
@@ -64,12 +84,6 @@ const PlaceOrder = ({ setShowLogin }) => {
     const onPlaceOrder = async (event) => {
         event.preventDefault();
         setErrorMessage("");
-
-        if (!token) {
-            setShowLogin(true);
-            setErrorMessage("Please sign in or register to place your order.");
-            return;
-        }
 
         let orderItems = [];
         food_list.forEach((item) => {
@@ -95,38 +109,55 @@ const PlaceOrder = ({ setShowLogin }) => {
             return;
         }
 
-        let orderData = {
-            address: data,
-            items: orderItems,
-            amount: finalTotal,
-            riderTip: appliedTip,
+        setIsSubmitting(true);
+        const orderId = `order_${Date.now()}`;
+        const placedOrder = {
+            _id: orderId,
+            date: new Date().toISOString(),
+            status: "Food Processing",
+            payment: paymentMode !== 'cod',
+            paymentMode: paymentMode,
             orderType: orderType,
             scheduledFor: scheduleType === 'asap' ? 'ASAP (25-35 mins)' : `Scheduled for ${scheduledTime}`,
-            tableNumber: orderType === 'dine-in' ? tableNumber : '',
-            pickupTime: orderType === 'pickup' ? (scheduleType === 'asap' ? 'Ready in 15-20 mins' : scheduledTime) : ''
+            tableNumber: orderType === 'dine-in' ? tableNumber : null,
+            pickupTime: orderType === 'pickup' ? (scheduleType === 'asap' ? 'Ready in 15-20 mins' : scheduledTime) : null,
+            riderTip: appliedTip,
+            etaMins: 22,
+            rider: {
+                name: "Raju Bhaiya",
+                vehicle: "Hero Splendor • KA-01-EA-2026",
+                rating: 4.9,
+                deliveries: 1420,
+                phone: "+91 98765 43210",
+                vaccinated: true,
+                status: "Preparing hot fresh pack at NaanStop Kitchen"
+            },
+            userId: token ? (userProfile?.email || "user_registered") : "guest_user",
+            items: orderItems,
+            amount: finalTotal,
+            address: data
         };
 
-        try {
-            setIsSubmitting(true);
-            const response = await axios.post(
-                `${url}/api/order/place`,
-                orderData,
-                { headers: { token } }
-            );
+        // Add to persistent local orders
+        addLocalOrder(placedOrder);
+        setCartItems({});
 
-            if (response.data.success) {
-                const { session_url } = response.data;
-                // Redirect to payment provider or simulated checkout verify url
-                window.location.replace(session_url);
-            } else {
-                setErrorMessage(response.data.message || "Failed to initiate payment session");
+        // Background sync with backend if available
+        if (token) {
+            try {
+                await axios.post(
+                    `${url}/api/order/place`,
+                    placedOrder,
+                    { headers: { token }, timeout: 3000 }
+                );
+            } catch (error) {
+                console.warn("Order saved locally; backend deferred:", error.message);
             }
-        } catch (error) {
-            console.error("Order placement error:", error);
-            setErrorMessage("An unexpected error occurred while placing your order.");
-        } finally {
-            setIsSubmitting(false);
         }
+
+        showToast(`Order #${orderId.slice(-6)} placed with kitchen! Raju Bhaiya is on the way 🛵🎉`, 'success', 4000);
+        setIsSubmitting(false);
+        navigate('/myorders');
     };
 
     useEffect(() => {
@@ -244,6 +275,25 @@ const PlaceOrder = ({ setShowLogin }) => {
                                     <p className="form-sub">Where should we deliver your feast?</p>
                                 </div>
                             </div>
+
+                            {savedAddresses && savedAddresses.length > 0 && (
+                                <div className="saved-addr-quick-select">
+                                    <span className="saqs-label">Saved Addresses:</span>
+                                    <div className="saqs-pills">
+                                        {savedAddresses.map((addr) => (
+                                            <button
+                                                key={addr.id}
+                                                type="button"
+                                                className={`saqs-pill ${selectedAddressId === addr.id ? 'active' : ''}`}
+                                                onClick={() => handleSelectSavedAddress(addr)}
+                                            >
+                                                <span className="saqs-dot">{addr.tag === 'home' ? '🏠' : addr.tag === 'work' ? '🏢' : '📍'}</span>
+                                                <span>{addr.label}</span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
 
                             {errorMessage && (
                                 <div className="order-error-alert">
@@ -482,6 +532,71 @@ const PlaceOrder = ({ setShowLogin }) => {
                                 </div>
                             </div>
                         )}
+
+                        {/* Payment Mode Selector */}
+                        <div className="payment-mode-section">
+                            <div className="pms-header">
+                                <h3>Select Payment Mode</h3>
+                                <span className="pms-badge">Instant Verification</span>
+                            </div>
+                            <div className="payment-options-grid">
+                                <button
+                                    type="button"
+                                    className={`payment-option-card ${paymentMode === 'upi' ? 'active' : ''}`}
+                                    onClick={() => setPaymentMode('upi')}
+                                    id="pay-mode-upi"
+                                >
+                                    <span className="pay-icon">📱</span>
+                                    <div className="pay-label">
+                                        <strong>UPI / Google Pay</strong>
+                                        <span>GPay, PhonePe, Paytm, BHIM</span>
+                                    </div>
+                                    <span className="pay-radio"></span>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    className={`payment-option-card ${paymentMode === 'card' ? 'active' : ''}`}
+                                    onClick={() => setPaymentMode('card')}
+                                    id="pay-mode-card"
+                                >
+                                    <span className="pay-icon">💳</span>
+                                    <div className="pay-label">
+                                        <strong>Credit / Debit Card</strong>
+                                        <span>Visa, Mastercard, RuPay</span>
+                                    </div>
+                                    <span className="pay-radio"></span>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    className={`payment-option-card ${paymentMode === 'cod' ? 'active' : ''}`}
+                                    onClick={() => setPaymentMode('cod')}
+                                    id="pay-mode-cod"
+                                >
+                                    <span className="pay-icon">💵</span>
+                                    <div className="pay-label">
+                                        <strong>Pay on Delivery</strong>
+                                        <span>Cash / QR code on arrival</span>
+                                    </div>
+                                    <span className="pay-radio"></span>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    className={`payment-option-card ${paymentMode === 'netbanking' ? 'active' : ''}`}
+                                    onClick={() => setPaymentMode('netbanking')}
+                                    id="pay-mode-netbanking"
+                                >
+                                    <span className="pay-icon">🏦</span>
+                                    <div className="pay-label">
+                                        <strong>Net Banking</strong>
+                                        <span>HDFC, ICICI, SBI & others</span>
+                                    </div>
+                                    <span className="pay-radio"></span>
+                                </button>
+                            </div>
+                        </div>
 
                         <div className="cart-total-details">
                             <div className="cart-line-item">

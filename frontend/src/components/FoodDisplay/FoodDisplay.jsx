@@ -1,5 +1,5 @@
 import React, { useContext, useState, useMemo } from 'react';
-import { Search, UtensilsCrossed, SlidersHorizontal, ArrowUpDown, Sparkles, Leaf, DollarSign } from 'lucide-react';
+import { Search, UtensilsCrossed, SlidersHorizontal, ArrowUpDown, Sparkles, Leaf, DollarSign, Heart } from 'lucide-react';
 import { StoreContext } from '../../context/StoreContext';
 import FoodItem from '../FoodItem/FoodItem';
 import FoodDetailModal from '../FoodDetailModal/FoodDetailModal';
@@ -8,12 +8,13 @@ import './FoodDisplay.css';
 const DIET_FILTERS = [
     { id: 'all', label: 'All Dishes' },
     { id: 'veg', label: '🌿 Vegetarian', icon: Leaf },
+    { id: 'favorites', label: '❤️ Favorites', icon: Heart },
     { id: 'under15', label: '🏷️ Under $15', icon: DollarSign },
     { id: 'popular', label: '⭐ Top Rated', icon: Sparkles }
 ];
 
 const FoodDisplay = ({ category }) => {
-    const { food_list, loadingFoods, pureVegOnly, setPureVegOnly } = useContext(StoreContext);
+    const { food_list, loadingFoods, pureVegOnly, setPureVegOnly, favorites } = useContext(StoreContext);
     const [searchQuery, setSearchQuery] = useState("");
     const [sortBy, setSortBy] = useState("featured");
     const [dietFilter, setDietFilter] = useState("all");
@@ -30,6 +31,8 @@ const FoodDisplay = ({ category }) => {
             let matchesDiet = true;
             if (dietFilter === 'veg') {
                 matchesDiet = item.isVeg === true;
+            } else if (dietFilter === 'favorites') {
+                matchesDiet = favorites?.includes(item._id);
             } else if (dietFilter === 'under15') {
                 matchesDiet = item.price < 15;
             } else if (dietFilter === 'popular') {
