@@ -1,8 +1,47 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Trash2, Plus, Minus, ArrowRight, ShoppingCart, Tag, CheckCircle } from 'lucide-react';
+import { Trash2, Plus, Minus, ArrowRight, ShoppingCart, Tag, CheckCircle, Sparkles, Coins, Flame } from 'lucide-react';
 import { StoreContext } from '../../context/StoreContext';
+import { triggerHaptic } from '../../utils/haptics';
 import './Cart.css';
+
+const RECOMMENDED_PAIRINGS = [
+    {
+        _id: "food_pair_naan",
+        name: "Garlic Butter Naan",
+        price: 3.50,
+        category: "Breads",
+        image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=300&auto=format&fit=crop&q=80"
+    },
+    {
+        _id: "food_pair_rice",
+        name: "Dum Jeera Rice",
+        price: 4.00,
+        category: "Rice",
+        image: "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=300&auto=format&fit=crop&q=80"
+    },
+    {
+        _id: "food_pair_raita",
+        name: "Chilled Boondi Raita",
+        price: 2.50,
+        category: "Sides",
+        image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=300&auto=format&fit=crop&q=80"
+    },
+    {
+        _id: "food_pair_lassi",
+        name: "Mango Kesar Lassi",
+        price: 3.50,
+        category: "Beverages",
+        image: "https://images.unsplash.com/photo-1527661591475-527312dd65f5?w=300&auto=format&fit=crop&q=80"
+    },
+    {
+        _id: "food_pair_jamun",
+        name: "Hot Gulab Jamun (2 pcs)",
+        price: 3.50,
+        category: "Mithai",
+        image: "https://images.unsplash.com/photo-1541832676-9b763b0239ab?w=300&auto=format&fit=crop&q=80"
+    }
+];
 
 const Cart = () => {
     const { 
@@ -15,8 +54,13 @@ const Cart = () => {
         showToast,
         appliedCoupon,
         setAppliedCoupon,
-        setSpinModalOpen
+        setSpinModalOpen,
+        naanCoins,
+        streakDays,
+        redeemCoinsActive,
+        toggleRedeemCoins
     } = useContext(StoreContext);
+
     const navigate = useNavigate();
     const [promoCode, setPromoCode] = useState(appliedCoupon?.code || "");
     const [appliedDiscount, setAppliedDiscount] = useState(appliedCoupon ? appliedCoupon.discount || 0 : 0);
@@ -27,7 +71,8 @@ const Cart = () => {
     const subtotal = getTotalCartAmount();
     const deliveryFee = subtotal === 0 ? 0 : (appliedDiscount === -1 ? 0 : 2); // -1 = free shipping
     const discountAmount = appliedDiscount > 0 ? Math.min(appliedDiscount, subtotal) : 0;
-    const finalTotal = Math.max(0, subtotal + deliveryFee - discountAmount);
+    const coinsDiscount = (redeemCoinsActive && naanCoins >= 100) ? 3.00 : 0;
+    const finalTotal = Math.max(0, subtotal + deliveryFee - discountAmount - coinsDiscount);
 
     const handleApplyPromo = (codeToApply) => {
         const code = (codeToApply || promoCode).trim().toUpperCase();
@@ -68,6 +113,15 @@ const Cart = () => {
             setPromoMessage("Invalid promo code. Try spinning the wheel or use TADKA20 / CHAI5 / DESIFREE!");
             showToast("Invalid promo code. Try TADKA20 or DESIFREE", "error");
         }
+    };
+
+    const handleQuickAddPairing = (pairing) => {
+        triggerHaptic('light');
+        addToCart(pairing._id, 1, false, {
+            size: 'Regular',
+            spice: 'Medium',
+            unitPrice: pairing.price
+        });
     };
 
     const hasItems = Object.values(cartItems).some(qty => qty > 0);
@@ -169,9 +223,66 @@ const Cart = () => {
                         })}
                     </div>
 
+                    {/* Smart Desi Pairings & Quick-Add Strip */}
+                    <div className="cart-pairings-shelf">
+                        <div className="pairings-header">
+                            <div className="pairings-title-row">
+                                <span className="pairings-badge">Chef's Pairings</span>
+                                <h3>Complete Your Dawat! 🫓</h3>
+                            </div>
+                            <p className="pairings-sub">Pair your curries & biryanis with fresh tandoori breads, jeera rice & cooling raitas</p>
+                        </div>
+                        <div className="pairings-scroll-cards">
+                            {RECOMMENDED_PAIRINGS.map(p => (
+                                <div key={p._id} className="pairing-mini-card">
+                                    <img src={p.image} alt={p.name} className="pairing-thumb" />
+                                    <div className="pairing-info">
+                                        <strong className="pairing-name">{p.name}</strong>
+                                        <span className="pairing-price">${p.price.toFixed(2)}</span>
+                                    </div>
+                                    <button 
+                                        type="button" 
+                                        className="pairing-add-btn"
+                                        onClick={() => handleQuickAddPairing(p)}
+                                    >
+                                        <Plus size={13} /> Add
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
                     <div className="cart-bottom-section">
-                        {/* Promo Code Box */}
+                        {/* Promo Code & NaanCoins Box */}
                         <div className="cart-promocode-card">
+                            {/* NaanCoins Rewards & Daily Streak Wallet */}
+                            <div className="naancoins-wallet-card">
+                                <div className="nc-card-header">
+                                    <div className="nc-coin-avatar">🪙</div>
+                                    <div>
+                                        <div className="nc-title-row">
+                                            <h4>NaanCoins Rewards</h4>
+                                            <span className="nc-streak-pill">🔥 {streakDays}-Day Streak!</span>
+                                        </div>
+                                        <p className="nc-sub">Your Balance: <strong>{naanCoins} NaanCoins</strong></p>
+                                    </div>
+                                </div>
+                                <div className="nc-redemption-row">
+                                    <div className="nc-perk-desc">
+                                        <span>Redeem 100 Coins for $3.00 OFF</span>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        className={`nc-redeem-toggle-btn ${redeemCoinsActive ? 'active' : ''}`}
+                                        onClick={toggleRedeemCoins}
+                                        disabled={naanCoins < 100}
+                                        id="redeem-coins-btn"
+                                    >
+                                        {redeemCoinsActive ? '✓ $3.00 Off Applied' : 'Use 100 Coins ($3 Off)'}
+                                    </button>
+                                </div>
+                            </div>
+
                             <div className="promo-header">
                                 <Tag size={18} className="promo-icon" />
                                 <h3>Have a promo code?</h3>
@@ -279,6 +390,15 @@ const Cart = () => {
                                         <div className="cart-line-item discount">
                                             <span>Promo Discount</span>
                                             <span>-${discountAmount.toFixed(2)}</span>
+                                        </div>
+                                    </>
+                                )}
+                                {coinsDiscount > 0 && (
+                                    <>
+                                        <hr />
+                                        <div className="cart-line-item coins-discount">
+                                            <span>🪙 NaanCoins (100 coins)</span>
+                                            <span>-$3.00</span>
                                         </div>
                                     </>
                                 )}

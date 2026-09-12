@@ -27,6 +27,10 @@ export const menu_list = [
     {
         menu_name: "Mithai",
         menu_image: "https://images.unsplash.com/photo-1589119908995-c6837fa14d48?w=300&auto=format&fit=crop&q=80"
+    },
+    {
+        menu_name: "Secret Dhaba 🌙",
+        menu_image: "https://images.unsplash.com/photo-1612927601601-6638404737ce?w=300&auto=format&fit=crop&q=80"
     }
 ];
 

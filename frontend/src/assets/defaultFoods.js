@@ -370,5 +370,57 @@ export const defaultFoods = [
     "spiceDefault": "Mild",
     "bestseller": false,
     "jainAvailable": true
+  },
+  {
+    "_id": "food_32",
+    "name": "Highway Butter Chicken Maggi",
+    "image": "https://images.unsplash.com/photo-1612927601601-6638404737ce?w=600&auto=format&fit=crop&q=80",
+    "price": 8.5,
+    "description": "Legendary late-night highway craving! Maggi 2-minute noodles tossed in rich butter chicken gravy, pulled tikka, and topped with melted Amul cheese.",
+    "category": "Secret Dhaba 🌙",
+    "isVeg": false,
+    "spiceDefault": "Desi Teekha",
+    "bestseller": true,
+    "jainAvailable": false,
+    "isSecret": true
+  },
+  {
+    "_id": "food_33",
+    "name": "Amritsari Chur Chur Naan Thali",
+    "image": "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600&auto=format&fit=crop&q=80",
+    "price": 12,
+    "description": "Piping hot crushed flaky tandoori naan stuffed with spiced aloo paneer, served with authentic Pindi chole, boondi raita & pickled onions.",
+    "category": "Secret Dhaba 🌙",
+    "isVeg": true,
+    "spiceDefault": "Medium",
+    "bestseller": true,
+    "jainAvailable": true,
+    "isSecret": true
+  },
+  {
+    "_id": "food_34",
+    "name": "Gulab Jamun Rabdi Kulfi Sundae",
+    "image": "https://images.unsplash.com/photo-1541832676-9b763b0239ab?w=600&auto=format&fit=crop&q=80",
+    "price": 8,
+    "description": "Two warm soft gulab jamuns drowned in chilled, thick saffron rabdi and topped with crushed dry fruits and silver vark.",
+    "category": "Secret Dhaba 🌙",
+    "isVeg": true,
+    "spiceDefault": "Mild",
+    "bestseller": true,
+    "jainAvailable": true,
+    "isSecret": true
+  },
+  {
+    "_id": "food_35",
+    "name": "Midnight Tapri Chai Flask (Serves 3)",
+    "image": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=600&auto=format&fit=crop&q=80",
+    "price": 6.5,
+    "description": "500ml spill-proof thermal flask of boiling adrak elaichi kadak chai brewed with full cream buffalo milk. Comes with 6 Parle-G biscuits.",
+    "category": "Secret Dhaba 🌙",
+    "isVeg": true,
+    "spiceDefault": "Mild",
+    "bestseller": false,
+    "jainAvailable": true,
+    "isSecret": true
   }
 ];

@@ -553,3 +553,103 @@
     font-size: 0.72rem;
     color: #64748b;
 }
+
+/* Profile Coins Banner */
+.profile-coins-banner {
+    background: linear-gradient(135deg, #78350f 0%, #451a03 100%);
+    border: 1.5px solid #d97706;
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 16px rgba(217, 119, 6, 0.25);
+}
+
+.pc-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pc-coin-icon {
+    font-size: 26px;
+}
+
+.pc-balance-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.pc-amount {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #fde68a;
+    font-family: 'Outfit', sans-serif;
+}
+
+.pc-label {
+    font-size: 0.75rem;
+    color: #fcd34d;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.pc-streak-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: rgba(254, 240, 138, 0.2);
+    color: #fef08a;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 2px;
+}
+
+.pc-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.pc-tier-badge {
+    font-size: 0.72rem;
+    font-weight: 800;
+    background: #f59e0b;
+    color: #451a03;
+    padding: 2px 8px;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+.pc-earn-hint {
+    font-size: 0.68rem;
+    color: #fde68a;
+}
+
+/* Secret Menu Unlock CTA */
+.secret-unlock-cta {
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    color: #fff;
+    border: none;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.35);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.secret-unlock-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.5);
+}
+
+.secret-unlock-cta.unlocked {
+    background: #10b981;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}

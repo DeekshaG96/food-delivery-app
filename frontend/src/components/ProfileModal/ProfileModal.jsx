@@ -37,7 +37,13 @@ const ProfileModal = () => {
         setLegalModalOpen,
         token,
         setToken,
-        showToast
+        showToast,
+        naanCoins,
+        streakDays,
+        secretMenuUnlocked,
+        unlockSecretMenu,
+        soundEnabled,
+        setSoundEnabled
     } = useContext(StoreContext);
 
     const [isEditing, setIsEditing] = useState(false);
@@ -135,6 +141,24 @@ const ProfileModal = () => {
                 </div>
 
                 <div className="profile-body">
+                    {/* NaanCoins Rewards & Streak Banner */}
+                    <div className="profile-coins-banner">
+                        <div className="pc-left">
+                            <span className="pc-coin-icon">🪙</span>
+                            <div>
+                                <div className="pc-balance-row">
+                                    <strong className="pc-amount">{naanCoins}</strong>
+                                    <span className="pc-label">NaanCoins</span>
+                                </div>
+                                <span className="pc-streak-badge">🔥 {streakDays}-Day Dawat Streak!</span>
+                            </div>
+                        </div>
+                        <div className="pc-right">
+                            <span className="pc-tier-badge">Gold Foodie</span>
+                            <span className="pc-earn-hint">10 coins / $1 spent</span>
+                        </div>
+                    </div>
+
                     {/* User Details Section */}
                     <div className="profile-card-section">
                         <div className="section-title-row">
@@ -310,6 +334,46 @@ const ProfileModal = () => {
                                 <span className="toggle-thumb"></span>
                             </button>
                         </div>
+                        {/* Sound Effects Toggle */}
+                        <div className="pref-row">
+                            <div className="pref-label-group">
+                                <strong>🔊 Tactile Audio & Sizzle</strong>
+                                <span>Cart pops, coin chimes & tandoori sizzle</span>
+                            </div>
+                            <button
+                                type="button"
+                                className={`pref-toggle-btn ${soundEnabled ? 'active' : ''}`}
+                                onClick={() => {
+                                    const next = !soundEnabled;
+                                    setSoundEnabled(next);
+                                    localStorage.setItem("naanstop_sound_enabled", String(next));
+                                }}
+                            >
+                                <span className="toggle-thumb"></span>
+                            </button>
+                        </div>
+
+                        {/* Secret Dhaba Menu Unlock */}
+                        <div className="pref-row">
+                            <div className="pref-label-group">
+                                <strong>🌙 Secret Dhaba Midnight Menu</strong>
+                                <span>{secretMenuUnlocked ? 'Unlocked & Active! 4 secret delicacies available' : 'Hidden highway recipes & late night treats'}</span>
+                            </div>
+                            <button
+                                type="button"
+                                className={`secret-unlock-cta ${secretMenuUnlocked ? 'unlocked' : ''}`}
+                                onClick={() => {
+                                    if (!secretMenuUnlocked) {
+                                        unlockSecretMenu();
+                                    } else {
+                                        showToast("Secret Dhaba Menu is already unlocked! Check the menu tab 🌙", "info");
+                                    }
+                                }}
+                            >
+                                {secretMenuUnlocked ? '✓ Unlocked' : 'Unlock Now 🔑'}
+                            </button>
+                        </div>
+
                         <div className="favorites-counter-row">
                             <div className="fav-count-left">
                                 <Heart size={16} className="fav-heart-icon" />

@@ -209,6 +209,32 @@
   font-weight: 600;
 }
 
+.diet-chip.secret-dhaba-chip {
+  background: linear-gradient(135deg, #1e1b4b 0%, #31104b 100%);
+  color: #facc15;
+  border: 1.5px solid #a855f7;
+  box-shadow: 0 2px 10px rgba(168, 85, 247, 0.25);
+  animation: glowPulse 2.5s infinite;
+  font-weight: 700;
+}
+
+.diet-chip.secret-dhaba-chip:hover {
+  background: linear-gradient(135deg, #2e1065 0%, #3b0764 100%);
+  border-color: #facc15;
+}
+
+.diet-chip.secret-dhaba-chip.active {
+  background: linear-gradient(135deg, #4c1d95 0%, #6b21a8 100%);
+  color: #ffffff;
+  border-color: #facc15;
+  box-shadow: 0 0 18px rgba(250, 204, 21, 0.45);
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(168, 85, 247, 0.25); }
+  50% { box-shadow: 0 0 18px rgba(168, 85, 247, 0.6); }
+}
+
 .sorting-control {
   display: flex;
   align-items: center;

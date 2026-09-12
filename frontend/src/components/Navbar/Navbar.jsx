@@ -20,7 +20,9 @@ const Navbar = ({ setShowLogin }) => {
         setNotificationModalOpen,
         setProfileModalOpen,
         setHelpModalOpen,
-        setLegalModalOpen
+        setLegalModalOpen,
+        naanCoins,
+        streakDays
     } = useContext(StoreContext);
     const navigate = useNavigate();
     const location = useLocation();
@@ -82,6 +84,19 @@ const Navbar = ({ setShowLogin }) => {
                 </nav>
 
                 <div className="navbar-right">
+                    {/* NaanCoins Loyalty Pill */}
+                    <button
+                        type="button"
+                        onClick={() => setProfileModalOpen(true)}
+                        className="nav-coins-pill"
+                        title={`${naanCoins} NaanCoins • ${streakDays}-Day Dawat Streak! Tap to view`}
+                        id="nav-naancoins-pill"
+                    >
+                        <span className="coin-emoji">🪙</span>
+                        <span className="coin-count">{naanCoins}</span>
+                        <span className="coin-streak-tag">🔥 {streakDays}d</span>
+                    </button>
+
                     {/* Pure Veg Switch */}
                     <button
                         type="button"

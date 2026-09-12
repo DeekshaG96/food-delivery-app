@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { defaultFoods } from "../assets/defaultFoods";
 import { triggerHaptic } from "../utils/haptics";
+import { playAddCartPop, playCoinChime, playSecretUnlock } from "../utils/soundEffects";
 
 export const StoreContext = createContext(null);
 
@@ -63,6 +64,43 @@ const StoreContextProvider = (props) => {
     const [spinModalOpen, setSpinModalOpen] = useState(false);
     const [appliedCoupon, setAppliedCoupon] = useState(null);
     const [riderTip, setRiderTip] = useState(1.00);
+
+    // NaanCoins & Viral Gamification states
+    const [naanCoins, setNaanCoins] = useState(() => {
+        try {
+            const saved = localStorage.getItem("naanstop_coins");
+            return saved ? Number(saved) : 250;
+        } catch {
+            return 250;
+        }
+    });
+
+    const [streakDays, setStreakDays] = useState(() => {
+        try {
+            const saved = localStorage.getItem("naanstop_streak");
+            return saved ? Number(saved) : 3;
+        } catch {
+            return 3;
+        }
+    });
+
+    const [redeemCoinsActive, setRedeemCoinsActive] = useState(false);
+
+    const [secretMenuUnlocked, setSecretMenuUnlocked] = useState(() => {
+        try {
+            return localStorage.getItem("naanstop_secret_unlocked") === "true";
+        } catch {
+            return false;
+        }
+    });
+
+    const [soundEnabled, setSoundEnabled] = useState(() => {
+        try {
+            return localStorage.getItem("naanstop_sound_enabled") !== "false";
+        } catch {
+            return true;
+        }
+    });
 
     // Mobile specific & Google Play compliance states
     const [favorites, setFavorites] = useState(() => {
@@ -133,7 +171,41 @@ const StoreContextProvider = (props) => {
 
     const closeToast = () => setToast(null);
 
+    const addNaanCoins = (amount, reason = "") => {
+        setNaanCoins(prev => {
+            const next = prev + amount;
+            localStorage.setItem("naanstop_coins", String(next));
+            if (soundEnabled) playCoinChime();
+            triggerHaptic('success');
+            showToast(`+${amount} NaanCoins earned! 🪙 ${reason ? `(${reason})` : ''}`, 'success');
+            return next;
+        });
+    };
+
+    const toggleRedeemCoins = () => {
+        if (naanCoins < 100) {
+            showToast("You need at least 100 NaanCoins to redeem $3.00 off!", "info");
+            return;
+        }
+        triggerHaptic('selection');
+        if (soundEnabled) playCoinChime();
+        setRedeemCoinsActive(prev => !prev);
+    };
+
+    const unlockSecretMenu = () => {
+        setSecretMenuUnlocked(true);
+        localStorage.setItem("naanstop_secret_unlocked", "true");
+        if (soundEnabled) playSecretUnlock();
+        triggerHaptic('success');
+        showToast("🌙 Secret Late-Night Dhaba Menu Unlocked!", "success", 4000);
+    };
+
     const addToCart = async (itemId, quantity = 1, silent = false, customization = null) => {
+        if (soundEnabled) {
+            playAddCartPop();
+        }
+        triggerHaptic('light');
+
         if (customization) {
             setCartCustomizations((prev) => ({
                 ...prev,
@@ -355,6 +427,22 @@ const StoreContextProvider = (props) => {
     // Local Orders for Instant / Guest Checkout
     const addLocalOrder = (order) => {
         triggerHaptic('success');
+        
+        // Award NaanCoins: 10 coins per $1 spent!
+        const earnedCoins = Math.max(10, Math.floor((Number(order.amount) || 15) * 10));
+        let remainingCoins = naanCoins + earnedCoins;
+
+        if (redeemCoinsActive && naanCoins >= 100) {
+            remainingCoins -= 100;
+            setRedeemCoinsActive(false);
+            showToast(`Redeemed 100 NaanCoins ($3.00 off)! Plus earned +${earnedCoins} new coins 🪙`, 'success', 4000);
+        } else {
+            showToast(`Earned +${earnedCoins} NaanCoins on this order! 🪙`, 'success');
+        }
+
+        setNaanCoins(remainingCoins);
+        localStorage.setItem("naanstop_coins", String(remainingCoins));
+
         setLocalOrders((prev) => {
             const updated = [order, ...prev];
             localStorage.setItem("naanstop_local_orders", JSON.stringify(updated));
@@ -387,13 +475,16 @@ const StoreContextProvider = (props) => {
         setSavedAddresses(DEFAULT_ADDRESSES);
         setNotifications([]);
         setLocalOrders([]);
+        setNaanCoins(250);
+        setStreakDays(1);
+        setSecretMenuUnlocked(false);
         setUserProfile({
             name: "Guest User",
             phone: "",
             email: "",
             isVeg: false
         });
-        showToast("All personal data and saved orders cleared.", "info");
+        showToast("All personal data, coins, and saved orders cleared.", "info");
     };
 
     const contextValue = {
@@ -447,7 +538,17 @@ const StoreContextProvider = (props) => {
         helpModalOpen,
         setHelpModalOpen,
         legalModalOpen,
-        setLegalModalOpen
+        setLegalModalOpen,
+        // Viral Loyalty & Audio Additions
+        naanCoins,
+        streakDays,
+        redeemCoinsActive,
+        toggleRedeemCoins,
+        addNaanCoins,
+        secretMenuUnlocked,
+        unlockSecretMenu,
+        soundEnabled,
+        setSoundEnabled
     };
 
     return (

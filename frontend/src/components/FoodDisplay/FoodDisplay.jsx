@@ -9,12 +9,13 @@ const DIET_FILTERS = [
     { id: 'all', label: 'All Dishes' },
     { id: 'veg', label: '🌿 Vegetarian', icon: Leaf },
     { id: 'favorites', label: '❤️ Favorites', icon: Heart },
+    { id: 'secret', label: '🌙 Secret Dhaba', icon: Sparkles },
     { id: 'under15', label: '🏷️ Under $15', icon: DollarSign },
     { id: 'popular', label: '⭐ Top Rated', icon: Sparkles }
 ];
 
 const FoodDisplay = ({ category }) => {
-    const { food_list, loadingFoods, pureVegOnly, setPureVegOnly, favorites } = useContext(StoreContext);
+    const { food_list, loadingFoods, pureVegOnly, setPureVegOnly, favorites, secretMenuUnlocked, unlockSecretMenu } = useContext(StoreContext);
     const [searchQuery, setSearchQuery] = useState("");
     const [sortBy, setSortBy] = useState("featured");
     const [dietFilter, setDietFilter] = useState("all");
@@ -33,6 +34,8 @@ const FoodDisplay = ({ category }) => {
                 matchesDiet = item.isVeg === true;
             } else if (dietFilter === 'favorites') {
                 matchesDiet = favorites?.includes(item._id);
+            } else if (dietFilter === 'secret') {
+                matchesDiet = item.isSecret === true || item.category === 'Secret Dhaba 🌙';
             } else if (dietFilter === 'under15') {
                 matchesDiet = item.price < 15;
             } else if (dietFilter === 'popular') {
@@ -52,7 +55,7 @@ const FoodDisplay = ({ category }) => {
         }
 
         return items;
-    }, [food_list, category, searchQuery, dietFilter, sortBy]);
+    }, [food_list, category, searchQuery, dietFilter, sortBy, favorites, pureVegOnly]);
 
     return (
         <section className="food-display-section" id="food-display">
@@ -117,8 +120,13 @@ const FoodDisplay = ({ category }) => {
                     {DIET_FILTERS.map(f => (
                         <button
                             key={f.id}
-                            className={`diet-chip ${dietFilter === f.id ? 'active' : ''}`}
-                            onClick={() => setDietFilter(f.id)}
+                            className={`diet-chip ${f.id === 'secret' ? 'secret-dhaba-chip' : ''} ${dietFilter === f.id ? 'active' : ''}`}
+                            onClick={() => {
+                                if (f.id === 'secret' && !secretMenuUnlocked) {
+                                    unlockSecretMenu();
+                                }
+                                setDietFilter(f.id);
+                            }}
                         >
                             {f.label}
                         </button>
