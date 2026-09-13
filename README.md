@@ -38,6 +38,18 @@ Synthesizing proven architectural patterns from:
 - **[delivery_app](https://github.com/CaioQuirinoMedeiros/delivery_app)**: Portion sizing (`Single Plate / Handi`, `Dhaba Sharing`, `Royal Dawat`), spice customizations, add-ons, and itemized receipts.
 - **NaanStop Royal Innovations**: Gamified **Chakkar of Luck 🎡**, **Raju Bhaiya 🛵** live tracker with chai tipping, 1-click **🟢 Pure Veg Mode**, and offline **Web Audio Desi Diner Radio**.
 
+## 🚀 Live Demo
+
+The deployed demo is split into three services:
+
+| Surface | Link |
+| :--- | :--- |
+| Customer Store | [naanstop-customer.vercel.app](https://naanstop-customer.vercel.app) |
+| Kitchen OS Admin | [naanstop-admin-khaki.vercel.app](https://naanstop-admin-khaki.vercel.app) |
+| Backend API | [naanstop-backend-weoh.onrender.com](https://naanstop-backend-weoh.onrender.com) |
+
+The backend uses MongoDB Atlas in deployment and falls back to local JSON storage for zero-configuration development. The free Render instance may take a few seconds to wake after inactivity.
+
 ---
 
 ## 🌟 Key Features
@@ -231,7 +243,7 @@ cp backend/.env.example backend/.env
 
 ```env
 PORT=4000
-JWT_SECRET="naanstop_super_secret_jwt_key_2026"
+JWT_SECRET="replace_with_a_long_random_secret"
 MONGO_URI=""           # Optional: MongoDB Atlas URI (leave blank for local store)
 STRIPE_SECRET_KEY=""   # Optional: Stripe Secret Key (leave blank for simulated checkout)
 FRONTEND_URL="http://localhost:5173"
@@ -326,6 +338,23 @@ npm --prefix frontend run build
 # Kitchen OS Admin Build
 npm --prefix admin run build
 ```
+
+### Android Demo Build
+
+The customer app includes a Capacitor Android project under `frontend/android`. Build the web bundle, sync it into Android, and open the project in Android Studio:
+
+```bash
+cd frontend
+npm run build
+npx cap sync android
+npx cap open android
+```
+
+In Android Studio, use **Build → Generate Signed Bundle / APK** and select **Android App Bundle** for a private Play Console or hackathon test release. Keep the signing keystore and passwords outside the repository. The Android production API is configured through `frontend/.env.production`.
+
+### Demo Scope
+
+This repository is configured for hackathons, portfolio demos, and hobby projects. Checkout uses simulated payment when `STRIPE_SECRET_KEY` is empty, and the free backend plan can have cold-start delays. Configure Stripe and a paid backend plan only when real customer traffic is required.
 
 ---
 
