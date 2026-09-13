@@ -456,6 +456,76 @@
 }
 
 @media (max-width: 850px) {
+  .navbar {
+    width: calc(100% - 24px);
+    padding: 12px 0;
+    gap: 10px;
+  }
+
+  .navbar-brand-group {
+    min-width: 0;
+    gap: 8px;
+  }
+
+  .logo-naan,
+  .logo-stop {
+    font-size: 22px;
+    letter-spacing: 0;
+  }
+
+  .logo-chilli {
+    font-size: 18px;
+  }
+
+  .nav-outlet-pill {
+    max-width: 110px;
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+
+  .nav-outlet-time {
+    display: none;
+  }
+
+  .navbar-right {
+    min-width: 0;
+    margin-left: auto;
+    gap: 8px;
+  }
+
+  .nav-coins-pill,
+  .nav-veg-toggle,
+  .nav-spin-btn,
+  .nav-radio-btn,
+  .rider-nav-badge-btn,
+  .admin-badge-btn,
+  .navbar-guest-actions,
+  .navbar-menu {
+    display: none;
+  }
+
+  .navbar-cart-icon {
+    flex: 0 0 auto;
+  }
+
+  .navbar-menu {
+    display: none;
+  }
+}
+
+@media (max-width: 1600px) {
+  .navbar-menu {
+    gap: 18px;
+  }
+
+  .nav-radio-btn,
+  .rider-nav-badge-btn,
+  .admin-badge-btn {
+    display: none;
+  }
+}
+
+@media (max-width: 1150px) {
   .navbar-menu {
     display: none;
   }
