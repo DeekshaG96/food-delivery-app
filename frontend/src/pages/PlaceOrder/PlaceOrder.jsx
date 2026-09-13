@@ -30,7 +30,12 @@ const PlaceOrder = ({ setShowLogin }) => {
         addLocalOrder,
         userProfile,
         setCartItems,
-        showToast
+        showToast,
+        selectedOutlet,
+        calculateCommercialBill,
+        appliedCoupon,
+        redeemCoinsActive,
+        generateDeliveryPin
     } = useContext(StoreContext);
     const navigate = useNavigate();
 
@@ -77,9 +82,14 @@ const PlaceOrder = ({ setShowLogin }) => {
     };
 
     const subtotal = getTotalCartAmount();
-    const deliveryFee = orderType === 'delivery' ? (subtotal === 0 ? 0 : 2) : 0;
-    const appliedTip = orderType === 'delivery' ? (riderTip || 0) : 0;
-    const finalTotal = subtotal + deliveryFee + appliedTip;
+    const bill = calculateCommercialBill({
+        subtotal,
+        orderType,
+        riderTip,
+        couponDiscount: appliedCoupon?.discount || 0,
+        redeemCoinsActive
+    });
+    const finalTotal = bill.finalTotal;
 
     const onPlaceOrder = async (event) => {
         event.preventDefault();
@@ -121,16 +131,19 @@ const PlaceOrder = ({ setShowLogin }) => {
             scheduledFor: scheduleType === 'asap' ? 'ASAP (25-35 mins)' : `Scheduled for ${scheduledTime}`,
             tableNumber: orderType === 'dine-in' ? tableNumber : null,
             pickupTime: orderType === 'pickup' ? (scheduleType === 'asap' ? 'Ready in 15-20 mins' : scheduledTime) : null,
-            riderTip: appliedTip,
-            etaMins: 22,
+            riderTip: bill.appliedTip,
+            etaMins: selectedOutlet?.etaMins || 25,
+            outlet: selectedOutlet,
+            deliveryPin: generateDeliveryPin(),
+            billDetails: bill,
             rider: {
                 name: "Raju Bhaiya",
                 vehicle: "Hero Splendor • KA-01-EA-2026",
                 rating: 4.9,
-                deliveries: 1420,
+                deliveries: 1428,
                 phone: "+91 98765 43210",
                 vaccinated: true,
-                status: "Preparing hot fresh pack at NaanStop Kitchen"
+                status: `Picking up at ${selectedOutlet?.name || "NaanStop Kitchen"}`
             },
             userId: token ? (userProfile?.email || "user_registered") : "guest_user",
             items: orderItems,
@@ -600,27 +613,51 @@ const PlaceOrder = ({ setShowLogin }) => {
 
                         <div className="cart-total-details">
                             <div className="cart-line-item">
-                                <span>Subtotal</span>
-                                <span>${subtotal.toFixed(2)}</span>
+                                <span>Item Total</span>
+                                <span>${bill.subtotal.toFixed(2)}</span>
                             </div>
-                            <hr />
+                            {bill.packagingFee > 0 && (
+                                <div className="cart-line-item">
+                                    <span>Eco Packaging Fee 🥡</span>
+                                    <span>${bill.packagingFee.toFixed(2)}</span>
+                                </div>
+                            )}
+                            {bill.platformFee > 0 && (
+                                <div className="cart-line-item">
+                                    <span>Platform Fee ⚡</span>
+                                    <span>${bill.platformFee.toFixed(2)}</span>
+                                </div>
+                            )}
                             <div className="cart-line-item">
-                                <span>Delivery Fee</span>
-                                <span>{deliveryFee === 0 ? <strong style={{ color: '#059669' }}>FREE</strong> : `$${deliveryFee.toFixed(2)}`}</span>
+                                <span>Delivery Partner Fee 🛵</span>
+                                <span>{bill.deliveryFee === 0 ? <strong style={{ color: '#059669' }}>FREE</strong> : `$${bill.deliveryFee.toFixed(2)}`}</span>
                             </div>
-                            {appliedTip > 0 && (
-                                <>
-                                    <hr />
-                                    <div className="cart-line-item" style={{ color: '#d97706', fontWeight: 600 }}>
-                                        <span>Rider Chai Tip ☕</span>
-                                        <span>+${appliedTip.toFixed(2)}</span>
-                                    </div>
-                                </>
+                            {bill.discount > 0 && (
+                                <div className="cart-line-item" style={{ color: '#059669' }}>
+                                    <span>Promo Code Discount 🎟️</span>
+                                    <span>-${bill.discount.toFixed(2)}</span>
+                                </div>
+                            )}
+                            {bill.coinsDeduction > 0 && (
+                                <div className="cart-line-item" style={{ color: '#059669' }}>
+                                    <span>NaanCoins Redeemed 🪙</span>
+                                    <span>-${bill.coinsDeduction.toFixed(2)}</span>
+                                </div>
+                            )}
+                            {bill.appliedTip > 0 && (
+                                <div className="cart-line-item" style={{ color: '#d97706', fontWeight: 600 }}>
+                                    <span>Rider Chai Tip ☕</span>
+                                    <span>+${bill.appliedTip.toFixed(2)}</span>
+                                </div>
                             )}
                             <hr />
                             <div className="cart-line-item grand-total">
-                                <strong>Total</strong>
-                                <strong>${finalTotal.toFixed(2)}</strong>
+                                <strong>To Pay</strong>
+                                <strong>${bill.finalTotal.toFixed(2)}</strong>
+                            </div>
+                            <div style={{ marginTop: '8px', fontSize: '0.78rem', color: '#64748b', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <span>📍 Dispatched from:</span>
+                                <strong style={{ color: '#0f172a' }}>{selectedOutlet?.name || 'Indiranagar Flagship Kitchen'}</strong>
                             </div>
                         </div>
 

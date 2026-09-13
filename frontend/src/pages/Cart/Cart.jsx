@@ -58,7 +58,12 @@ const Cart = () => {
         naanCoins,
         streakDays,
         redeemCoinsActive,
-        toggleRedeemCoins
+        toggleRedeemCoins,
+        riderTip,
+        setRiderTip,
+        selectedOutlet,
+        setOutletModalOpen,
+        calculateCommercialBill
     } = useContext(StoreContext);
 
     const navigate = useNavigate();
@@ -69,10 +74,19 @@ const Cart = () => {
     );
 
     const subtotal = getTotalCartAmount();
-    const deliveryFee = subtotal === 0 ? 0 : (appliedDiscount === -1 ? 0 : 2); // -1 = free shipping
     const discountAmount = appliedDiscount > 0 ? Math.min(appliedDiscount, subtotal) : 0;
-    const coinsDiscount = (redeemCoinsActive && naanCoins >= 100) ? 3.00 : 0;
-    const finalTotal = Math.max(0, subtotal + deliveryFee - discountAmount - coinsDiscount);
+    
+    const bill = calculateCommercialBill({
+        subtotal,
+        orderType: 'delivery',
+        riderTip,
+        couponDiscount: appliedDiscount === -1 ? 2.00 : discountAmount,
+        redeemCoinsActive
+    });
+
+    const freeDeliveryThreshold = 30.00;
+    const freeDeliveryDiff = Math.max(0, freeDeliveryThreshold - subtotal);
+    const freeDeliveryProgress = Math.min(100, Math.round((subtotal / freeDeliveryThreshold) * 100));
 
     const handleApplyPromo = (codeToApply) => {
         const code = (codeToApply || promoCode).trim().toUpperCase();
@@ -365,47 +379,127 @@ const Cart = () => {
                             </div>
                         </div>
 
-                        {/* Cart Totals Card */}
+                        {/* Swiggy/Zomato Commercial Bill Details Card */}
                         <div className="cart-total-card">
-                            <h2>Cart Totals</h2>
+                            <div className="cart-bill-header">
+                                <h2>Bill Details</h2>
+                                <button 
+                                    type="button" 
+                                    className="cart-outlet-switch-btn"
+                                    onClick={() => setOutletModalOpen(true)}
+                                    title="Change Cloud Kitchen Outlet"
+                                >
+                                    <span>📍 {selectedOutlet?.name?.replace("NaanStop ", "") || "Indiranagar"}</span>
+                                    <span className="cart-switch-link">Change</span>
+                                </button>
+                            </div>
+
+                            {/* Free Delivery Gamified Meter */}
+                            <div className="free-delivery-meter-box">
+                                <div className="meter-top-label">
+                                    {bill.isFreeDelivery ? (
+                                        <span className="meter-success">🎉 Yay! You unlocked <strong>FREE Delivery</strong></span>
+                                    ) : (
+                                        <span>Add <strong>${freeDeliveryDiff.toFixed(2)}</strong> more for <strong>FREE Delivery</strong></span>
+                                    )}
+                                    <span className="meter-percent">{freeDeliveryProgress}%</span>
+                                </div>
+                                <div className="meter-track">
+                                    <div className="meter-bar" style={{ width: `${freeDeliveryProgress}%` }}></div>
+                                </div>
+                            </div>
+
+                            {/* 1-Tap Rider Chai Tip Selector */}
+                            <div className="cart-rider-tip-card">
+                                <div className="tip-header">
+                                    <div>
+                                        <strong>Say Thanks with a Tip 🛵</strong>
+                                        <p>100% of tips go directly to Raju Bhaiya & fleet</p>
+                                    </div>
+                                </div>
+                                <div className="tip-chips-row">
+                                    {[
+                                        { val: 0, label: 'No Tip' },
+                                        { val: 1.00, label: '$1.00 ☕' },
+                                        { val: 2.00, label: '$2.00 🫓' },
+                                        { val: 3.00, label: '$3.00 🏍️' },
+                                        { val: 5.00, label: '$5.00 ⭐' }
+                                    ].map(t => (
+                                        <button
+                                            key={t.val}
+                                            type="button"
+                                            className={`tip-chip-pill ${riderTip === t.val ? 'active' : ''}`}
+                                            onClick={() => {
+                                                triggerHaptic('light');
+                                                setRiderTip(t.val);
+                                            }}
+                                        >
+                                            {t.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
                             <div className="cart-total-details">
                                 <div className="cart-line-item">
-                                    <span>Subtotal</span>
-                                    <span>${subtotal.toFixed(2)}</span>
+                                    <span>Item Total</span>
+                                    <span>${bill.subtotal.toFixed(2)}</span>
                                 </div>
                                 <hr />
                                 <div className="cart-line-item">
-                                    <span>Delivery Fee</span>
+                                    <span>Restaurant Packaging & Hygiene</span>
+                                    <span>${bill.packagingFee.toFixed(2)}</span>
+                                </div>
+                                <hr />
+                                <div className="cart-line-item">
+                                    <span>Platform Fee</span>
+                                    <span>${bill.platformFee.toFixed(2)}</span>
+                                </div>
+                                <hr />
+                                <div className="cart-line-item">
+                                    <span>Delivery Partner Fee</span>
                                     <span>
-                                        {deliveryFee === 0 ? (
+                                        {bill.isFreeDelivery ? (
                                             <span className="free-text">FREE</span>
                                         ) : (
-                                            `$${deliveryFee.toFixed(2)}`
+                                            `$${bill.deliveryFee.toFixed(2)}`
                                         )}
                                     </span>
                                 </div>
-                                {discountAmount > 0 && (
+                                {bill.appliedTip > 0 && (
                                     <>
                                         <hr />
-                                        <div className="cart-line-item discount">
-                                            <span>Promo Discount</span>
-                                            <span>-${discountAmount.toFixed(2)}</span>
+                                        <div className="cart-line-item tip-line">
+                                            <span>Rider Tip (Raju Bhaiya) ❤️</span>
+                                            <span>+${bill.appliedTip.toFixed(2)}</span>
                                         </div>
                                     </>
                                 )}
-                                {coinsDiscount > 0 && (
+                                {bill.coinDiscountAmount > 0 && (
                                     <>
                                         <hr />
                                         <div className="cart-line-item coins-discount">
                                             <span>🪙 NaanCoins (100 coins)</span>
-                                            <span>-$3.00</span>
+                                            <span>-${bill.coinDiscountAmount.toFixed(2)}</span>
+                                        </div>
+                                    </>
+                                )}
+                                {discountAmount > 0 && (
+                                    <>
+                                        <hr />
+                                        <div className="cart-line-item discount">
+                                            <span>Promo Discount ({appliedCoupon?.code || "Voucher"})</span>
+                                            <span>-${discountAmount.toFixed(2)}</span>
                                         </div>
                                     </>
                                 )}
                                 <hr />
                                 <div className="cart-line-item grand-total">
-                                    <strong>Total Amount</strong>
-                                    <strong>${finalTotal.toFixed(2)}</strong>
+                                    <div>
+                                        <strong>To Pay</strong>
+                                        <span className="gst-inclusive-sub">Incl. all taxes & charges</span>
+                                    </div>
+                                    <strong>${bill.finalTotal.toFixed(2)}</strong>
                                 </div>
                             </div>
                             <button
@@ -413,7 +507,7 @@ const Cart = () => {
                                 className="checkout-cta-btn"
                                 id="cart-proceed-checkout-btn"
                             >
-                                <span>PROCEED TO CHECKOUT</span>
+                                <span>PROCEED TO CHECKOUT • ${bill.finalTotal.toFixed(2)}</span>
                                 <ArrowRight size={18} />
                             </button>
                         </div>

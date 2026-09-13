@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingBag, Search, User, LogOut, Package, ExternalLink, Bell, Shield, HelpCircle } from 'lucide-react';
+import { ShoppingBag, Search, User, LogOut, Package, ExternalLink, Bell, Shield, HelpCircle, MapPin, Bike } from 'lucide-react';
 import { StoreContext } from '../../context/StoreContext';
 import './Navbar.css';
 
@@ -22,7 +22,9 @@ const Navbar = ({ setShowLogin }) => {
         setHelpModalOpen,
         setLegalModalOpen,
         naanCoins,
-        streakDays
+        streakDays,
+        selectedOutlet,
+        setOutletModalOpen
     } = useContext(StoreContext);
     const navigate = useNavigate();
     const location = useLocation();
@@ -38,11 +40,26 @@ const Navbar = ({ setShowLogin }) => {
     return (
         <header className="navbar-container">
             <div className="navbar">
-                <Link to="/" className="navbar-logo">
-                    <span className="logo-naan">Naan</span>
-                    <span className="logo-stop">Stop</span>
-                    <span className="logo-chilli">🌶️</span>
-                </Link>
+                <div className="navbar-brand-group">
+                    <Link to="/" className="navbar-logo">
+                        <span className="logo-naan">Naan</span>
+                        <span className="logo-stop">Stop</span>
+                        <span className="logo-chilli">🌶️</span>
+                    </Link>
+
+                    {/* Multi-Outlet Selector Pill */}
+                    <button
+                        type="button"
+                        onClick={() => setOutletModalOpen(true)}
+                        className="nav-outlet-pill"
+                        title={`Current Cloud Kitchen: ${selectedOutlet?.name || "NaanStop Indiranagar"} • Click to switch`}
+                        id="nav-outlet-selector-btn"
+                    >
+                        <MapPin size={13} className="nav-pin-icon" />
+                        <span className="nav-outlet-name">{selectedOutlet?.name?.replace("NaanStop ", "") || "Indiranagar"}</span>
+                        <span className="nav-outlet-time">{selectedOutlet?.etaMins || 25}m ▾</span>
+                    </button>
+                </div>
 
                 <nav className="navbar-menu">
                     <Link
@@ -148,6 +165,17 @@ const Navbar = ({ setShowLogin }) => {
                         <span>Kitchen OS</span>
                         <ExternalLink size={13} />
                     </a>
+
+                    {/* Switch to Rider Fleet Portal */}
+                    <Link
+                        to="/rider"
+                        className="rider-nav-badge-btn"
+                        title="Open Delivery Partner / Rider Mode"
+                        id="nav-rider-portal-btn"
+                    >
+                        <Bike size={14} />
+                        <span>Rider Mode</span>
+                    </Link>
 
                     {/* In-App Notification Bell */}
                     <button

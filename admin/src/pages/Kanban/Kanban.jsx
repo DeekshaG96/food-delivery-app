@@ -69,10 +69,49 @@ const Kanban = ({ url }) => {
     const fetchOrders = async (silent = false) => {
         try {
             if (!silent) setIsRefreshing(true);
-            const response = await axios.get(`${url}/api/order/list`, { timeout: 3000 });
-            if (response.data?.success && Array.isArray(response.data.data)) {
-                setOrders(response.data.data);
+            let combined = [];
+
+            // 1. Read persistent local orders placed by customers / updated by riders
+            try {
+                const storedLocal = localStorage.getItem('naanstop_local_orders');
+                if (storedLocal) {
+                    const parsed = JSON.parse(storedLocal);
+                    if (Array.isArray(parsed)) {
+                        combined = parsed;
+                    }
+                }
+            } catch (err) {
+                console.warn('Error reading local orders in Kitchen Kanban:', err);
             }
+
+            // 2. Fetch server orders if backend is active
+            try {
+                const response = await axios.get(`${url}/api/order/list`, { timeout: 3000 });
+                if (response.data?.success && Array.isArray(response.data.data)) {
+                    response.data.data.forEach((srv) => {
+                        if (!combined.some(o => o._id === srv._id)) {
+                            combined.push(srv);
+                        }
+                    });
+                }
+            } catch (error) {
+                // Backend offline is expected on static deployment
+            }
+
+            // 3. Fallback or merge demo orders if list is empty
+            if (combined.length === 0) {
+                combined = [...defaultOrders];
+            } else {
+                defaultOrders.forEach((def) => {
+                    if (!combined.some(o => o._id === def._id)) {
+                        combined.push(def);
+                    }
+                });
+            }
+
+            // Sort newest first
+            combined.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+            setOrders(combined);
         } catch (error) {
             console.warn('Live API unavailable for Kanban, using offline data:', error.message);
         } finally {
@@ -83,11 +122,22 @@ const Kanban = ({ url }) => {
 
     useEffect(() => {
         fetchOrders();
-        // Auto refresh every 15 seconds for live kitchen display
+        // Auto refresh every 10 seconds for live kitchen display
         const interval = setInterval(() => {
             fetchOrders(true);
-        }, 15000);
-        return () => clearInterval(interval);
+        }, 10000);
+
+        const handleStorageSync = () => {
+            fetchOrders(true);
+        };
+        window.addEventListener('storage', handleStorageSync);
+        window.addEventListener('naanstop_order_updated', handleStorageSync);
+
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener('storage', handleStorageSync);
+            window.removeEventListener('naanstop_order_updated', handleStorageSync);
+        };
     }, [url]);
 
     const handleUpdateStatus = async (orderId, newStatus) => {
@@ -97,6 +147,22 @@ const Kanban = ({ url }) => {
             setOrders((prev) =>
                 prev.map((o) => (o._id === orderId ? { ...o, status: newStatus } : o))
             );
+
+            // Synchronize with persistent local storage so Customer App & Rider View update reactively!
+            try {
+                const storedLocal = localStorage.getItem('naanstop_local_orders');
+                if (storedLocal) {
+                    const parsed = JSON.parse(storedLocal);
+                    const updated = parsed.map((o) =>
+                        o._id === orderId ? { ...o, status: newStatus } : o
+                    );
+                    localStorage.setItem('naanstop_local_orders', JSON.stringify(updated));
+                    window.dispatchEvent(new Event('storage'));
+                }
+            } catch (err) {
+                console.warn('Failed to sync Kanban order status to localStorage:', err);
+            }
+
             await axios.post(`${url}/api/order/status`, {
                 orderId,
                 status: newStatus
@@ -268,6 +334,27 @@ const Kanban = ({ url }) => {
                                                             <span>{elapsed}</span>
                                                         </div>
                                                     </div>
+
+                                                    {/* Outlet and Security PIN Badges */}
+                                                    {(order.outlet || order.deliveryPin || order.rider) && (
+                                                        <div className="ticket-meta-badges">
+                                                            {order.outlet && (
+                                                                <span className="t-outlet-badge" title="Fulfilling Cloud Kitchen Outlet">
+                                                                    📍 {order.outlet.name}
+                                                                </span>
+                                                            )}
+                                                            {order.deliveryPin && (
+                                                                <span className="t-pin-badge" title="4-Digit Secure Handover Code">
+                                                                    PIN: <strong>{order.deliveryPin}</strong>
+                                                                </span>
+                                                            )}
+                                                            {order.rider && (
+                                                                <span className="t-rider-badge" title="Assigned Delivery Rider">
+                                                                    🛵 {order.rider.name}
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    )}
 
                                                     {/* Scheduled Time if applicable */}
                                                     {order.scheduledFor && order.scheduledFor !== 'ASAP (25-35 mins)' && (

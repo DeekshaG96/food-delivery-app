@@ -11,6 +11,7 @@ import PlaceOrder from './pages/PlaceOrder/PlaceOrder';
 import Verify from './pages/Verify/Verify';
 import MyOrders from './pages/MyOrders/MyOrders';
 import Reservations from './pages/Reservations/Reservations';
+import RiderPortal from './pages/Rider/RiderPortal';
 import { StoreContext } from './context/StoreContext';
 
 import MusicPlayer from './components/MusicPlayer/MusicPlayer';
@@ -19,6 +20,7 @@ import NotificationCenter from './components/NotificationCenter/NotificationCent
 import ProfileModal from './components/ProfileModal/ProfileModal';
 import HelpSupportModal from './components/HelpSupport/HelpSupportModal';
 import LegalModal from './components/Legal/LegalModal';
+import OutletSelectorModal from './components/OutletSelector/OutletSelectorModal';
 
 const App = () => {
     const [showLogin, setShowLogin] = useState(false);
@@ -36,6 +38,7 @@ const App = () => {
                     <Route path="/verify" element={<Verify />} />
                     <Route path="/myorders" element={<MyOrders />} />
                     <Route path="/reservations" element={<Reservations />} />
+                    <Route path="/rider" element={<RiderPortal />} />
                 </Routes>
                 <Footer />
             </div>
@@ -53,6 +56,7 @@ const App = () => {
             <ProfileModal />
             <HelpSupportModal />
             <LegalModal />
+            <OutletSelectorModal />
             {toast && <Toast message={toast.message} type={toast.type} onClose={closeToast} />}
         </>
     );

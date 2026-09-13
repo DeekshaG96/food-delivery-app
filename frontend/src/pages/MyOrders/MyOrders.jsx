@@ -300,6 +300,11 @@ const MyOrders = () => {
                                                 <span className={`order-type-chip ${orderType}`}>
                                                     {orderType === 'delivery' ? '🛵 Express Delivery' : orderType === 'pickup' ? '🛍️ Store Pickup' : `🍽️ Dine-In (${order.tableNumber || 'Table'})`}
                                                 </span>
+                                                {order.outlet && (
+                                                    <span className="order-outlet-chip" title="Fulfilling Cloud Kitchen Hub">
+                                                        📍 {order.outlet.name}
+                                                    </span>
+                                                )}
                                                 {order.paymentMethod && (
                                                     <span className="order-paymethod-chip">
                                                         {order.paymentMethod === 'upi' ? '⚡ UPI / GPay' : order.paymentMethod === 'cod' ? '💵 COD' : '💳 Card'}
@@ -449,6 +454,42 @@ const MyOrders = () => {
                                     </div>
                                 )}
 
+                                {/* Doorstep Handover 4-Digit Security PIN (Swiggy / Zomato Handover OTP) */}
+                                {orderType === 'delivery' && (
+                                    <div className={`doorstep-pin-card ${isDelivered ? 'verified' : 'pending'}`}>
+                                        <div className="doorstep-pin-left">
+                                            <div className="doorstep-pin-shield">
+                                                <ShieldCheck size={22} />
+                                            </div>
+                                            <div className="doorstep-pin-info">
+                                                <div className="doorstep-pin-header">
+                                                    <span className="doorstep-pin-title">🔐 Doorstep Handover PIN</span>
+                                                    <span className={`doorstep-pin-badge ${isDelivered ? 'verified' : 'active'}`}>
+                                                        {isDelivered ? '✓ Handover Verified' : 'Share with Rider at Doorstep'}
+                                                    </span>
+                                                </div>
+                                                <p className="doorstep-pin-hint">
+                                                    {isDelivered
+                                                        ? 'Delivery successfully completed and verified via secure 4-digit handover code.'
+                                                        : 'Share this confidential 4-digit code with Raju Bhaiya when receiving your order to verify handover.'}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="doorstep-pin-right">
+                                            <div className="doorstep-pin-digits" title="4-Digit Secure Verification PIN">
+                                                {String(order.deliveryPin || '7310').split('').map((digit, dIdx) => (
+                                                    <span key={dIdx} className="pin-digit-box">{digit}</span>
+                                                ))}
+                                            </div>
+                                            {!isDelivered && (
+                                                <Link to="/rider" className="doorstep-rider-switch-link" title="Open Delivery Partner Console">
+                                                    <span>Open Rider Console 🛵</span>
+                                                </Link>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+
                                 {/* Order Card Footer */}
                                 <div className="order-card-footer">
                                     <div className="order-address-snippet">
@@ -586,18 +627,69 @@ const MyOrders = () => {
 
                         {/* Pricing Summary */}
                         <div className="receipt-pricing-summary">
-                            <div className="rps-row">
-                                <span>Subtotal</span>
-                                <span>${(Math.max(0, (receiptOrder.amount || 0) - (receiptOrder.orderType === 'delivery' ? 2 : 0))).toFixed(2)}</span>
-                            </div>
-                            <div className="rps-row">
-                                <span>Fulfillment Fee</span>
-                                <span>{receiptOrder.orderType === 'delivery' ? '$2.00' : 'FREE $0.00'}</span>
-                            </div>
+                            {receiptOrder.billDetails ? (
+                                <>
+                                    <div className="rps-row">
+                                        <span>Item Total</span>
+                                        <span>${Number(receiptOrder.billDetails.subtotal || 0).toFixed(2)}</span>
+                                    </div>
+                                    {receiptOrder.billDetails.packagingFee > 0 && (
+                                        <div className="rps-row">
+                                            <span>Packaging Fee 🥡</span>
+                                            <span>${Number(receiptOrder.billDetails.packagingFee).toFixed(2)}</span>
+                                        </div>
+                                    )}
+                                    {receiptOrder.billDetails.platformFee > 0 && (
+                                        <div className="rps-row">
+                                            <span>Platform Fee ⚡</span>
+                                            <span>${Number(receiptOrder.billDetails.platformFee).toFixed(2)}</span>
+                                        </div>
+                                    )}
+                                    <div className="rps-row">
+                                        <span>Delivery Partner Fee 🛵</span>
+                                        <span>{receiptOrder.billDetails.deliveryFee === 0 ? 'FREE' : `$${Number(receiptOrder.billDetails.deliveryFee).toFixed(2)}`}</span>
+                                    </div>
+                                    {receiptOrder.billDetails.discount > 0 && (
+                                        <div className="rps-row" style={{ color: '#059669' }}>
+                                            <span>Promo Discount 🎟️</span>
+                                            <span>-${Number(receiptOrder.billDetails.discount).toFixed(2)}</span>
+                                        </div>
+                                    )}
+                                    {receiptOrder.billDetails.coinsDeduction > 0 && (
+                                        <div className="rps-row" style={{ color: '#059669' }}>
+                                            <span>NaanCoins Redeemed 🪙</span>
+                                            <span>-${Number(receiptOrder.billDetails.coinsDeduction).toFixed(2)}</span>
+                                        </div>
+                                    )}
+                                    {receiptOrder.billDetails.appliedTip > 0 && (
+                                        <div className="rps-row" style={{ color: '#d97706', fontWeight: 600 }}>
+                                            <span>Rider Chai Tip ☕</span>
+                                            <span>+${Number(receiptOrder.billDetails.appliedTip).toFixed(2)}</span>
+                                        </div>
+                                    )}
+                                </>
+                            ) : (
+                                <>
+                                    <div className="rps-row">
+                                        <span>Subtotal</span>
+                                        <span>${(Math.max(0, (receiptOrder.amount || 0) - (receiptOrder.orderType === 'delivery' ? 2 : 0))).toFixed(2)}</span>
+                                    </div>
+                                    <div className="rps-row">
+                                        <span>Fulfillment Fee</span>
+                                        <span>{receiptOrder.orderType === 'delivery' ? '$2.00' : 'FREE $0.00'}</span>
+                                    </div>
+                                </>
+                            )}
                             <div className="rps-row total">
                                 <strong>Total Paid</strong>
                                 <strong>${Number(receiptOrder.amount || 0).toFixed(2)}</strong>
                             </div>
+                            {receiptOrder.outlet && (
+                                <div style={{ marginTop: '10px', fontSize: '0.78rem', color: '#64748b', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                    <span>📍 Fulfilling Hub:</span>
+                                    <strong style={{ color: '#0f172a' }}>{receiptOrder.outlet.name} ({receiptOrder.outlet.city})</strong>
+                                </div>
+                            )}
                         </div>
 
                         {/* Delivery or Pickup destination */}

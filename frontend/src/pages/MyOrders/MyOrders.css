@@ -1302,4 +1302,175 @@
   .route-road-track {
     height: 36px;
   }
+  .doorstep-pin-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .doorstep-pin-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* Outlet Chip in Order Header */
+.order-outlet-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 9999px;
+}
+
+/* Doorstep Handover PIN Card (Swiggy / Zomato Handover OTP) */
+.doorstep-pin-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+  border: 1.5px dashed #f97316;
+  border-radius: 16px;
+  padding: 16px 20px;
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.08);
+  transition: all 0.25s ease;
+  margin-top: 4px;
+}
+
+.doorstep-pin-card.verified {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border: 1.5px solid #10b981;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.08);
+}
+
+.doorstep-pin-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.doorstep-pin-shield {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #ff4c24;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(255, 76, 36, 0.3);
+}
+
+.doorstep-pin-card.verified .doorstep-pin-shield {
+  background: #10b981;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.doorstep-pin-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.doorstep-pin-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.doorstep-pin-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.doorstep-pin-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.doorstep-pin-badge.active {
+  background: #ea580c;
+  color: #ffffff;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.doorstep-pin-badge.verified {
+  background: #10b981;
+  color: #ffffff;
+}
+
+.doorstep-pin-hint {
+  font-size: 12.5px;
+  color: #475569;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.doorstep-pin-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.doorstep-pin-digits {
+  display: flex;
+  gap: 6px;
+}
+
+.pin-digit-box {
+  width: 36px;
+  height: 44px;
+  background: #0f172a;
+  color: #ffffff;
+  font-family: 'Space Grotesk', ui-monospace, SFMono-Regular, monospace;
+  font-size: 1.4rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.doorstep-pin-card.verified .pin-digit-box {
+  background: #065f46;
+  border-color: #34d399;
+}
+
+.doorstep-rider-switch-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  color: #ff4c24;
+  border: 1.5px solid #ff4c24;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.doorstep-rider-switch-link:hover {
+  background: #ff4c24;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(255, 76, 36, 0.25);
+  transform: translateY(-1px);
 }

@@ -72,6 +72,16 @@ const BottomNav = ({ setShowLogin }) => {
             </button>
 
             <button
+                className={`nav-tab-item ${location.pathname === '/rider' ? 'active' : ''}`}
+                onClick={() => navigate('/rider')}
+                id="bottom-nav-rider"
+                title="Delivery Partner Fleet Mode"
+            >
+                <span style={{ fontSize: '18px', lineHeight: 1 }}>🛵</span>
+                <span>Rider</span>
+            </button>
+
+            <button
                 className="nav-tab-item"
                 onClick={handleProfileClick}
                 id="bottom-nav-profile"

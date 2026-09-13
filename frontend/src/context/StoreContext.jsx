@@ -2,9 +2,94 @@ import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { defaultFoods } from "../assets/defaultFoods";
 import { triggerHaptic } from "../utils/haptics";
-import { playAddCartPop, playCoinChime, playSecretUnlock } from "../utils/soundEffects";
+import { playAddCartPop, playCoinChime, playSecretUnlock, playSuccessChime } from "../utils/soundEffects";
 
 export const StoreContext = createContext(null);
+
+export const OUTLETS = [
+    {
+        id: "outlet_indiranagar",
+        name: "NaanStop Indiranagar",
+        type: "Flagship Cloud Kitchen",
+        city: "Bengaluru",
+        address: "100 Feet Road, HAL 2nd Stage, Indiranagar",
+        distanceKm: 2.1,
+        etaMins: 25,
+        rating: 4.9,
+        reviews: "2.4k+",
+        status: "Open Now",
+        badge: "Popular 🔥"
+    },
+    {
+        id: "outlet_koramangala",
+        name: "NaanStop Koramangala",
+        type: "Highway Express Hub",
+        city: "Bengaluru",
+        address: "80 Feet Road, 4th Block, Koramangala",
+        distanceKm: 4.2,
+        etaMins: 32,
+        rating: 4.8,
+        reviews: "1.8k+",
+        status: "Open Now",
+        badge: "Express ⚡"
+    },
+    {
+        id: "outlet_cyberhub",
+        name: "NaanStop Cyber Hub",
+        type: "Downtown Canteen",
+        city: "Gurugram",
+        address: "DLF Cyber Hub, Phase 2, Sector 24",
+        distanceKm: 1.8,
+        etaMins: 20,
+        rating: 4.9,
+        reviews: "3.1k+",
+        status: "Open Now",
+        badge: "Fastest 🚀"
+    }
+];
+
+export const COMMERCIAL_FEES = {
+    PLATFORM_FEE: 0.25,
+    PACKAGING_FEE: 0.40,
+    BASE_DELIVERY_FEE: 2.00,
+    FREE_DELIVERY_THRESHOLD: 30.00
+};
+
+export const generateDeliveryPin = () => {
+    return String(Math.floor(1000 + Math.random() * 9000));
+};
+
+export const calculateCommercialBill = ({
+    subtotal = 0,
+    orderType = 'delivery',
+    riderTip = 0,
+    couponDiscount = 0,
+    redeemCoinsActive = false
+}) => {
+    const isDelivery = orderType === 'delivery';
+    const packagingFee = subtotal > 0 ? COMMERCIAL_FEES.PACKAGING_FEE : 0;
+    const platformFee = subtotal > 0 ? COMMERCIAL_FEES.PLATFORM_FEE : 0;
+    const isFreeDelivery = subtotal >= COMMERCIAL_FEES.FREE_DELIVERY_THRESHOLD;
+    const deliveryFee = (!isDelivery || subtotal === 0) ? 0 : (isFreeDelivery ? 0 : COMMERCIAL_FEES.BASE_DELIVERY_FEE);
+    const appliedTip = isDelivery ? (Number(riderTip) || 0) : 0;
+    const coinDiscountAmount = redeemCoinsActive ? 3.00 : 0;
+    const totalDiscount = (Number(couponDiscount) || 0) + coinDiscountAmount;
+    
+    const gross = subtotal + packagingFee + platformFee + deliveryFee + appliedTip;
+    const finalTotal = Math.max(0, gross - totalDiscount);
+
+    return {
+        subtotal: Number(subtotal.toFixed(2)),
+        packagingFee: Number(packagingFee.toFixed(2)),
+        platformFee: Number(platformFee.toFixed(2)),
+        deliveryFee: Number(deliveryFee.toFixed(2)),
+        isFreeDelivery,
+        appliedTip: Number(appliedTip.toFixed(2)),
+        coinDiscountAmount: Number(coinDiscountAmount.toFixed(2)),
+        totalDiscount: Number(totalDiscount.toFixed(2)),
+        finalTotal: Number(finalTotal.toFixed(2))
+    };
+};
 
 const DEFAULT_ADDRESSES = [
     {
@@ -152,6 +237,47 @@ const StoreContextProvider = (props) => {
                 phone: "+1-555-0199",
                 email: "rohan.desi@naanstop.com",
                 isVeg: false
+            };
+        }
+    });
+
+    // Multi-Outlet Cloud Kitchen State
+    const [selectedOutlet, setSelectedOutlet] = useState(() => {
+        try {
+            const savedId = localStorage.getItem("naanstop_outlet_id");
+            return OUTLETS.find(o => o.id === savedId) || OUTLETS[0];
+        } catch {
+            return OUTLETS[0];
+        }
+    });
+    const [outletModalOpen, setOutletModalOpen] = useState(false);
+
+    // Delivery Partner / Fleet State (Raju Bhaiya)
+    const [riderProfile, setRiderProfile] = useState(() => {
+        try {
+            const saved = localStorage.getItem("naanstop_rider_profile");
+            return saved ? JSON.parse(saved) : {
+                name: "Raju Bhaiya",
+                phone: "+91 98765 43210",
+                vehicle: "Hero Splendor • KA-01-EA-2026",
+                rating: 4.9,
+                totalDeliveries: 1428,
+                isOnline: true,
+                todayEarnings: 48.50,
+                todayTrips: 8,
+                currentLocation: "Indiranagar Hub"
+            };
+        } catch {
+            return {
+                name: "Raju Bhaiya",
+                phone: "+91 98765 43210",
+                vehicle: "Hero Splendor • KA-01-EA-2026",
+                rating: 4.9,
+                totalDeliveries: 1428,
+                isOnline: true,
+                todayEarnings: 48.50,
+                todayTrips: 8,
+                currentLocation: "Indiranagar Hub"
             };
         }
     });
@@ -424,12 +550,96 @@ const StoreContextProvider = (props) => {
         showToast("Profile updated! 👤", "success");
     };
 
+    // Multi-Outlet & Rider Fleet Methods
+    const handleSelectOutlet = (outlet) => {
+        setSelectedOutlet(outlet);
+        localStorage.setItem("naanstop_outlet_id", outlet.id);
+        triggerHaptic('selection');
+        showToast(`Switched outlet to ${outlet.name} 🏙️`, 'success');
+        setOutletModalOpen(false);
+    };
+
+    const toggleRiderOnline = () => {
+        setRiderProfile(prev => {
+            const next = { ...prev, isOnline: !prev.isOnline };
+            localStorage.setItem("naanstop_rider_profile", JSON.stringify(next));
+            triggerHaptic('selection');
+            showToast(`Rider status: ${next.isOnline ? "Online & Ready 🟢" : "Offline 🔴"}`, 'info');
+            return next;
+        });
+    };
+
+    const advanceRiderOrderStatus = (orderId, newStatus) => {
+        triggerHaptic('light');
+        updateLocalOrderStatus(orderId, newStatus);
+        showToast(`Rider updated order to "${newStatus}" 🛵`, 'info');
+    };
+
+    const verifyAndCompleteDelivery = (orderId, enteredPin) => {
+        const order = localOrders.find(o => o._id === orderId);
+        if (!order) {
+            return { success: false, message: "Order not found!" };
+        }
+
+        const expectedPin = String(order.deliveryPin || "1234");
+        if (String(enteredPin).trim() !== expectedPin.trim()) {
+            triggerHaptic('error');
+            return { success: false, message: "Incorrect PIN! Please ask customer for the 4-digit code." };
+        }
+
+        // Correct PIN! Complete delivery!
+        triggerHaptic('success');
+        if (soundEnabled) {
+            playSuccessChime();
+        }
+
+        const tripPayout = 4.50 + (Number(order.riderTip) || 0);
+
+        setLocalOrders(prev => {
+            const updated = prev.map(o => o._id === orderId ? {
+                ...o,
+                status: "Delivered",
+                deliveredAt: new Date().toISOString(),
+                isVerified: true
+            } : o);
+            localStorage.setItem("naanstop_local_orders", JSON.stringify(updated));
+            return updated;
+        });
+
+        setRiderProfile(prev => {
+            const updated = {
+                ...prev,
+                todayEarnings: Number((prev.todayEarnings + tripPayout).toFixed(2)),
+                todayTrips: prev.todayTrips + 1,
+                totalDeliveries: prev.totalDeliveries + 1
+            };
+            localStorage.setItem("naanstop_rider_profile", JSON.stringify(updated));
+            return updated;
+        });
+
+        addNotification({
+            title: `Order #${order._id.slice(-6)} Delivered! 🌶️🎉`,
+            message: `Handover verified with PIN. Thank you for ordering from ${order.outlet?.name || "NaanStop"}!`,
+            type: "order"
+        });
+
+        showToast(`Delivery verified! Earned $${tripPayout.toFixed(2)} 🎉`, 'success', 4000);
+        return { success: true, message: `Delivery verified successfully! Earned $${tripPayout.toFixed(2)}` };
+    };
+
     // Local Orders for Instant / Guest Checkout
     const addLocalOrder = (order) => {
         triggerHaptic('success');
         
+        // Ensure Delivery PIN and Outlet are bound
+        const finalizedOrder = {
+            ...order,
+            deliveryPin: order.deliveryPin || generateDeliveryPin(),
+            outlet: order.outlet || selectedOutlet
+        };
+
         // Award NaanCoins: 10 coins per $1 spent!
-        const earnedCoins = Math.max(10, Math.floor((Number(order.amount) || 15) * 10));
+        const earnedCoins = Math.max(10, Math.floor((Number(finalizedOrder.amount) || 15) * 10));
         let remainingCoins = naanCoins + earnedCoins;
 
         if (redeemCoinsActive && naanCoins >= 100) {
@@ -444,13 +654,13 @@ const StoreContextProvider = (props) => {
         localStorage.setItem("naanstop_coins", String(remainingCoins));
 
         setLocalOrders((prev) => {
-            const updated = [order, ...prev];
+            const updated = [finalizedOrder, ...prev];
             localStorage.setItem("naanstop_local_orders", JSON.stringify(updated));
             return updated;
         });
         addNotification({
-            title: `Order Placed: #${order._id.slice(-6)} 🛵`,
-            message: `${order.items.length} item(s) on their way with Raju Bhaiya. Tap to track live!`,
+            title: `Order Placed: #${finalizedOrder._id.slice(-6)} 🛵`,
+            message: `${finalizedOrder.items.length} item(s) on their way from ${finalizedOrder.outlet?.name || "NaanStop"}. Handover PIN: ${finalizedOrder.deliveryPin}`,
             type: "order"
         });
     };
@@ -548,7 +758,22 @@ const StoreContextProvider = (props) => {
         secretMenuUnlocked,
         unlockSecretMenu,
         soundEnabled,
-        setSoundEnabled
+        setSoundEnabled,
+        // Swiggy/Zomato Multi-Outlet & Fleet Additions
+        OUTLETS,
+        COMMERCIAL_FEES,
+        calculateCommercialBill,
+        generateDeliveryPin,
+        selectedOutlet,
+        setSelectedOutlet,
+        handleSelectOutlet,
+        outletModalOpen,
+        setOutletModalOpen,
+        riderProfile,
+        setRiderProfile,
+        toggleRiderOnline,
+        advanceRiderOrderStatus,
+        verifyAndCompleteDelivery
     };
 
     return (

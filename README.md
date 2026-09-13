@@ -33,6 +33,7 @@ An enterprise-ready, full-stack Desi food delivery, table reservation, and kitch
 **NaanStop 🌶️** is a vibrant, modern full-stack culinary application that blends high-energy Indian dhaba culture with sleek, state-of-the-art digital dining. Combining royal dawat feasts with fast-casual street food, NaanStop solves the entire food journey—from interactive dish exploration to live kitchen prep, gamified discounts, and delivery partner tracking.
 
 Synthesizing proven architectural patterns from:
+- **[Ashlin Shaju's Swiggy & Zomato Ecosystem Architecture](https://youtu.be/hE0jg2dVTR0?si=RHw9MJZBeAo5M25t)**: 3-sided on-demand ecosystem (Customer Web App + Cloud Kitchen OS + Rider Partner Console) with multi-outlet kitchen hubs, Swiggy commercial fee breakdown, 4-digit doorstep handover PIN, and driver wallet telemetry.
 - **[KitchenAsty](https://github.com/mighty840/kitchenasty)**: Self-hosted table reservations and real-time Kitchen Display System (KDS) Kanban.
 - **[delivery_app](https://github.com/CaioQuirinoMedeiros/delivery_app)**: Portion sizing (`Single Plate / Handi`, `Dhaba Sharing`, `Royal Dawat`), spice customizations, add-ons, and itemized receipts.
 - **NaanStop Royal Innovations**: Gamified **Chakkar of Luck 🎡**, **Raju Bhaiya 🛵** live tracker with chai tipping, 1-click **🟢 Pure Veg Mode**, and offline **Web Audio Desi Diner Radio**.
@@ -68,21 +69,44 @@ Synthesizing proven architectural patterns from:
   * **Raju Bhaiya** (4.9 ★, 1,420+ safe deliveries)
   * **Vehicle**: Hero Splendor (`KA-03-HA-7788`)
   * **Live ETA Countdown**: Real-time arrival estimation with insulated hot-bag guarantee.
-* **Chai Tipping**: 1-click tipping (*"Bhaiya ki Chai ke liye"* $1, $2, or $3) with 100% direct attribution to the rider.
+* **Chai Tipping**: 1-click tipping (*"Bhaiya ki Chai ke liye"* $1, $2, $3, or $5) with 100% direct attribution to the rider.
 
-#### 4. 🪑 Themed Desi Table Reservations
+#### 4. 🏙️ Multi-Outlet Cloud Kitchen Selector (Swiggy Multi-Hub Model)
+* **Indiranagar Flagship Kitchen**: Central culinary hub with 18-25 min express delivery.
+* **Koramangala Highway Express**: Highway outpost with 20-30 min delivery radius.
+* **Cyber Hub Downtown Canteen**: Corporate dining & quick lunch hub with 15-22 min delivery.
+* Live distance indicators, kitchen status pills, and instant switching with real-time recalculation of delivery fees and ETAs.
+
+#### 5. 💰 Swiggy-Style Commercial Billing & Doorstep Handover PIN
+* **Transparent Commercial Breakdown**: Item Total, Restaurant Eco-Packaging Fee ($0.40), Platform Fee ($0.25), Delivery Partner Fee (Free on orders $30+ with progress meter), and 1-tap Rider Chai Tip chips.
+* **🔐 4-Digit Doorstep Handover PIN / OTP**: Secure 4-digit verification code generated at order creation, displayed on the customer's live tracking screen, and validated by the rider upon handover.
+
+#### 6. 🪑 Themed Desi Table Reservations
 * **Maharaja Royal Diwan 👑**: Regal silk cushions, antique brass lanterns, and low-table dawat feast seating.
 * **Dhaba Charpai Courtyard 🪑**: Authentic woven charpai cots, open tandoor aromas, and truck art aesthetic.
 * **Bollywood Retro Rooftop 🌆**: Open-air terrace with nostalgic golden era cinema murals and panoramic skyline views.
 * **Verandah Garden Patio 🌿**: Al fresco fountain courtyard surrounded by night-blooming jasmine and marigolds.
 * Instant `RES-xxxx` confirmation code, email notification dispatch, and personal reservation history.
 
-#### 5. 📻 NaanStop Desi Diner Radio & Waiting Lounge
+#### 7. 📻 NaanStop Desi Diner Radio & Waiting Lounge
 * In-app audio player featuring 3 procedural ambient stations (100% offline Web Audio API):
   * 🎸 *Bollywood Acoustic Chill* (Romantic nylon guitar & mellow chords)
   * 🌧️ *Tapri Chai & Monsoon Rain* (Raindrop ambience & gentle lofi piano)
   * 🌅 *Highway Dhaba Sunset* (Ethereal tanpura pads & sitar undertones)
 * Plus classic cafe lofi channels, dancing soundwave equalizer, and spinning vinyl disc animation.
+
+---
+
+### 🛵 Delivery Partner Console (`/#/rider` — Mobile-First Rider PWA)
+* **Duty Toggle**: Instant **ONLINE 🟢 / OFFLINE ⚪** switch with live incoming delivery radar scanner.
+* **Turn-by-Turn Route Telemetry**: Dynamic GPS road simulator showing dispatch distance, customer address, and phone connect.
+* **Multi-Stage Trip Stepper**:
+  1. *Assigned / Head to Cloud Kitchen*
+  2. *At Kitchen / Pickup Hot Bag*
+  3. *En Route / Driving to Customer*
+  4. *At Doorstep / Enter Handover PIN*
+* **Handover PIN Verification Modal**: Interactive 4-digit code validator preventing order misdelivery.
+* **Driver Wallet & Quick Cashout**: Tracks daily trips completed, base delivery pay, customer chai tips, and instant wallet cashout.
 
 ---
 
