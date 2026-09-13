@@ -1,347 +1,178 @@
-<div align="center">
+# NaanStop Food Delivery
 
-# 🌶️ NaanStop — Modern Desi Canteen & Express Delivery
+NaanStop is a full-stack food delivery demo for Indian food ordering, table reservations, and kitchen operations.
 
-### *"Ghar Ka Pyaar, Dhaba Ka Swad • Non-Stop Goodness!"*
+It includes:
 
-An enterprise-ready, full-stack Desi food delivery, table reservation, and kitchen operations platform built with **React 18 (Vite)**, **Node.js**, **Express**, and **Modern Vanilla CSS**.
+- Customer web app with menu browsing, cart, checkout, reservations, and order tracking
+- Admin dashboard with orders, reservations, menu management, and a kitchen Kanban board
+- Express API with JWT authentication, MongoDB Atlas support, and local JSON fallback storage
+- Capacitor Android project for private testing and hackathon demos
 
-[![React](https://img.shields.io/badge/Frontend-React%2018%20(Vite)-61DAFB?logo=react&logoColor=black)](https://react.dev/)
-[![Node.js](https://img.shields.io/badge/Backend-Node.js%20%2F%20Express-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
-[![JavaScript](https://img.shields.io/badge/Language-JavaScript%20(ESM)-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)](https://github.com/DeekshaG96/food-delivery-app)
-[![Tests](https://img.shields.io/badge/Tests-24%2F24%20Passing-success)](https://github.com/DeekshaG96/food-delivery-app)
+## Live Demo
 
-<p align="center">
-  <a href="#-key-features">Key Features</a> •
-  <a href="#-the-naanstop-experience">The NaanStop Vibe</a> •
-  <a href="#-tech-stack">Tech Stack</a> •
-  <a href="#-project-architecture">Architecture</a> •
-  <a href="#-getting-started">Getting Started</a> •
-  <a href="#-api-documentation">API Docs</a> •
-  <a href="#-testing--verification">Testing</a> •
-  <a href="#-acknowledgements">Acknowledgements</a>
-</p>
+- Customer app: https://naanstop-customer.vercel.app
+- Admin dashboard: https://naanstop-admin-khaki.vercel.app
+- Backend API: https://naanstop-backend-weoh.onrender.com
 
-</div>
+The demo backend runs on Render's free plan and may take a few seconds to wake after inactivity.
 
----
+## Tech Stack
 
-## 📖 Overview
+- React 18 and Vite
+- Node.js and Express
+- MongoDB Atlas with local JSON fallback
+- JWT and bcryptjs authentication
+- Capacitor Android
+- Vercel for the web apps
+- Render for the API
 
-**NaanStop 🌶️** is a vibrant, modern full-stack culinary application that blends high-energy Indian dhaba culture with sleek, state-of-the-art digital dining. Combining royal dawat feasts with fast-casual street food, NaanStop solves the entire food journey—from interactive dish exploration to live kitchen prep, gamified discounts, and delivery partner tracking.
+## Project Structure
 
-Synthesizing proven architectural patterns from:
-- **[Ashlin Shaju's Swiggy & Zomato Ecosystem Architecture](https://youtu.be/hE0jg2dVTR0?si=RHw9MJZBeAo5M25t)**: 3-sided on-demand ecosystem (Customer Web App + Cloud Kitchen OS + Rider Partner Console) with multi-outlet kitchen hubs, Swiggy commercial fee breakdown, 4-digit doorstep handover PIN, and driver wallet telemetry.
-- **[KitchenAsty](https://github.com/mighty840/kitchenasty)**: Self-hosted table reservations and real-time Kitchen Display System (KDS) Kanban.
-- **[delivery_app](https://github.com/CaioQuirinoMedeiros/delivery_app)**: Portion sizing (`Single Plate / Handi`, `Dhaba Sharing`, `Royal Dawat`), spice customizations, add-ons, and itemized receipts.
-- **NaanStop Royal Innovations**: Gamified **Chakkar of Luck 🎡**, **Raju Bhaiya 🛵** live tracker with chai tipping, 1-click **🟢 Pure Veg Mode**, and offline **Web Audio Desi Diner Radio**.
-
-## 🚀 Live Demo
-
-The deployed demo is split into three services:
-
-| Surface | Link |
-| :--- | :--- |
-| Customer Store | [naanstop-customer.vercel.app](https://naanstop-customer.vercel.app) |
-| Kitchen OS Admin | [naanstop-admin-khaki.vercel.app](https://naanstop-admin-khaki.vercel.app) |
-| Backend API | [naanstop-backend-weoh.onrender.com](https://naanstop-backend-weoh.onrender.com) |
-
-The backend uses MongoDB Atlas in deployment and falls back to local JSON storage for zero-configuration development. The free Render instance may take a few seconds to wake after inactivity.
-
----
-
-## 🌟 Key Features
-
-### 🛒 Customer Web Portal (`frontend/` — Port 5173)
-
-#### 1. 🍛 Royal Desi Menu & Pure Veg Mode
-* **7 Curated Indian Categories**: *Biryani*, *Curries*, *Tandoor*, *Breads*, *Street Chaat*, *Chai & Drinks*, and *Mithai*.
-* **Authentic FSSAI Badges**: Distinctive green square/dot (🟢 Pure Veg) and red square/dot (🔴 Non-Veg) indicators on every dish card and modal.
-* **1-Click 🟢 Veg Mode**: Instant navbar toggle switch filtering out all non-veg items with active visual alerts.
-* **Desi Spice Meter (Teekhapan)**: Choose between *Mild (Creamy) 🌿*, *Medium (Ghar Ka Tadka) 🌶️*, *Desi Teekha (Dhaba Style) 🌶️🌶️*, and *Bhut Jolokia Fire 🌶️🌶️🌶️*.
-* **🌱 Jain-Friendly Option**: 1-click toggle for satvik preparation (cooked without onions or garlic in dedicated cookware).
-* **Desi Sidekicks & Add-Ons**: Extra dollops of Amul Makhan, chilled boondi raita, sirka pickled onions, crispy papad, and piping hot garlic naan.
-
-#### 2. 🎡 "Chakkar of Luck" (Gamified Spin-the-Wheel)
-* Interactive SVG/Canvas lucky wheel modal with vibrant Indian festive colors.
-* Procedural Web Audio API sound synthesis: realistic mechanical wheel ticks and celebratory fanfare chords.
-* Instant coupon rewards:
-  * `TADKA20`: 20% OFF subtotal
-  * `FREELASSI`: Free Chilled Mango Lassi ($4.50 value)
-  * `CHAI5`: $5.00 OFF for chai lovers
-  * `DESIFREE`: Free Express Delivery waiver
-  * `MAKHAN10`: 10% OFF Makhan discount
-  * `GULABJAMUN`: Free Shahi Gulab Jamun treat ($3.99 value)
-* 1-click "Apply Coupon Directly to Cart" with clipboard copy fallback.
-
-#### 3. 🛵 "Raju Bhaiya" Live Delivery Hero & Chai Tipping
-* Customer order tracking cards displaying your assigned delivery hero:
-  * **Raju Bhaiya** (4.9 ★, 1,420+ safe deliveries)
-  * **Vehicle**: Hero Splendor (`KA-03-HA-7788`)
-  * **Live ETA Countdown**: Real-time arrival estimation with insulated hot-bag guarantee.
-* **Chai Tipping**: 1-click tipping (*"Bhaiya ki Chai ke liye"* $1, $2, $3, or $5) with 100% direct attribution to the rider.
-
-#### 4. 🏙️ Multi-Outlet Cloud Kitchen Selector (Swiggy Multi-Hub Model)
-* **Indiranagar Flagship Kitchen**: Central culinary hub with 18-25 min express delivery.
-* **Koramangala Highway Express**: Highway outpost with 20-30 min delivery radius.
-* **Cyber Hub Downtown Canteen**: Corporate dining & quick lunch hub with 15-22 min delivery.
-* Live distance indicators, kitchen status pills, and instant switching with real-time recalculation of delivery fees and ETAs.
-
-#### 5. 💰 Swiggy-Style Commercial Billing & Doorstep Handover PIN
-* **Transparent Commercial Breakdown**: Item Total, Restaurant Eco-Packaging Fee ($0.40), Platform Fee ($0.25), Delivery Partner Fee (Free on orders $30+ with progress meter), and 1-tap Rider Chai Tip chips.
-* **🔐 4-Digit Doorstep Handover PIN / OTP**: Secure 4-digit verification code generated at order creation, displayed on the customer's live tracking screen, and validated by the rider upon handover.
-
-#### 6. 🪑 Themed Desi Table Reservations
-* **Maharaja Royal Diwan 👑**: Regal silk cushions, antique brass lanterns, and low-table dawat feast seating.
-* **Dhaba Charpai Courtyard 🪑**: Authentic woven charpai cots, open tandoor aromas, and truck art aesthetic.
-* **Bollywood Retro Rooftop 🌆**: Open-air terrace with nostalgic golden era cinema murals and panoramic skyline views.
-* **Verandah Garden Patio 🌿**: Al fresco fountain courtyard surrounded by night-blooming jasmine and marigolds.
-* Instant `RES-xxxx` confirmation code, email notification dispatch, and personal reservation history.
-
-#### 7. 📻 NaanStop Desi Diner Radio & Waiting Lounge
-* In-app audio player featuring 3 procedural ambient stations (100% offline Web Audio API):
-  * 🎸 *Bollywood Acoustic Chill* (Romantic nylon guitar & mellow chords)
-  * 🌧️ *Tapri Chai & Monsoon Rain* (Raindrop ambience & gentle lofi piano)
-  * 🌅 *Highway Dhaba Sunset* (Ethereal tanpura pads & sitar undertones)
-* Plus classic cafe lofi channels, dancing soundwave equalizer, and spinning vinyl disc animation.
-
----
-
-### 🛵 Delivery Partner Console (`/#/rider` — Mobile-First Rider PWA)
-* **Duty Toggle**: Instant **ONLINE 🟢 / OFFLINE ⚪** switch with live incoming delivery radar scanner.
-* **Turn-by-Turn Route Telemetry**: Dynamic GPS road simulator showing dispatch distance, customer address, and phone connect.
-* **Multi-Stage Trip Stepper**:
-  1. *Assigned / Head to Cloud Kitchen*
-  2. *At Kitchen / Pickup Hot Bag*
-  3. *En Route / Driving to Customer*
-  4. *At Doorstep / Enter Handover PIN*
-* **Handover PIN Verification Modal**: Interactive 4-digit code validator preventing order misdelivery.
-* **Driver Wallet & Quick Cashout**: Tracks daily trips completed, base delivery pay, customer chai tips, and instant wallet cashout.
-
----
-
-### 🛠️ Kitchen OS & Admin Dashboard (`admin/` — Port 5174)
-
-* **Live Kitchen Display System (KDS) Kanban**:
-  * 4 live workflow lanes: **New Orders** ➔ **In Kitchen** ➔ **Ready** ➔ **Completed**.
-  * Prep urgency timers, order-type badges (`Delivery`, `Store Pickup`, `Dine-In`), and itemized portion breakdowns.
-  * 1-click stage progression buttons (`Start Prep ➔`, `Ready for Pickup ➔`, `Complete ➔`).
-* **Table Reservations Desk**:
-  * KPI metric cards: *Total Bookings*, *Confirmed*, *Seated*, and *Today's Guests*.
-  * Operational actions: `Seat Guests`, `Confirm`, and `Cancel`.
-* **Menu Catalog & Inventory Manager**:
-  * Add new Desi dishes with image upload, category assignment, spice defaults, and pricing.
-  * Searchable menu catalog with instant deletion.
-
----
-
-### ⚡ Resilient Backend Service (`backend/` — Port 4000)
-
-* **Dual Storage Engine**:
-  * Production ready with **MongoDB Atlas** (`MONGO_URI`).
-  * **Zero-Config Local Fallback**: Automatically persists to local store (`data/db.json`) if MongoDB URI is absent.
-* **JWT Authentication**: User registration, login, token verification, and instant 1-click demo accounts.
-* **Rider & Tip Attribution**: Persists assigned delivery rider profiles, ETA countdowns, and chai tip amounts across order lifecycles.
-* **Stripe & Simulated Checkout**: Live Stripe checkout sessions with graceful local simulation fallback.
-
----
-
-## 💻 Tech Stack
-
-| Layer | Technology | Description |
-| :--- | :--- | :--- |
-| **Frontend App** | React 18, Vite | Customer web portal (SPA) |
-| **Admin Dashboard**| React 18, Vite | Kitchen OS, live KDS Kanban, reservations manager |
-| **Styling** | Vanilla CSS (CSS3 Tokens) | Warm saffron & tandoori palette, glassmorphism, responsive |
-| **Audio Engine** | Web Audio API | Procedural synthesizers for lucky wheel & Desi radio stations |
-| **State Management** | React Context API | Cart calculation, veg filter, promo codes, rider tips |
-| **Backend API** | Node.js, Express.js (ESM) | REST API, route controllers, error handling middleware |
-| **Database** | MongoDB Atlas / Local JSON | Hybrid dual persistence architecture |
-| **Auth & Security** | JWT, bcryptjs | Stateless auth & salted password hashing |
-| **Testing** | Node.js Test Runner | 24 automated full-stack integration assertions |
-
----
-
-## 📁 Project Architecture
-
-```
+```text
 food-delivery-app/
-├── admin/                      # NaanStop Kitchen OS & Admin React App
-│   ├── src/
-│   │   ├── components/         # Navbar, Sidebar
-│   │   ├── pages/
-│   │   │   ├── Add/            # Add dish to catalog
-│   │   │   ├── List/           # Search & manage dishes
-│   │   │   ├── Orders/         # Order dispatch list
-│   │   │   ├── Kanban/         # Live Kitchen Display System (KDS)
-│   │   │   └── Reservations/   # Table reservations manager
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   └── vite.config.js
-├── backend/                    # Express REST API Service
-│   ├── config/
-│   │   ├── db.js               # MongoDB Mongoose connector
-│   │   └── store.js            # Dual storage & seed catalog (Desi menu)
-│   ├── controllers/            # food, user, cart, order, reservation controllers
-│   ├── middleware/             # JWT auth middleware
-│   ├── models/                 # Mongoose schemas (Food, User, Order, Reservation)
-│   ├── routes/                 # Express routers
-│   ├── data/                   # Fallback database store (db.json)
-│   ├── verify_features.mjs     # 24-test integration test runner
-│   └── server.js               # Server entry point
-├── frontend/                   # NaanStop Customer React App
-│   ├── src/
-│   │   ├── assets/             # Menu definitions, high-res Indian food photos
-│   │   ├── components/
-│   │   │   ├── Navbar/         # Logo, 🟢 Veg toggle, 🎡 Spin button, cart badge
-│   │   │   ├── Header/         # Hero banner, CTAs
-│   │   │   ├── ExploreMenu/    # Category slider
-│   │   │   ├── FoodDisplay/    # Food grid, instant search, sort, veg alert banner
-│   │   │   ├── FoodItem/       # FSSAI indicator, spice badge, bestseller ribbon
-│   │   │   ├── FoodDetailModal/# Portion sizing, Desi spices, Jain prep, add-ons
-│   │   │   ├── SpinWheel/      # Chakkar of Luck interactive modal & Web Audio sound
-│   │   │   ├── MusicPlayer/    # NaanStop Diner Radio (Bollywood / Dhaba stations)
-│   │   │   └── Footer/         # Brand story, address, contact
-│   │   ├── context/            # StoreContext (cart, coupons, veg mode, rider tips)
-│   │   ├── utils/
-│   │   │   ├── musicEngine.js  # Web Audio sound synthesis engine
-│   │   │   └── spinWheel.js    # Lucky wheel physics and audio fanfare
-│   │   ├── pages/
-│   │   │   ├── Home/           # Landing page
-│   │   │   ├── Cart/           # Dynamic cart, Desi promo codes, spin CTA
-│   │   │   ├── PlaceOrder/     # Address form, delivery/pickup/dine-in, Chai tip
-│   │   │   ├── MyOrders/       # Live milestone stepper, Raju Bhaiya tracker, receipt
-│   │   │   └── Reservations/   # Maharaja Diwan / Charpai courtyard table booking
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   └── vite.config.js
-├── package.json
+├── frontend/    Customer React app and Capacitor Android project
+├── admin/       Kitchen OS React app
+├── backend/     Express API and persistence layer
+├── archive/     Food image dataset and source material
 └── README.md
 ```
 
----
+## Requirements
 
-## 🚀 Getting Started
+- Node.js 18 or newer
+- npm 9 or newer
+- MongoDB Atlas account for hosted persistence (optional for local development)
 
-### Prerequisites
-- **Node.js**: v18.0.0 or higher
-- **npm**: v9.0.0 or higher
+## Local Setup
 
-### 1. Clone the Repository
+Install dependencies:
+
 ```bash
-git clone https://github.com/DeekshaG96/food-delivery-app.git
-cd food-delivery-app
+npm install
+npm --prefix backend install
+npm --prefix frontend install
+npm --prefix admin install
 ```
 
-### 2. Configure Environment Variables
-Create a `.env` file in `backend/`:
-```bash
-cp backend/.env.example backend/.env
-```
+Create `backend/.env`:
 
 ```env
 PORT=4000
 JWT_SECRET="replace_with_a_long_random_secret"
-MONGO_URI=""           # Optional: MongoDB Atlas URI (leave blank for local store)
-STRIPE_SECRET_KEY=""   # Optional: Stripe Secret Key (leave blank for simulated checkout)
+MONGO_URI=""
+STRIPE_SECRET_KEY=""
 FRONTEND_URL="http://localhost:5173"
 ```
 
-### 3. Install Dependencies
+`MONGO_URI` is optional. When it is empty, the backend uses `backend/data/db.json`. `STRIPE_SECRET_KEY` is also optional; an empty value enables simulated checkout.
+
+Do not commit `.env` files or share their contents.
+
+## Run Locally
+
+Start each service in a separate terminal:
+
 ```bash
-# Backend
-cd backend && npm install
-
-# Frontend Customer App
-cd ../frontend && npm install
-
-# Admin Panel
-cd ../admin && npm install
+npm run server
+npm run client
+npm run admin
 ```
 
-### 4. Run Development Servers
-```bash
-# Terminal 1 — Backend (Port 4000)
-npm --prefix backend run dev
+Open:
 
-# Terminal 2 — Customer Frontend (Port 5173)
-npm --prefix frontend run dev
+- Customer app: http://localhost:5173
+- Admin dashboard: http://localhost:5174
+- API: http://localhost:4000
 
-# Terminal 3 — Admin Panel (Port 5174)
-npm --prefix admin run dev
+## Environment Variables
+
+### Backend
+
+| Variable | Purpose |
+| --- | --- |
+| `PORT` | API port; Render supplies its own port in deployment |
+| `JWT_SECRET` | Secret used to sign login tokens |
+| `MONGO_URI` | MongoDB Atlas connection string; optional locally |
+| `STRIPE_SECRET_KEY` | Stripe secret key; optional for simulated checkout |
+| `FRONTEND_URL` | Customer app URL used for checkout redirects |
+
+### Frontend and Admin
+
+```env
+VITE_BACKEND_URL=https://naanstop-backend-weoh.onrender.com
 ```
 
-Visit:
-- **Customer Store**: [http://localhost:5173](http://localhost:5173)
-- **Admin & KDS Dashboard**: [http://localhost:5174](http://localhost:5174)
-- **Backend API**: [http://localhost:4000](http://localhost:4000)
+The admin app can also use:
 
----
-
-## 📡 API Documentation
-
-### Table Reservations (`/api/reservation`)
-| Method | Endpoint | Description | Auth |
-| :--- | :--- | :--- | :---: |
-| `POST` | `/api/reservation/book` | Book a table reservation (generates `RES-xxxx`) | No |
-| `GET` | `/api/reservation/list` | Retrieve all reservations for admin view | No |
-| `GET` | `/api/reservation/user?email=...` | Retrieve reservations for a specific user | No |
-| `POST` | `/api/reservation/status` | Update reservation status (`Confirmed`, `Seated`, `Cancelled`) | No |
-
-### Orders & Fulfillment (`/api/order`)
-| Method | Endpoint | Description | Auth |
-| :--- | :--- | :--- | :---: |
-| `POST` | `/api/order/place` | Place an order (attaches Raju Bhaiya rider profile & chai tip) | Token |
-| `POST` | `/api/order/verify` | Verify payment status (Stripe or Simulated) | No |
-| `POST` | `/api/order/userorders` | Fetch orders placed by authenticated user | Token |
-| `GET` | `/api/order/list` | Fetch all orders for admin monitor & KDS Kanban | No |
-| `POST` | `/api/order/status` | Update order stage (`Food Processing`, `Out for delivery`, `Delivered`)| No |
-
-### Food & Catalog (`/api/food`)
-| Method | Endpoint | Description | Auth |
-| :--- | :--- | :--- | :---: |
-| `GET` | `/api/food/list` | Retrieve complete Desi menu catalog | No |
-| `POST` | `/api/food/add` | Upload image and create new dish item | No |
-| `POST` | `/api/food/remove` | Delete dish item from catalog | No |
-
----
-
-## 🧪 Testing & Verification
-
-Run the automated integration test suite:
-
-```bash
-cd backend
-node verify_features.mjs
+```env
+VITE_FRONTEND_URL=https://naanstop-customer.vercel.app
 ```
 
-### Verified Scenarios (24/24 Passing)
-- [x] **Table Booking**: Creation, unique `RES-xxxx` code generation, and initial `Confirmed` status.
-- [x] **Admin Reservation Management**: Full listing, seating area retention, and status transitions to `Seated`.
-- [x] **Customer Reservation Lookup**: Filter reservations by customer email.
-- [x] **Store Pickup Fulfillment**: Placement with portion sizes, add-ons, notes, and $0 fee.
-- [x] **Dine-In Table Fulfillment**: Placement with table assignment (`Table 4`), portion size, and cooking notes.
-- [x] **KDS Kanban Progression**: Retrieval of order types and progression from `New Orders` ➔ `In Kitchen` ➔ `Ready` ➔ `Completed`.
+## API Overview
 
----
+| Area | Main endpoints |
+| --- | --- |
+| Food | `GET /api/food/list`, `POST /api/food/add`, `POST /api/food/remove` |
+| Users | `POST /api/user/register`, `POST /api/user/login` |
+| Cart | `POST /api/cart/add`, `POST /api/cart/remove`, `POST /api/cart/get` |
+| Orders | `POST /api/order/place`, `POST /api/order/userorders`, `GET /api/order/list`, `POST /api/order/status` |
+| Reservations | `POST /api/reservation/book`, `GET /api/reservation/list`, `POST /api/reservation/status` |
 
-## 🛡️ Production Build
+## Testing and Builds
 
-Both the Customer Store and the Admin Dashboard compile cleanly with **0 errors**:
+Run the backend integration suite:
 
 ```bash
-# Customer Frontend Build
+node backend/verify_features.mjs
+```
+
+Build both web apps:
+
+```bash
 npm --prefix frontend run build
-
-# Kitchen OS Admin Build
 npm --prefix admin run build
 ```
 
-### Android Demo Build
+The integration suite covers reservations, customized orders, pickup and dine-in flows, and kitchen order-stage transitions.
 
-The customer app includes a Capacitor Android project under `frontend/android`. Build the web bundle, sync it into Android, and open the project in Android Studio:
+## Deployment
+
+### Backend on Render
+
+Use these settings:
+
+```text
+Root directory: backend
+Build command: npm install
+Start command: node server.js
+```
+
+Set `JWT_SECRET`, `MONGO_URI`, `STRIPE_SECRET_KEY` if needed, and `FRONTEND_URL` in Render's environment settings.
+
+### Customer app on Vercel
+
+```text
+Root directory: frontend
+Build command: npm run build
+Output directory: dist
+```
+
+Set `VITE_BACKEND_URL` to the Render backend URL.
+
+### Admin app on Vercel
+
+```text
+Root directory: admin
+Build command: npm run build
+Output directory: dist
+```
+
+Set `VITE_BACKEND_URL` and `VITE_FRONTEND_URL`.
+
+## Android Demo
+
+The customer app has a Capacitor project in `frontend/android`.
 
 ```bash
 cd frontend
@@ -350,23 +181,10 @@ npx cap sync android
 npx cap open android
 ```
 
-In Android Studio, use **Build → Generate Signed Bundle / APK** and select **Android App Bundle** for a private Play Console or hackathon test release. Keep the signing keystore and passwords outside the repository. The Android production API is configured through `frontend/.env.production`.
+In Android Studio, use **Build > Generate Signed Bundle / APK**, choose **Android App Bundle**, and select the release variant. Keep the signing keystore and passwords outside the repository.
 
-### Demo Scope
+The Android app is intended for private testing and hackathon demos. Configure Stripe, monitoring, push notifications, and stronger production security before accepting real customer traffic.
 
-This repository is configured for hackathons, portfolio demos, and hobby projects. Checkout uses simulated payment when `STRIPE_SECRET_KEY` is empty, and the free backend plan can have cold-start delays. Configure Stripe and a paid backend plan only when real customer traffic is required.
+## License
 
----
-
-## 💖 Acknowledgements
-
-- [KitchenAsty](https://github.com/mighty840/kitchenasty) — Self-hosted table reservations and kitchen display system architecture.
-- [delivery_app](https://github.com/CaioQuirinoMedeiros/delivery_app) — Portion sizing, add-on customization, and itemized receipt model.
-- [GreatStack](https://www.youtube.com/@GreatStackDev) — Full-stack MERN food delivery foundation.
-- [Unsplash](https://unsplash.com/) — High-definition Indian food imagery.
-
----
-
-<div align="center">
-  <sub>Built with ❤️ by Deeksha Ganesh • Star ⭐ this repository if you loved the NaanStop experience!</sub>
-</div>
+This project is provided for learning, portfolio, and hackathon use.
